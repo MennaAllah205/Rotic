@@ -1,5 +1,6 @@
 <?php
 
+use Illuminate\Http\Request;
 use Illuminate\Validation\ValidationException;
 
 if (! function_exists('getLocaleFromRequest')) {
@@ -7,6 +8,17 @@ if (! function_exists('getLocaleFromRequest')) {
     {
         $locale = request()->header('Locale', 'ar');
         return in_array($locale, ['en', 'ar']) ? $locale : 'ar';
+    }
+}
+if (! function_exists('getPerPage')) {
+    function getPerPage(Request $request, int $defaultPerPage = 25, int $maxPerPage = 200): int
+    {
+        $perPage = $request->get('per_page', $defaultPerPage);
+
+        if (! is_numeric($perPage)) {
+            $perPage = $defaultPerPage;
+        }
+        return (int) min($perPage, $maxPerPage);
     }
 }
 

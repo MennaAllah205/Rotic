@@ -1,10 +1,9 @@
 <?php
-
 namespace Database\Seeders;
 
 use Illuminate\Database\Seeder;
-use Spatie\Permission\Models\Role;
 use Spatie\Permission\Models\Permission;
+use Spatie\Permission\Models\Role;
 
 class RolesPermissionsSeeder extends Seeder
 {
@@ -14,18 +13,18 @@ class RolesPermissionsSeeder extends Seeder
     public function run(): void
     {
         $permissions = [
-            'permission_view',
+
+            'permission_show',
             'permission_create',
             'permission_update',
             'permission_delete',
 
-            'user_view',
+            'user_show',
             'user_create',
             'user_update',
             'user_delete',
 
-            'user_profile_view',
-
+            'user_profile_show',
 
         ];
 
@@ -39,8 +38,6 @@ class RolesPermissionsSeeder extends Seeder
         $admin = Role::firstOrCreate(['name' => 'admin', 'guard_name' => 'web']);
 
         $admin->syncPermissions($createdPermissions);
-
-
 
     }
 }

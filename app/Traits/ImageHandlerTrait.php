@@ -10,6 +10,7 @@ trait ImageHandlerTrait
     public function uploadAndCompressImage($image, $folder = 'uploads', $targetSizeKB = 500, $quality = 80)
     {
         try {
+            
             set_time_limit(60);
 
             $originalSizeKB = $image->getSize() / 1024;

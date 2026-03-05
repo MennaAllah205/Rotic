@@ -14,7 +14,7 @@ class UserController extends Controller
 
     public function __construct()
     {
-        $this->middleware('permission:user_view')->only(['index', 'show']);
+        $this->middleware('permission:user_show')->only(['index', 'show']);
         $this->middleware('permission:user_create')->only(['store']);
         $this->middleware('permission:user_update')->only(['update']);
         $this->middleware('permission:user_delete')->only(['destroy']);
@@ -34,6 +34,8 @@ class UserController extends Controller
     public function store(UsersStoreRequest $request)
     {
         try {
+
+            
             $data = $request->validated();
 
 

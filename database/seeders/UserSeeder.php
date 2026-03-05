@@ -1,10 +1,8 @@
 <?php
-
 namespace Database\Seeders;
 
-use Illuminate\Database\Seeder;
-use Illuminate\Support\Facades\Hash;
 use App\Models\User;
+use Illuminate\Database\Seeder;
 
 class UserSeeder extends Seeder
 {
@@ -15,11 +13,10 @@ class UserSeeder extends Seeder
     {
         User::Create(
             [
-                
-            'email' => 'owner@example.com',
-                'name' => 'owner',
-                'phone' => '01234567890',
-                'password' => 'password',
+                'name'     => 'owner',
+                'email'    => 'owner@owner.com',
+                'phone'    => '01234567890',
+                'password' => '1234',
                 'is_owner' => true,
             ]
         );

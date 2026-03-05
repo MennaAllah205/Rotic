@@ -12,7 +12,7 @@ class UserProfile extends Controller
      */
     public function __construct()
     {
-        $this->middleware('permission:user_profile_view')->only(['__invoke']);
+        $this->middleware('permission:user_profile_show')->only(['__invoke']);
     }
     public function __invoke(Request $request)
     {

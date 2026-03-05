@@ -1,13 +1,12 @@
 <?php
-
 namespace App\Http\Controllers;
 
 use App\Http\Requests\PermissionsStoreRequest;
 use App\Http\Requests\PermissionsUpdateRequest;
 use App\Http\Resources\PermissionsResources;
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Spatie\Permission\Models\Permission;
-
 
 class PermissionsController extends Controller
 {
@@ -17,19 +16,18 @@ class PermissionsController extends Controller
 
     public function __construct()
     {
-        $this->middleware('permission:permission_view')->only(['index', 'show']);
+        $this->middleware('permission:permission_show')->only(['index', 'show']);
         $this->middleware('permission:permission_create')->only(['store']);
         $this->middleware('permission:permission_update')->only(['update']);
         $this->middleware('permission:permission_delete')->only(['destroy']);
     }
-    public function index()
+    public function index(Request $request)
     {
-        try {
-            $permissions = Permission::paginate(10);
-            return PermissionsResources::collection($permissions);
-        } catch (\Exception $e) {
-            return backWithError($e);
-        }
+
+        $permissions = Permission::paginate(getPerPage(($request)));
+
+        return PermissionsResources::collection($permissions);
+
     }
 
     /**
@@ -46,33 +44,19 @@ class PermissionsController extends Controller
             });
             return backWithSuccess();
 
-
         } catch (\Exception $e) {
             return backWithError($e);
         }
     }
 
-    /**
-     * Display the specified resource.
-     */
-    public function show(Permission $permission)
-    {
-        try {
-            return new PermissionsResources($permission);
-        } catch (\Exception $e) {
-            return backWithError($e);
-        }
-    }
-
-    /**
-     * Update the specified resource in storage.
-     */
     public function update(PermissionsUpdateRequest $request, Permission $permission)
     {
         $data = $request->validated();
 
         try {
+            
             DB::transaction(function () use ($data, $permission) {
+
                 $permission->update($data);
 
             });
@@ -89,6 +73,7 @@ class PermissionsController extends Controller
     public function destroy(Permission $permission)
     {
         try {
+            
             $permission->roles()->detach();
             $permission->users()->detach();
 
