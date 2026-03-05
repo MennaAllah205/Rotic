@@ -17,9 +17,10 @@ class UserProfileResources extends JsonResource
         return [
             'id' => $this->id,
             'name' => $this->name,
-            'roles' => $this->getRoleNames(),
-            'permissions' => $this->getAllPermissions()->pluck('name'),
-
+            'email' => $this->email,
+            'phone' => $this->phone,
+            'roles' => $this->when($this->relationLoaded('roles'), $this->getRoleNames()),
+            'permissions' => $this->when($this->relationLoaded('permissions'), $this->getAllPermissions()->pluck('name')),
         ];
     }
 }

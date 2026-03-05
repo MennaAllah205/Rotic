@@ -3,10 +3,12 @@
 namespace App\Http\Controllers;
 
 use App\ApiResponseTrait;
+use App\Http\Requests\PermissionsStoreRequest;
+use App\Http\Requests\PermissionsUpdateRequest;
 use App\Http\Resources\PermissionsResources;
-use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Spatie\Permission\Models\Permission;
+
 
 class PermissionsController extends Controller
 {
@@ -18,10 +20,10 @@ class PermissionsController extends Controller
 
     public function __construct()
     {
-        $this->middleware('permission:permission.view')->only(['index', 'show']);
-        $this->middleware('permission:permission.create')->only(['store']);
-        $this->middleware('permission:permission.update')->only(['update']);
-        $this->middleware('permission:permission.delete')->only(['destroy']);
+        $this->middleware('permission:permission_view')->only(['index', 'show']);
+        $this->middleware('permission:permission_create')->only(['store']);
+        $this->middleware('permission:permission_update')->only(['update']);
+        $this->middleware('permission:permission_delete')->only(['destroy']);
     }
     public function index()
     {
@@ -32,18 +34,17 @@ class PermissionsController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    public function store(PermissionsResources $request)
+    public function store(PermissionsStoreRequest $request)
     {
         $data = $request->validated();
 
         try {
             DB::transaction(function () use ($data) {
-                $permission = Permission::create($data);
+                Permission::create($data);
 
-                return $this->successResponse(
-                    new PermissionsResources($permission)
-                );
             });
+            return $this->successResponse();
+
 
         } catch (\Exception $e) {
             return $this->errorResponse($e);
@@ -61,7 +62,7 @@ class PermissionsController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, Permission $permission)
+    public function update(PermissionsUpdateRequest $request, Permission $permission)
     {
         $data = $request->validated();
 
@@ -69,10 +70,8 @@ class PermissionsController extends Controller
             DB::transaction(function () use ($data, $permission) {
                 $permission->update($data);
 
-                return $this->successResponse(
-                    new PermissionsResources($permission)
-                );
             });
+            return $this->successResponse();
 
         } catch (\Exception $e) {
             return $this->errorResponse($e);
@@ -85,12 +84,14 @@ class PermissionsController extends Controller
     public function destroy(Permission $permission)
     {
         try {
+            $permission->roles()->detach();
+            $permission->users()->detach();
+
             $permission->delete();
 
             return $this->successResponse();
-
         } catch (\Exception $e) {
-            return $this->errorResponse($e);
+            return $this->errorResponse($e->getMessage());
         }
     }
 }

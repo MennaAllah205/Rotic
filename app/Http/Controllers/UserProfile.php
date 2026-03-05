@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Resources\UserProfileResources;
 use Illuminate\Http\Request;
 
 class UserProfile extends Controller
@@ -17,7 +18,7 @@ class UserProfile extends Controller
     {
         $user = $request->user();
 
-        return $this->UserProfileResources($user);
+        return new UserProfileResources($user);
 
     }
 }

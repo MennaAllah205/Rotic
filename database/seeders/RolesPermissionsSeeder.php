@@ -31,7 +31,7 @@ class RolesPermissionsSeeder extends Seeder
 
         $createdPermissions = [];
         foreach ($permissions as $permission) {
-            $createdPermissions[] = Permission::Create(
+            $createdPermissions[] = Permission::firstOrCreate(
                 ['name' => $permission, 'guard_name' => 'web']
             );
         }

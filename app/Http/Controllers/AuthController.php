@@ -38,8 +38,8 @@ class AuthController extends Controller
         $data = $request->validated();
         try {
             DB::beginTransaction();
-            $user = User::where('email', $data['login'])
-                ->orWhere('phone', $data['login'])
+            $user = User::where('email', $data['email'])
+                ->orWhere('phone', $data['phone'])
                 ->first();
             if (!$user || !Hash::check($data['password'], $user->password)) {
                 return $this->errorResponse('Invalid Credentials');
@@ -49,7 +49,7 @@ class AuthController extends Controller
             return $this->successResponse([
                 'user' => $user->only('name'),
                 'token' => $token
-            ], );
+            ]);
         } catch (\Exception $e) {
             DB::rollBack();
             return $this->errorResponse($e);
