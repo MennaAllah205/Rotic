@@ -7,18 +7,11 @@ use Illuminate\Support\Str;
 
 trait ImageHandlerTrait
 {
-    /**
-     * Compress image to ~500KB if larger
-     *
-     * @param \Illuminate\Http\UploadedFile $image
-     * @param string $folder
-     * @param int $targetSizeKB
-     * @param int $quality
-     * @return string|null
-     */
     public function uploadAndCompressImage($image, $folder = 'uploads', $targetSizeKB = 500, $quality = 80)
     {
         try {
+            set_time_limit(60);
+
             $originalSizeKB = $image->getSize() / 1024;
             $fileName = Str::random(20) . '.' . $image->getClientOriginalExtension();
             $destinationPath = public_path($folder);
@@ -28,14 +21,14 @@ trait ImageHandlerTrait
             }
 
             $tempPath = $folder . '/' . $fileName;
+            $fullPath = public_path($tempPath);
             $ext = strtolower($image->getClientOriginalExtension());
 
             if ($originalSizeKB <= $targetSizeKB) {
                 $image->move($destinationPath, $fileName);
                 return $tempPath;
             }
-
-            switch ($ext) {
+         switch ($ext) {
                 case 'jpg':
                 case 'jpeg':
                     $img = imagecreatefromjpeg($image->getRealPath());
@@ -50,50 +43,34 @@ trait ImageHandlerTrait
                     return null;
             }
 
-            $currentSizeKB = $originalSizeKB;
+            $width = imagesx($img);
+            $height = imagesy($img);
+
+            $maxDimension = 1600;
+            if ($width > $maxDimension || $height > $maxDimension) {
+                $ratio = $maxDimension / max($width, $height);
+                $newWidth = intval($width * $ratio);
+                $newHeight = intval($height * $ratio);
+
+                $tmpImg = imagecreatetruecolor($newWidth, $newHeight);
+
+                if ($ext == 'png' || $ext == 'gif') {
+                    imagecolortransparent($tmpImg, imagecolorallocatealpha($tmpImg, 0, 0, 0, 127));
+                    imagealphablending($tmpImg, false);
+                    imagesavealpha($tmpImg, true);
+                }
+
+                imagecopyresampled($tmpImg, $img, 0, 0, 0, 0, $newWidth, $newHeight, $width, $height);
+                imagedestroy($img);
+                $img = $tmpImg;
+            }
 
             if ($ext == 'jpg' || $ext == 'jpeg') {
-                $currentQuality = $quality;
-                do {
-                    imagejpeg($img, public_path($tempPath), $currentQuality);
-                    clearstatcache();
-                    $currentSizeKB = filesize(public_path($tempPath)) / 1024;
-                    $currentQuality -= 5;
-                } while ($currentSizeKB > $targetSizeKB && $currentQuality > 10);
-
+                imagejpeg($img, $fullPath, $quality);
+            } elseif ($ext == 'png') {
+                imagepng($img, $fullPath, 7);
             } else {
-                $maxWidth = imagesx($img);
-                $maxHeight = imagesy($img);
-                $scale = 0.95;
-                do {
-                    $newWidth = intval($maxWidth * $scale);
-                    $newHeight = intval($maxHeight * $scale);
-
-                    $tmpImg = imagecreatetruecolor($newWidth, $newHeight);
-
-                    if ($ext == 'png' || $ext == 'gif') {
-                        imagecolortransparent($tmpImg, imagecolorallocatealpha($tmpImg, 0, 0, 0, 127));
-                        imagealphablending($tmpImg, false);
-                        imagesavealpha($tmpImg, true);
-                    }
-
-                    imagecopyresampled($tmpImg, $img, 0, 0, 0, 0, $newWidth, $newHeight, imagesx($img), imagesy($img));
-
-                    if ($ext == 'png') {
-                        $compression = intval((100 - $quality) / 10);
-                        imagepng($tmpImg, public_path($tempPath), $compression);
-                    } elseif ($ext == 'gif') {
-                        imagegif($tmpImg, public_path($tempPath));
-                    }
-
-                    imagedestroy($tmpImg);
-                    clearstatcache();
-                    $currentSizeKB = filesize(public_path($tempPath)) / 1024;
-
-                    $maxWidth = $newWidth;
-                    $maxHeight = $newHeight;
-
-                } while ($currentSizeKB > $targetSizeKB && $maxWidth > 50 && $maxHeight > 50);
+                imagegif($img, $fullPath);
             }
 
             imagedestroy($img);
@@ -108,7 +85,7 @@ trait ImageHandlerTrait
     public function deleteImage($path)
     {
         $fullPath = public_path($path);
-        if (file_exists($fullPath)) {
+        if ($path && file_exists($fullPath)) {
             unlink($fullPath);
         }
     }
