@@ -22,9 +22,13 @@ class UserController extends Controller
 
     public function index()
     {
+        try{
         $users = User::paginate(10);
 
         return UsersResources::collection($users);
+    } catch (\Exception $e) {
+        return backWithError($e);
+    }
     }
 
     public function store(UsersStoreRequest $request)

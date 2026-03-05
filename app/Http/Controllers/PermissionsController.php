@@ -24,8 +24,12 @@ class PermissionsController extends Controller
     }
     public function index()
     {
-        $permissions = Permission::paginate(10);
-        return PermissionsResources::collection($permissions);
+        try {
+            $permissions = Permission::paginate(10);
+            return PermissionsResources::collection($permissions);
+        } catch (\Exception $e) {
+            return backWithError($e);
+        }
     }
 
     /**
@@ -53,7 +57,11 @@ class PermissionsController extends Controller
      */
     public function show(Permission $permission)
     {
-        return new PermissionsResources($permission);
+        try {
+            return new PermissionsResources($permission);
+        } catch (\Exception $e) {
+            return backWithError($e);
+        }
     }
 
     /**

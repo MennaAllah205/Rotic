@@ -23,9 +23,8 @@ class AuthController extends Controller
                     'token' => $token
                 ];
             });
-            
-            return backWithSuccess('User registered successfully', $result);
 
+            return backWithSuccess(data: $result);
         } catch (\Exception $e) {
             return backWithError($e);
         }
@@ -44,7 +43,7 @@ class AuthController extends Controller
             }
             $token = $user->createToken('auth_token')->plainTextToken;
             DB::commit();
-            return backWithSuccess('Login successful', [
+            return backWithSuccess(data: [
                 'user' => $user->only('name'),
                 'token' => $token
             ]);
@@ -60,7 +59,7 @@ class AuthController extends Controller
             DB::transaction(function () use ($request) {
                 $request->user()->currentAccessToken()->delete();
             });
-            return backWithSuccess('Logout successful');
+            return backWithSuccess();
         } catch (\Exception $e) {
             return backWithError($e);
         }
