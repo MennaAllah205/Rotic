@@ -2,7 +2,6 @@
 
 namespace App\Http\Controllers;
 
-use App\ApiResponseTrait;
 use App\Http\Requests\LoginRequest;
 use App\Http\Requests\RegisterRequest;
 use App\Models\User;
@@ -12,7 +11,6 @@ use Illuminate\Http\Request;
 
 class AuthController extends Controller
 {
-    use ApiResponseTrait;
     public function register(RegisterRequest $request)
     {
         try {
@@ -26,10 +24,10 @@ class AuthController extends Controller
                 ];
             });
             
-            return $this->successResponse($result);
+            return backWithSuccess('User registered successfully', $result);
 
         } catch (\Exception $e) {
-            return $this->errorResponse($e);
+            return backWithError($e);
         }
     }
 
@@ -42,17 +40,17 @@ class AuthController extends Controller
                 ->orWhere('phone', $data['phone'])
                 ->first();
             if (!$user || !Hash::check($data['password'], $user->password)) {
-                return $this->errorResponse('Invalid Credentials');
+                return backWithWarning('بيانات الاعتماد غير صالحة', 'Invalid Credentials');
             }
             $token = $user->createToken('auth_token')->plainTextToken;
             DB::commit();
-            return $this->successResponse([
+            return backWithSuccess('Login successful', [
                 'user' => $user->only('name'),
                 'token' => $token
             ]);
         } catch (\Exception $e) {
             DB::rollBack();
-            return $this->errorResponse($e);
+            return backWithError($e);
         }
     }
 
@@ -62,9 +60,9 @@ class AuthController extends Controller
             DB::transaction(function () use ($request) {
                 $request->user()->currentAccessToken()->delete();
             });
-            return $this->successResponse();
+            return backWithSuccess('Logout successful');
         } catch (\Exception $e) {
-            return $this->errorResponse($e);
+            return backWithError($e);
         }
     }
 }

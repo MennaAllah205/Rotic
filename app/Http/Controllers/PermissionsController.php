@@ -2,7 +2,6 @@
 
 namespace App\Http\Controllers;
 
-use App\ApiResponseTrait;
 use App\Http\Requests\PermissionsStoreRequest;
 use App\Http\Requests\PermissionsUpdateRequest;
 use App\Http\Resources\PermissionsResources;
@@ -15,8 +14,6 @@ class PermissionsController extends Controller
     /**
      * Display a listing of the resource.
      */
-
-    use ApiResponseTrait;
 
     public function __construct()
     {
@@ -43,11 +40,11 @@ class PermissionsController extends Controller
                 Permission::create($data);
 
             });
-            return $this->successResponse();
+            return backWithSuccess();
 
 
         } catch (\Exception $e) {
-            return $this->errorResponse($e);
+            return backWithError($e);
         }
     }
 
@@ -71,10 +68,10 @@ class PermissionsController extends Controller
                 $permission->update($data);
 
             });
-            return $this->successResponse();
+            return backWithSuccess();
 
         } catch (\Exception $e) {
-            return $this->errorResponse($e);
+            return backWithError($e);
         }
     }
 
@@ -89,9 +86,9 @@ class PermissionsController extends Controller
 
             $permission->delete();
 
-            return $this->successResponse();
+            return backWithSuccess();
         } catch (\Exception $e) {
-            return $this->errorResponse($e->getMessage());
+            return backWithError($e->getMessage());
         }
     }
 }

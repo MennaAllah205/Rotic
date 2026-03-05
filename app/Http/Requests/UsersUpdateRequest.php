@@ -49,4 +49,14 @@ class UsersUpdateRequest extends FormRequest
             ],
         ];
     }
+
+    /**
+     * Get the custom validation messages for the request.
+     *
+     * @return array<string, string>
+     */
+    public function messages(): array
+    {
+        return getCustomValidationMessages();
+    }
 }

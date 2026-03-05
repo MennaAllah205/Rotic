@@ -3,16 +3,20 @@
 namespace App\Models;
 
 // use Illuminate\Contracts\Auth\MustVerifyEmail;
+use App\Traits\ImageHandlerTrait;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Laravel\Sanctum\HasApiTokens;
+use Spatie\MediaLibrary\HasMedia;
+use Spatie\MediaLibrary\InteractsWithMedia;
+use Spatie\MediaLibrary\MediaCollections\Models\Media;
 use Spatie\Permission\Traits\HasRoles;
 
-class User extends Authenticatable
+class User extends Authenticatable implements HasMedia
 {
     /** @use HasFactory<\Database\Factories\UserFactory> */
-    use HasFactory, Notifiable, HasApiTokens, HasRoles;
+    use HasFactory, Notifiable, HasApiTokens, HasRoles, InteractsWithMedia;
 
 
     /**
@@ -25,6 +29,7 @@ class User extends Authenticatable
         'email',
         'phone',
         'password',
+        'is_owner',
     ];
 
     /**
@@ -35,6 +40,7 @@ class User extends Authenticatable
     protected $hidden = [
         'password',
         'remember_token',
+        'is_owner',
     ];
 
     /**
@@ -47,6 +53,28 @@ class User extends Authenticatable
         return [
             'email_verified_at' => 'datetime',
             'password' => 'hashed',
+            'is_owner' => 'boolean',
         ];
+    }
+
+    /**
+     * Register media conversions for automatic image compression
+     */
+    public function registerMediaConversions(Media $media = null): void
+    {
+        $this->addMediaConversion('thumb')
+            ->width(800) // Resize to max 800px width
+            ->height(800) // Resize to max 800px height
+            ->sharpen(10)
+            ->performOnCollections('images')
+            ->nonQueued(); // Process immediately
+
+        // Add a smaller thumbnail version
+        $this->addMediaConversion('small-thumb')
+            ->width(300)
+            ->height(300)
+            ->sharpen(10)
+            ->performOnCollections('images')
+            ->nonQueued();
     }
 }

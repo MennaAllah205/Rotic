@@ -26,7 +26,18 @@ class UsersStoreRequest extends FormRequest
             'email' => 'required|email|unique:users,email',
             'phone' => 'required|string|max:20',
             'password' => 'required|string|min:6|confirmed',
+            'images' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
 
         ];
+    }
+
+    /**
+     * Get the custom validation messages for the request.
+     *
+     * @return array<string, string>
+     */
+    public function messages(): array
+    {
+        return getCustomValidationMessages();
     }
 }
