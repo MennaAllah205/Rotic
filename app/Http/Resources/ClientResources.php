@@ -26,6 +26,8 @@ class ClientResources extends JsonResource
             'logo' => $this->logo,
 
             'meta' => $this->meta,
+
+            
             'projects' => ProjectsResources::collection($this->whenLoaded('projects')),
 
         ];

@@ -22,12 +22,13 @@ class StoreClientsRequest extends FormRequest
     public function rules(): array
     {
         return [
+
             'name' => 'required',
             'name.ar' => 'required|string',
             'name.en' => 'required|string',
 
-            'description' => 'sometimes|nullable|array',
-            'testimonial' => 'sometimes|nullable|array',
+            'description' => 'sometimes|nullable|url',
+            'testimonial' => 'sometimes|nullable|url',
             'logo' => 'sometimes|nullable|image',
             'meta' => 'sometimes|nullable|array',
             'keywords' => 'sometimes|nullable|array',

@@ -51,7 +51,7 @@ class UserController extends Controller
     public function update(UsersUpdateRequest $request, $id)
     {
 
-        $user = User::findorfail($id);
+        $user = User::findOrFail($id);
         $data = $request->validated();
 
         try {
@@ -77,6 +77,7 @@ class UserController extends Controller
     {
         try {
             $user = User::findOrFail($id);
+            
             $user->delete();
 
             return backWithSuccess();

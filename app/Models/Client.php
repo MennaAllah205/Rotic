@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Traits\HandlesOptimizedMedia;
 use Illuminate\Database\Eloquent\Model;
 use Spatie\MediaLibrary\HasMedia;
 use Spatie\MediaLibrary\InteractsWithMedia;
@@ -10,7 +11,7 @@ use Spatie\MediaLibrary\MediaCollections\Models\Media;
 
 class Client extends Model implements HasMedia
 {
-    use InteractsWithMedia;
+    use InteractsWithMedia , HandlesOptimizedMedia;
     protected $fillable = [
         'name',
         'description',
