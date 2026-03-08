@@ -1,52 +1,63 @@
 <?php
-
 namespace App\Http\Controllers\Auth;
+
 use App\Http\Controllers\Controller;
 use App\Http\Requests\LoginRequest;
-use App\Http\Requests\RegisterRequest;
 use App\Models\User;
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
-use Illuminate\Http\Request;
 
 class AuthController extends Controller
 {
-    public function register(RegisterRequest $request)
-    {
-        try {
-            $result = DB::transaction(function () use ($request) {
-                $data = $request->validated();
-                $user = User::create($data);
-                $token = $user->createToken('auth_token')->plainTextToken;
-                return [
-                    'user' => $user->only('name'),
-                    'token' => $token
-                ];
-            });
+    // public function register(RegisterRequest $request)
+    // {
+    //     try {
+    //         $result = DB::transaction(function () use ($request) {
+    //             $data = $request->validated();
+    //             $user = User::create($data);
+    //             $token = $user->createToken('auth_token')->plainTextToken;
+    //             return [
+    //                 'user' => $user->only('name'),
+    //                 'token' => $token
+    //             ];
+    //         });
 
-            return backWithSuccess(data: $result);
-        } catch (\Exception $e) {
-            return backWithError($e);
-        }
-    }
+    //         return backWithSuccess(data: $result);
+    //     } catch (\Exception $e) {
+    //         return backWithError($e);
+    //     }
+    // }
 
     public function login(LoginRequest $request)
     {
         $data = $request->validated();
         try {
+
+            $loginField = filter_var($data['credential'], FILTER_VALIDATE_EMAIL) ? 'email' : 'phone';
+
+            $credentials = [
+                $loginField => $data['credential'],
+                'password'  => $data['password'],
+            ];
+
             DB::beginTransaction();
-            $user = User::where('email', $data['email'])
-                ->orWhere('phone', $data['phone'])
-                ->first();
-            if (!$user || !Hash::check($data['password'], $user->password)) {
-                return backWithWarning('بيانات الاعتماد غير صالحة', 'Invalid Credentials');
+
+            $user = User::where($loginField, $data['credential'])->firstOrFail();
+
+            if (! $user || ! Hash::check($data['password'], $user->password)) {
+                return backWithWarning('بيانات غير صالحة', 'Invalid Credentials');
             }
-            $token = $user->createToken('auth_token')->plainTextToken;
+
+            $token = $user->createToken($request->userAgent())->plainTextToken;
+
             DB::commit();
+            
             return backWithSuccess(data: [
-                'user' => $user->only('name'),
-                'token' => $token
+                'user'  => $user->only('name'),
+                'token' => $token,
             ]);
+
         } catch (\Exception $e) {
             DB::rollBack();
             return backWithError($e);

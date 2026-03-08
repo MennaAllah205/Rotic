@@ -14,14 +14,18 @@ class DatabaseSeeder extends Seeder
      */
     public function run(): void
     {
-        $this->call([RolesPermissionsSeeder::class, UserSeeder::class]);
+        $this->call([
+
+            RolesPermissionsSeeder::class,
+            UserSeeder::class,
+        ]);
 
         $owner = User::first();
-        $user = User::create([
+        $user  = User::create([
             'name'     => 'Admin',
             'email'    => 'admin@admin.com',
-            'phone'    => '01062598872',
-            'password' => 'password',
+            'phone'    => '0101234567',
+            'password' => '123456',
 
         ]);
 

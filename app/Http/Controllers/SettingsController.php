@@ -16,6 +16,7 @@ class SettingsController extends Controller
         try {
 
             $setting = Setting::firstOrCreate([]);
+            
             $setting->update($data);
 
             if ($request->hasFile('logo')) {

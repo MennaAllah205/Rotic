@@ -1,5 +1,4 @@
 <?php
-
 namespace App\Http\Resources;
 
 use Illuminate\Http\Request;
@@ -14,14 +13,13 @@ class UsersResources extends JsonResource
      */
     public function toArray(Request $request): array
     {
+
         return [
-            'id' => $this->id,
-            'name' => $this->name,
+            'id'    => $this->id,
+            'name'  => $this->name,
             'email' => $this->email,
-            'phone' => $this->phone
+            'phone' => $this->phone,
         ];
-
-
 
     }
 }
