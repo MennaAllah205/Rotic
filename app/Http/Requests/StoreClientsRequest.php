@@ -26,13 +26,11 @@ class StoreClientsRequest extends FormRequest
             'name.ar' => 'required|string',
             'name.en' => 'required|string',
 
-            'description' => 'sometimes|nullable|url',
-            'testimonial' => 'sometimes|nullable|url',
+            'description' => 'sometimes|nullable|array',
+            'testimonial' => 'sometimes|nullable|array',
             'logo' => 'sometimes|nullable|image',
             'meta' => 'sometimes|nullable|array',
             'keywords' => 'sometimes|nullable|array',
-
-
 
         ];
     }
