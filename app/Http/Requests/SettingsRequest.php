@@ -1,5 +1,4 @@
 <?php
-
 namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
@@ -22,19 +21,21 @@ class SettingsRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'name' => 'required|array',
-            'name.ar' => 'required|string',
-            'name.en' => 'required|string',
 
-            'facebook' => 'nullable|url',
-            'youtube' => 'nullable|url',
-            'meta' => 'nullable|array',
+            'name'         => 'required',
+            'name.ar'      => 'required|string',
+            'name.en'      => 'required|string',
 
-            'email' => 'nullable|email',
-            'first_phone_number' => 'nullable|string',
-            'second_phone_number' => 'nullable|string',
+            'facebook'     => 'sometimes|nullable|url',
+            'youtube'      => 'sometimes|nullable|url',
+            // 'insta'
+            'meta'         => 'sometimes|nullable|array',
 
-            'logo' => 'nullable|image'
+            'email'        => 'sometimes|nullable|email',
+            'phone'        => 'sometimes|nullable|string',
+            'second_phone' => 'sometimes|nullable|string',
+
+            'logo'         => 'sometimes|nullable|image',
 
         ];
     }

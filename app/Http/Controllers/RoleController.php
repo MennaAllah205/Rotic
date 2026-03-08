@@ -1,5 +1,4 @@
 <?php
-
 namespace App\Http\Controllers;
 
 use App\Http\Controllers\Controller;
@@ -27,10 +26,9 @@ class RoleController extends Controller
     {
         $roles = Role::with('permissions')
             ->paginate(getPerPage($request));
+
         return RolesResources::collection($roles);
     }
-
-
 
     /**
      * Store a newly created resource in storage.
@@ -40,10 +38,10 @@ class RoleController extends Controller
         $data = $request->validated();
         try {
             DB::transaction(function () use ($data, &$role) {
+
                 $role = Role::create($data);
-                if (isset($data['permissions'])) {
-                    $role->syncPermissions($data['permissions']);
-                }
+
+                $role->syncPermissions($data['permissions']);
 
             });
             return backWithSuccess();
@@ -57,9 +55,6 @@ class RoleController extends Controller
      * Show the specified resource.
      */
 
-
-
-
     /**
      * Update the specified resource in storage.
      */
@@ -71,9 +66,11 @@ class RoleController extends Controller
         try {
             DB::transaction(function () use ($data, $role) {
                 $role->update($data);
+
                 if (isset($data['permissions'])) {
                     $role->syncPermissions($data['permissions']);
                 }
+
             });
             return backWithSuccess();
         } catch (\Exception $e) {
@@ -88,11 +85,17 @@ class RoleController extends Controller
     public function destroy($id)
     {
         $role = Role::findOrFail($id);
+
         try {
+
             DB::transaction(function () use ($role) {
-                if ($role->permissions()->count() > 0) {
-                    throw new \Exception('Cannot delete role that has permissions');
-                }
+
+                // if ($role->permissions()->count() > 0) {
+                //     throw new \Exception('Cannot delete role that has permissions');
+                // }
+
+                //users
+
                 $role->delete();
             });
 

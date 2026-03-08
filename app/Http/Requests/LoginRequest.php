@@ -1,5 +1,4 @@
 <?php
-
 namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
@@ -22,11 +21,9 @@ class LoginRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'email' => 'required_without:phone|nullable|email|exists:users,email',
 
-            'phone' => 'required_without:email|nullable|exists:users,phone',
-
-            'password' => 'required|string',
+            'credential' => 'required|string',
+            'password'   => 'required|string',
 
         ];
     }

@@ -1,5 +1,4 @@
 <?php
-
 namespace App\Http\Controllers;
 
 use App\Http\Controllers\Controller;
@@ -23,24 +22,20 @@ class UserController extends Controller
 
     public function index(Request $request)
     {
-        try {
-            $users = User::paginate(getPerPage($request));
 
-            return UsersResources::collection($users);
-        } catch (\Exception $e) {
-            return backWithError($e);
-        }
+        $users = User::paginate(getPerPage($request));
+
+        return UsersResources::collection($users);
+
     }
 
     public function store(UsersStoreRequest $request)
     {
         try {
 
-
             $data = $request->validated();
 
-
-            DB::transaction(function () use ($data, $request) {
+            DB::transaction(function () use ($data) {
 
                 User::create($data);
             });
@@ -58,13 +53,18 @@ class UserController extends Controller
 
     public function update(UsersUpdateRequest $request, User $user)
     {
+        $data = $request->validated();
+
         try {
-            $data = $request->validated();
 
             DB::transaction(function () use ($data, &$user) {
+                
                 $user->update($data);
-            });
 
+
+
+
+            });
 
             return backWithSuccess();
 

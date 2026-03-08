@@ -19,11 +19,12 @@ Route::middleware(['auth:sanctum'])->group(function () {
 
     Route::get('auth-data', [AuthDataController::class]);
 
+    Route::get('auth-data', AuthDataController::class);
 
     Route::apiResource('roles', RoleController::class);
 
     Route::apiResource('users', UserController::class);
-    Route::apiResource('settings', SettingsController::class);
 
+    Route::apiResource('settings', SettingsController::class)->only('index','update');
 
 });
