@@ -13,7 +13,7 @@ class AuthDataController extends Controller
      */
     public function __construct()
     {
-        $this->middleware('permission:user_profile_show')->only(['__invoke']);
+        $this->middleware('permission:auth_data_show')->only(['__invoke']);
     }
     public function __invoke(Request $request)
     {

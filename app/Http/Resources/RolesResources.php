@@ -1,10 +1,9 @@
 <?php
 
-namespace Modules\Admin\Transformers;
-
+namespace App\Http\Resources;
+use App\Http\Resources\PermissionResources;
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\JsonResource;
-use Modules\Admin\Transformers\PermissionResources;
 
 class RolesResources extends JsonResource
 {

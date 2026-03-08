@@ -14,17 +14,19 @@ class RolesPermissionsSeeder extends Seeder
     {
         $permissions = [
 
-            'permission_show',
-            'permission_create',
-            'permission_update',
-            'permission_delete',
+            'role_show',
+            'role_create',
+            'role_update',
+            'role_delete',
 
             'user_show',
             'user_create',
             'user_update',
             'user_delete',
 
-            'user_profile_show',
+            'auth_data_show',
+
+            'settings_update',
 
         ];
 

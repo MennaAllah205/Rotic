@@ -9,6 +9,11 @@ use App\Traits\HandlesOptimizedMedia;
 
 class SettingsController extends Controller
 {
+
+    public function __construct()
+    {
+        $this->middleware('permission:settings_update')->only(['update']);
+    }
     use HandlesOptimizedMedia;
     public function update(SettingsRequest $request)
     {
@@ -19,7 +24,6 @@ class SettingsController extends Controller
             $setting->update($data);
 
             if ($request->hasFile('logo')) {
-
                 $file = $request->file('logo');
 
 

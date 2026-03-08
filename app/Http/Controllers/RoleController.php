@@ -1,12 +1,12 @@
 <?php
 
-namespace Modules\Admin\Http\Controllers;
+namespace App\Http\Controllers;
 
 use App\Http\Controllers\Controller;
 use App\Http\Requests\StoreRolesRequest;
 use App\Http\Requests\UpdateRolesRequest;
+use App\Http\Resources\RolesResources;
 use Illuminate\Support\Facades\DB;
-use Modules\Admin\Transformers\RolesResources;
 use Spatie\Permission\Models\Role;
 use Symfony\Component\HttpFoundation\Request;
 
@@ -15,7 +15,7 @@ class RoleController extends Controller
 
     public function __construct()
     {
-        $this->middleware('permission:role.view')->only(['index', 'show']);
+        $this->middleware('permission:role.show')->only(['index', 'show']);
         $this->middleware('permission:role.create')->only(['store']);
         $this->middleware('permission:role.update')->only(['update']);
         $this->middleware('permission:role.delete')->only(['destroy']);
