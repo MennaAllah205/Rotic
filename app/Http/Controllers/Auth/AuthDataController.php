@@ -1,11 +1,12 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\Auth;
 
-use App\Http\Resources\UserProfileResources;
+use App\Http\Controllers\Controller;
+use App\Http\Resources\AuthDataResources;
 use Illuminate\Http\Request;
 
-class UserProfile extends Controller
+class AuthDataController extends Controller
 {
     /**
      * Handle the incoming request.
@@ -18,7 +19,7 @@ class UserProfile extends Controller
     {
         $user = $request->user();
 
-        return new UserProfileResources($user);
+        return new AuthDataResources($user);
 
     }
 }

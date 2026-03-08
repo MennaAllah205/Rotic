@@ -8,6 +8,7 @@ use App\Http\Requests\UsersUpdateRequest;
 use App\Http\Resources\UsersResources;
 use App\Models\User;
 use Illuminate\Support\Facades\DB;
+use Symfony\Component\HttpFoundation\Request;
 
 class UserController extends Controller
 {
@@ -20,22 +21,22 @@ class UserController extends Controller
         $this->middleware('permission:user_delete')->only(['destroy']);
     }
 
-    public function index()
+    public function index(Request $request)
     {
-        try{
-        $users = User::paginate(10);
+        try {
+            $users = User::paginate(getPerPage($request));
 
-        return UsersResources::collection($users);
-    } catch (\Exception $e) {
-        return backWithError($e);
-    }
+            return UsersResources::collection($users);
+        } catch (\Exception $e) {
+            return backWithError($e);
+        }
     }
 
     public function store(UsersStoreRequest $request)
     {
         try {
 
-            
+
             $data = $request->validated();
 
 
