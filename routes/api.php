@@ -2,6 +2,8 @@
 
 use App\Http\Controllers\Auth\AuthController;
 use App\Http\Controllers\Auth\AuthDataController;
+use App\Http\Controllers\ClientController;
+use App\Http\Controllers\ProjectsController;
 use App\Http\Controllers\RoleController;
 use App\Http\Controllers\SettingsController;
 use App\Http\Controllers\UserController;
@@ -25,6 +27,10 @@ Route::middleware(['auth:sanctum'])->group(function () {
 
     Route::apiResource('users', UserController::class);
 
-    Route::apiResource('settings', SettingsController::class)->only('index','update');
+    Route::apiResource('settings', SettingsController::class)->only('index', 'update');
+
+    Route::apiResource('clients', ClientController::class);
+
+    Route::apiResource('projects', ProjectsController::class);
 
 });

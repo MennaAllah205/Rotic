@@ -1,7 +1,7 @@
 <?php
+
 namespace App\Http\Controllers;
 
-use App\Http\Controllers\Controller;
 use App\Http\Requests\UsersStoreRequest;
 use App\Http\Requests\UsersUpdateRequest;
 use App\Http\Resources\UsersResources;
@@ -11,7 +11,6 @@ use Symfony\Component\HttpFoundation\Request;
 
 class UserController extends Controller
 {
-
     public function __construct()
     {
         $this->middleware('permission:user_show')->only(['index', 'show']);
@@ -35,47 +34,49 @@ class UserController extends Controller
 
             $data = $request->validated();
 
-            DB::transaction(function () use ($data) {
+            DB::transaction(function () use ($data, &$users) {
 
-                User::create($data);
+                $users = User::create($data);
             });
 
-            return backWithSuccess();
+            return backWithSuccess(
+                data: new UsersResources($users)
+            );
 
         } catch (\Exception $e) {
             return backWithError($e);
         }
     }
-    public function show(User $user)
-    {
-        return new UsersResources($user);
-    }
 
-    public function update(UsersUpdateRequest $request, User $user)
+    public function update(UsersUpdateRequest $request, $id)
     {
+
+        $user = User::findorfail($id);
         $data = $request->validated();
 
         try {
 
-            DB::transaction(function () use ($data, &$user) {
-                
+            DB::transaction(function () use ($data, $user) {
+
                 $user->update($data);
 
-
-
-
+                if (isset($data['password'])) {
+                    $user->tokens()->delete();
+                }
             });
 
-            return backWithSuccess();
-
+            return backWithSuccess(
+                data: new UsersResources($user)
+            );
         } catch (\Exception $e) {
             return backWithError($e);
         }
     }
 
-    public function destroy(User $user)
+    public function destroy($id)
     {
         try {
+            $user = User::findOrFail($id);
             $user->delete();
 
             return backWithSuccess();

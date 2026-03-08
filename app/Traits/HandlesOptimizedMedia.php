@@ -27,11 +27,23 @@ trait HandlesOptimizedMedia
 
     ): UploadedFile {
 
+        // Create temp file in public directory
 
+        $tempDir = public_path('temp');
 
-        $path = storage_path('app/tmp/' . uniqid() . '.webp');
+        if (!is_dir($tempDir)) {
 
+            mkdir($tempDir, 0755, true);
 
+        }
+
+        
+
+        $filename = uniqid() . '.webp';
+
+        $path = $tempDir . '/' . $filename;
+
+        
 
         // resize + convert
 
@@ -45,16 +57,15 @@ trait HandlesOptimizedMedia
 
             ->save($path);
 
+        
 
-
+        // Reduce quality if file is still too large
 
         while (filesize($path) / 1024 > $targetKb && $quality > 20) {
 
-
-
             $quality -= 5;
 
-
+            
 
             Image::load($file->getPathname())
 
@@ -68,13 +79,15 @@ trait HandlesOptimizedMedia
 
         }
 
+        
 
+        // Create new UploadedFile with correct path
 
         return new UploadedFile(
 
             $path,
 
-            basename($path),
+            $filename,
 
             'image/webp',
 
@@ -89,6 +102,7 @@ trait HandlesOptimizedMedia
 
 
     protected function addOptimizedMedia($model, UploadedFile $file, string $collection = 'images')
+
     {
 
         $optimized = $this->optimizeImage($file);

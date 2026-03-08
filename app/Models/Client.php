@@ -7,22 +7,17 @@ use Spatie\MediaLibrary\HasMedia;
 use Spatie\MediaLibrary\InteractsWithMedia;
 use Spatie\MediaLibrary\MediaCollections\Models\Media;
 
-class Setting extends Model implements HasMedia
+
+class Client extends Model implements HasMedia
 {
-
-
     use InteractsWithMedia;
-
     protected $fillable = [
         'name',
+        'description',
+        'testimonial',
         'logo',
-        'facebook',
-        'youtube',
-        'instagram',
-        'email',
-        'first_phone_number',
-        'second_phone_number',
-        'meta'
+        'meta',
+        'keywords',
     ];
 
     public function registerMediaCollections(): void
@@ -40,14 +35,23 @@ class Setting extends Model implements HasMedia
             ->nonQueued();
     }
 
-
-
-
     protected function casts(): array
     {
         return [
             'name' => 'array',
+            'description' => 'array',
+            'testimonial' => 'array',
             'meta' => 'array',
+            'keywords' => 'array',
         ];
     }
+
+    // Relationship with projects
+
+    public function projects()
+    {
+        return $this->hasMany(Project::class);
+    }
+
+
 }

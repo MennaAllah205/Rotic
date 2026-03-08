@@ -28,6 +28,16 @@ class RolesPermissionsSeeder extends Seeder
 
             'settings_update',
 
+            'client_show',
+            'client_create',
+            'client_update',
+            'client_delete',
+
+            'projects_show',
+            'projects_create',
+            'projects_update',
+            'projects_delete',
+
         ];
 
         $createdPermissions = [];

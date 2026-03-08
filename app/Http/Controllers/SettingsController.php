@@ -15,13 +15,23 @@ class SettingsController extends Controller
         $this->middleware('permission:settings_update')->only(['update']);
     }
     use HandlesOptimizedMedia;
+
+
+    public function index()
+    {
+        $setting = Setting::first();
+
+        return response()->json($setting);
+    }
+
+
     public function update(SettingsRequest $request)
     {
         $data = $request->validated();
         try {
 
             $setting = Setting::firstOrCreate([]);
-            
+
             $setting->update($data);
 
             if ($request->hasFile('logo')) {

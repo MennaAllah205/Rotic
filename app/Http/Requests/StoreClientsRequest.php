@@ -1,9 +1,10 @@
 <?php
+
 namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
 
-class SettingsRequest extends FormRequest
+class StoreClientsRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -21,32 +22,18 @@ class SettingsRequest extends FormRequest
     public function rules(): array
     {
         return [
-
             'name' => 'required',
             'name.ar' => 'required|string',
             'name.en' => 'required|string',
 
-            'facebook' => 'sometimes|nullable|url',
-            'youtube' => 'sometimes|nullable|url',
-            'instagram' => 'sometimes|nullable|url',
-            'meta' => 'sometimes|nullable|array',
-
-            'email' => 'sometimes|nullable|email',
-            'phone' => 'sometimes|nullable|string',
-            'second_phone' => 'sometimes|nullable|string',
-
+            'description' => 'sometimes|nullable|url',
+            'testimonial' => 'sometimes|nullable|url',
             'logo' => 'sometimes|nullable|image',
+            'meta' => 'sometimes|nullable|array',
+            'keywords' => 'sometimes|nullable|array',
+
+
 
         ];
-    }
-
-    /**
-     * Get the custom validation messages for the request.
-     *
-     * @return array<string, string>
-     */
-    public function messages(): array
-    {
-        return getCustomValidationMessages();
     }
 }

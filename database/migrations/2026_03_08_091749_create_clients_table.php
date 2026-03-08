@@ -10,28 +10,18 @@ return new class extends Migration {
      */
     public function up(): void
     {
-        Schema::create('settings', function (Blueprint $table) {
+        Schema::create('clients', function (Blueprint $table) {
             $table->id();
 
-            // name ar / en
             $table->json('name')->nullable();
-            // logo
+            $table->json('description')->nullable();
+            $table->json('testimonial')->nullable();
+            // client logo
             $table->string('logo')->nullable();
 
-
-            // social links
-            $table->string('facebook')->nullable();
-            $table->string('youtube')->nullable();
-            $table->string('instagram')->nullable();
-
-
-
-            // contact info
-            $table->string('email')->nullable();
-            $table->string('phone')->nullable();
-            $table->string('second_phone')->nullable();
-
+            //SEO feilds
             $table->json('meta')->nullable();
+            $table->text('keywords')->nullable();
 
 
 
@@ -44,6 +34,6 @@ return new class extends Migration {
      */
     public function down(): void
     {
-        Schema::dropIfExists('settings');
+        Schema::dropIfExists('clients');
     }
 };
