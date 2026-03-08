@@ -39,16 +39,14 @@ class ClientController extends Controller
         try {
 
             DB::transaction(function () use ($data, $request) {
+
                 $client = Client::create($data);
 
                 if ($request->hasFile('logo')) {
+                    
                     $file = $request->file('logo');
 
-
-                    $client->clearMediaCollection('logo');
-
-                    $this->addOptimizedMedia($client, $file, 'logo');
-
+                    $client->addOptimizedMedia($client, $file, 'logo');
                 }
 
                 return new ClientResources($client);

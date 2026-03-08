@@ -19,11 +19,9 @@ return new class extends Migration {
             // client logo
             $table->string('logo')->nullable();
 
-            //SEO feilds
+            //SEO fields
             $table->json('meta')->nullable();
             $table->text('keywords')->nullable();
-
-
 
             $table->timestamps();
         });

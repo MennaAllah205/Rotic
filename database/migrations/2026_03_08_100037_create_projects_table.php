@@ -15,11 +15,7 @@ return new class extends Migration {
 
             //clients projects relationship
 
-            $table->foreignId('client_id')
-                ->constrained('clients')
-                ->onUpdate('cascade')
-                ->onDelete('cascade');
-
+            $table->foreignId('client_id')->nullable()->constrained('clients')->cascadeOnUpdate()->nullOnDelete();
 
             $table->json('title');
             $table->json('description')->nullable();
@@ -32,7 +28,6 @@ return new class extends Migration {
 
             $table->json('meta')->nullable();
             $table->text('keywords')->nullable();
-
 
             $table->timestamps();
         });
