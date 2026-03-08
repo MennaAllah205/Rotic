@@ -2,18 +2,18 @@
 
 namespace App\Http\Controllers;
 
-use App\Http\Requests\StoreProjectsRequest;
+use App\Http\Requests\ProjectsStoreRequest;
+use App\Http\Requests\ProjectsUpdateRequest;
 use App\Http\Resources\ProjectsResources;
 use App\Models\Project;
-use Illuminate\Support\Facades\DB;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 
 class ProjectsController extends Controller
 {
     /**
      * Display a listing of the resource.
      */
-
     public function __construct()
     {
         $this->middleware('permission:projects_show')->only(['index', 'show']);
@@ -21,9 +21,11 @@ class ProjectsController extends Controller
         $this->middleware('permission:projects_update')->only(['update']);
         $this->middleware('permission:projects_delete')->only(['destroy']);
     }
+
     public function index(Request $request)
     {
         $projects = Project::paginate(getPerPage($request));
+
         return ProjectsResources::collection($projects);
 
     }
@@ -31,7 +33,7 @@ class ProjectsController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    public function store(StoreProjectsRequest $request)
+    public function store(ProjectsStoreRequest $request)
     {
         $data = $request->validated();
 
@@ -39,7 +41,9 @@ class ProjectsController extends Controller
             DB::transaction(function () use ($data) {
                 $project = Project::create($data);
 
-                return new ProjectsResources($project);
+                return backwithSuccess(
+                    data: new ProjectsResources($project)
+                );
             });
         } catch (\Exception $e) {
             backWithError($e);
@@ -51,11 +55,10 @@ class ProjectsController extends Controller
      * Display the specified resource.
      */
 
-
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, string $id)
+    public function update(ProjectsUpdateRequest $request, string $id)
     {
         $project = Project::findOrFail($id);
         $data = $request->validated();
@@ -64,7 +67,9 @@ class ProjectsController extends Controller
             DB::transaction(function () use ($data, $project) {
                 $project->update($data);
 
-                return new ProjectsResources($project);
+                return backWithSuccess(
+                    data: new ProjectsResources($project)
+                );
             });
         } catch (\Exception $e) {
             backWithError($e);

@@ -20,7 +20,7 @@ class ProjectsResources extends JsonResource
             'description' => $this->description,
             'features' => $this->features,
             'link' => $this->link,
-            'image' => $this->image,
+            'image' => $this->getFirstMediaUrl('image'),
             'meta' => $this->meta,
             'keywords' => $this->keywords,
         ];

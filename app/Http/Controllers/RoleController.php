@@ -1,9 +1,9 @@
 <?php
+
 namespace App\Http\Controllers;
 
-use App\Http\Controllers\Controller;
-use App\Http\Requests\StoreRolesRequest;
-use App\Http\Requests\UpdateRolesRequest;
+use App\Http\Requests\RolesStoreRequest;
+use App\Http\Requests\RolesUpdateRequest;
 use App\Http\Resources\RolesResources;
 use Illuminate\Support\Facades\DB;
 use Spatie\Permission\Models\Role;
@@ -11,7 +11,6 @@ use Symfony\Component\HttpFoundation\Request;
 
 class RoleController extends Controller
 {
-
     public function __construct()
     {
         $this->middleware('permission:role_show')->only(['index', 'show']);
@@ -19,6 +18,7 @@ class RoleController extends Controller
         $this->middleware('permission:role_update')->only(['update']);
         $this->middleware('permission:role_delete')->only(['destroy']);
     }
+
     /**
      * Display a listing of the resource.
      */
@@ -33,7 +33,7 @@ class RoleController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    public function store(StoreRolesRequest $request)
+    public function store(RolesStoreRequest $request)
     {
         $data = $request->validated();
         try {
@@ -44,6 +44,7 @@ class RoleController extends Controller
                 $role->syncPermissions($data['permissions']);
 
             });
+
             return backWithSuccess();
         } catch (\Exception $e) {
             return backWithError($e);
@@ -58,7 +59,7 @@ class RoleController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(UpdateRolesRequest $request, $id)
+    public function update(RolesUpdateRequest $request, $id)
     {
         $data = $request->validated();
         $role = Role::findOrFail($id);
@@ -72,6 +73,7 @@ class RoleController extends Controller
                 }
 
             });
+
             return backWithSuccess();
         } catch (\Exception $e) {
             return backWithError($e);
@@ -90,16 +92,21 @@ class RoleController extends Controller
 
             DB::transaction(function () use ($role) {
 
-                // if ($role->permissions()->count() > 0) {
-                //     throw new \Exception('Cannot delete role that has permissions');
-                // }
-
-                //users
+                if ($role->id == 1) {
+                    return backWithWarning('لا يمكنك حذف دور المالك', 'Cannot delete the owner role.');
+                }
+                if ($role->users()->count() > 0) {
+                    return backWithWarning('يوجد مستخدمين مرتبطين بهذا الدور', 'Cannot delete role because it has users.');
+                }
 
                 $role->delete();
             });
 
             return backWithSuccess('Role deleted successfully');
+
+        } catch (\Exception $e) {
+
+            return backWithError($e->getMessage());
         } catch (\Exception $e) {
             return backWithError($e);
         }

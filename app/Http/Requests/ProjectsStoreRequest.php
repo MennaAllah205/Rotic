@@ -1,9 +1,10 @@
 <?php
+
 namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
 
-class UpdateRolesRequest extends FormRequest
+class ProjectsStoreRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -21,16 +22,14 @@ class UpdateRolesRequest extends FormRequest
     public function rules(): array
     {
         return [
-            
-            'name'          => 'required|string|max:255|unique:roles,name,' . $this->route('id'),
-            'permissions'   => 'array',
-            'permissions.*' => 'string|exists:permissions,name',
-
+            'client_id' => 'required|exists:clients,id',
+            'title' => 'required|array',
+            'description' => 'sometimes|nullable|array',
+            'features' => 'sometimes|nullable|array',
+            'link' => 'sometimes|nullable|string|max:255',
+            'image' => 'sometimes|nullable|string|max:255',
+            'meta' => 'sometimes|nullable|array',
+            'keywords' => 'sometimes|nullable|string|max:255',
         ];
     }
-    public function messages(): array
-    {
-        return getCustomValidationMessages();
-    }
-
 }

@@ -2,8 +2,8 @@
 
 namespace App\Http\Controllers;
 
-use App\Http\Requests\StoreClientsRequest;
-use App\Http\Requests\UpdateClientsRequest;
+use App\Http\Requests\ClientsStoreRequest;
+use App\Http\Requests\ClientsUpdateRequest;
 use App\Http\Resources\ClientResources;
 use App\Models\Client;
 use Illuminate\Http\Request;
@@ -14,7 +14,6 @@ class ClientController extends Controller
     /**
      * Display a listing of the resource.
      */
-
     public function __construct()
     {
         $this->middleware('permission:client_show')->only(['index', 'show']);
@@ -22,6 +21,7 @@ class ClientController extends Controller
         $this->middleware('permission:client_update')->only(['update']);
         $this->middleware('permission:client_delete')->only(['destroy']);
     }
+
     public function index(Request $request)
     {
         $client = Client::with('projects')->paginate(getPerPage($request));
@@ -32,7 +32,7 @@ class ClientController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    public function store(StoreClientsRequest $request)
+    public function store(ClientsStoreRequest $request)
     {
         $data = $request->validated();
 
@@ -43,13 +43,15 @@ class ClientController extends Controller
                 $client = Client::create($data);
 
                 if ($request->hasFile('logo')) {
-                    
+
                     $file = $request->file('logo');
 
                     $client->addOptimizedMedia($client, $file, 'logo');
                 }
 
-                return new ClientResources($client);
+                return backWithSuccess(
+                    data: new ClientResources($client)
+                );
             });
         } catch (\Exception $e) {
             backWithError($e);
@@ -57,13 +59,10 @@ class ClientController extends Controller
 
     }
 
-
-
-
     /**
      * Update the specified resource in storage.
      */
-    public function update(UpdateClientsRequest $request, string $id)
+    public function update(ClientsUpdateRequest $request, string $id)
     {
         $client = Client::findOrFail($id);
         $data = $request->validated();
@@ -73,7 +72,9 @@ class ClientController extends Controller
             DB::transaction(function () use ($data, $client) {
                 $client->update($data);
 
-                return new ClientResources($client);
+                return backWithSuccess(
+                    data: new ClientResources($client)
+                );
             });
         } catch (\Exception $e) {
             backWithError($e);
