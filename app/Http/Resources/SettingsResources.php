@@ -5,7 +5,7 @@ namespace App\Http\Resources;
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\JsonResource;
 
-class SettingsResource extends JsonResource
+class SettingsResources extends JsonResource
 {
     public function toArray(Request $request): array
     {
@@ -25,8 +25,8 @@ class SettingsResource extends JsonResource
                 'youtube' => $this->youtube,
                 'instagram' => $this->instagram,
             ],
-            'logo' => $this->logo,
-            'metadata' => $this->meta,
+            'logo' => $this->getFirstMediaUrl('logo'),
+            'meta' => $this->meta,
         ];
     }
 }

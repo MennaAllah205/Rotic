@@ -4,31 +4,30 @@ namespace App\Models;
 
 use App\Traits\HandlesOptimizedMedia;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Http\UploadedFile;
 use Spatie\MediaLibrary\HasMedia;
 use Spatie\MediaLibrary\InteractsWithMedia;
 use Spatie\MediaLibrary\MediaCollections\Models\Media;
 
-class Client extends Model implements HasMedia
+class Product extends Model implements HasMedia
 {
     use HandlesOptimizedMedia , InteractsWithMedia;
 
     protected $fillable = [
         'name',
         'description',
-        'testimonial',
-        'logo',
         'meta',
         'keywords',
     ];
 
     public function registerMediaCollections(): void
     {
-        $this->addMediaCollection('logo');
+        $this->addMediaCollection('image');
     }
 
     public function registerMediaConversions(?Media $media = null): void
     {
-        $this->addMediaConversion('logo')
+        $this->addMediaConversion('image')
             ->width(800)
             ->height(800)
             ->quality(70)
@@ -41,16 +40,11 @@ class Client extends Model implements HasMedia
         return [
             'name' => 'array',
             'description' => 'array',
-            'testimonial' => 'array',
-            'meta' => 'array',
-            'keywords' => 'array',
         ];
     }
 
-    // Relationship with projects
-
-    public function projects()
+    public function addOptimizedMediaToCollection(UploadedFile $file, string $collection = 'image')
     {
-        return $this->hasMany(Project::class);
+        return $this->addOptimizedMedia($this, $file, $collection);
     }
 }

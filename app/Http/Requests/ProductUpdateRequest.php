@@ -4,7 +4,7 @@ namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
 
-class StoreProjectsRequest extends FormRequest
+class ProductUpdateRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -22,14 +22,20 @@ class StoreProjectsRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'client_id' => 'required|exists:clients,id',
-            'title' => 'required|array',
+            'name' => 'sometimes|nullable|array',
+            'name.ar' => 'sometimes|nullable|string',
+            'name.en' => 'sometimes|nullable|string',
+
             'description' => 'sometimes|nullable|array',
-            'features' => 'sometimes|nullable|array',
-            'link' => 'sometimes|nullable|string|max:255',
-            'image' => 'sometimes|nullable|string|max:255',
-            'meta' => 'sometimes|nullable|array',
-            'keywords' => 'sometimes|nullable|string|max:255',
+            'description.ar' => 'sometimes|nullable|string',
+            'description.en' => 'sometimes|nullable|string',
+
+            'image' => 'sometimes|nullable|image|max:255',
         ];
+    }
+
+    public function messages(): array
+    {
+        return getCustomValidationMessages();
     }
 }

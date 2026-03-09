@@ -4,7 +4,7 @@ namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
 
-class PermissionsUpdateRequest extends FormRequest
+class ProjectsUpdateRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -22,16 +22,17 @@ class PermissionsUpdateRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'name' => 'required|string|unique:permissions,name,' . $this->route('permission')->id,
-            'guard_name' => 'required|string',
+            'client_id' => 'sometimes|required|exists:clients,id',
+            'title' => 'sometimes|required|array',
+            'description' => 'sometimes|nullable|array',
+            'features' => 'sometimes|nullable|array',
+            'link' => 'sometimes|nullable|string|max:255|url',
+            'image' => 'sometimes|nullable|image|max:255',
+            'meta' => 'sometimes|nullable|array',
+            'keywords' => 'sometimes|nullable|string|max:255',
         ];
     }
 
-    /**
-     * Get the custom validation messages for the request.
-     *
-     * @return array<string, string>
-     */
     public function messages(): array
     {
         return getCustomValidationMessages();

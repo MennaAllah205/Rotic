@@ -4,7 +4,7 @@ namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
 
-class UpdateProjectsRequest extends FormRequest
+class ClientsUpdateRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -22,14 +22,26 @@ class UpdateProjectsRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'client_id' => 'sometimes|required|exists:clients,id',
-            'title' => 'sometimes|required|array',
-            'description' => 'sometimes|nullable|array',
-            'features' => 'sometimes|nullable|array',
-            'link' => 'sometimes|nullable|string|max:255',
-            'image' => 'sometimes|nullable|string|max:255',
+
+            'name' => 'sometimes|required',
+
+            'name.ar' => 'sometimes|required|string',
+            'name.en' => 'sometimes|required|string',
+
+            'description' => 'sometimes|nullable',
+
+            'testimonial' => 'sometimes|nullable',
+
+            'logo' => 'sometimes|nullable|image|mimes:png,jpg|max:2048',
+
             'meta' => 'sometimes|nullable|array',
-            'keywords' => 'sometimes|nullable|string|max:255',
+            'keywords' => 'sometimes|nullable|array',
+
         ];
+    }
+
+    public function messages(): array
+    {
+        return getCustomValidationMessages();
     }
 }

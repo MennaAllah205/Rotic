@@ -1,4 +1,5 @@
 <?php
+
 namespace Database\Seeders;
 
 use Illuminate\Database\Seeder;
@@ -38,18 +39,23 @@ class RolesPermissionsSeeder extends Seeder
             'projects_update',
             'projects_delete',
 
+            'products_show',
+            'products_create',
+            'products_update',
+            'products_delete',
+
         ];
 
         $createdPermissions = [];
         foreach ($permissions as $permission) {
             $createdPermissions[] = Permission::firstOrCreate(
-                ['name' => $permission, 'guard_name' => 'web']
+                ['name' => $permission]
             );
         }
 
-        $admin = Role::firstOrCreate(['name' => 'admin', 'guard_name' => 'web']);
+        $owner = Role::firstOrCreate(['name' => 'owner', 'guard_name' => 'web']);
 
-        $admin->syncPermissions($createdPermissions);
+        $owner->syncPermissions($permissions);
 
     }
 }

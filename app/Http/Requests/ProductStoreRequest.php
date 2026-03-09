@@ -4,7 +4,7 @@ namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
 
-class PermissionsStoreRequest extends FormRequest
+class ProductStoreRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -22,16 +22,18 @@ class PermissionsStoreRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'name' => 'required|string|unique:permissions,name',
-            'guard_name' => 'required|string',
+            'name' => 'required|array',
+            'name.ar' => 'required|string',
+            'name.en' => 'required|string',
+
+            'description' => 'sometimes|nullable|array',
+            'description.ar' => 'sometimes|nullable|string',
+            'description.en' => 'sometimes|nullable|string',
+
+            'image' => 'nullable|image|max:255',
         ];
     }
 
-    /**
-     * Get the custom validation messages for the request.
-     *
-     * @return array<string, string>
-     */
     public function messages(): array
     {
         return getCustomValidationMessages();

@@ -1,4 +1,5 @@
 <?php
+
 namespace Database\Seeders;
 
 use App\Models\User;
@@ -21,15 +22,14 @@ class DatabaseSeeder extends Seeder
         ]);
 
         $owner = User::first();
-        $user  = User::create([
-            'name'     => 'Admin',
-            'email'    => 'admin@admin.com',
-            'phone'    => '0101234567',
+        $user = User::create([
+            'name' => 'Admin',
+            'email' => 'admin@admin.com',
+            'phone' => '0101234567',
             'password' => '123456',
 
         ]);
 
-        $owner->assignRole('admin');
-        $user->assignRole('admin');
+        $owner->assignRole('owner');
     }
 }

@@ -1,4 +1,5 @@
 <?php
+
 namespace Database\Seeders;
 
 use App\Models\User;
@@ -11,14 +12,17 @@ class UserSeeder extends Seeder
      */
     public function run(): void
     {
-        User::Create(
+        $user = User::firstOrCreate(
             [
-                'name'     => 'owner',
-                'email'    => 'owner@owner.com',
-                'phone'    => '01234567890',
+                'email' => 'owner@owner.com',
+                'name' => 'owner',
+                'phone' => '01234567890',
                 'password' => '1234',
                 'is_owner' => true,
             ]
         );
+
+        $user->assignRole('owner');
+
     }
 }

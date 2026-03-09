@@ -4,7 +4,7 @@ namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
 
-class RegisterRequest extends FormRequest
+class RolesStoreRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -19,23 +19,15 @@ class RegisterRequest extends FormRequest
      *
      * @return array<string, \Illuminate\Contracts\Validation\ValidationRule|array<mixed>|string>
      */
-    public function rules(
-
-    ): array {
+    public function rules(): array
+    {
         return [
-            'name' => 'required|string|max:255',
-            'email' => 'required|email|unique:users,email',
-            'phone' => 'required|string|max:20',
-            'password' => 'required|string|min:6|confirmed',
-
+            'name' => 'required|string|max:255|unique:roles,name,',
+            'permissions' => 'array',
+            'permissions.*' => 'string|exists:permissions,name',
         ];
     }
 
-    /**
-     * Get the custom validation messages for the request.
-     *
-     * @return array<string, string>
-     */
     public function messages(): array
     {
         return getCustomValidationMessages();

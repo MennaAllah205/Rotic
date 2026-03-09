@@ -15,18 +15,18 @@ class SettingSeeder extends Seeder
         Setting::create([
             'name' => [
                 'ar' => 'اسم المتجر بالعربي',
-                'en' => 'Store Name in English'
+                'en' => 'Store Name in English',
             ],
             'facebook' => 'https://facebook.com/my-page',
             'youtube' => 'https://youtube.com/my-channel',
             'meta' => [
                 'title' => 'My SEO Title',
-                'description' => 'My SEO Description'
+                'description' => 'My SEO Description',
             ],
             'email' => 'admin@example.com',
-            'first_phone_number' => '0123456789',
-            'second_phone_number' => '0987654321',
-            // 'logo' => 'default_logo.png', // يفضل رفع الصورة يدوياً أو تركها نل
+            'phone' => '0123456789',
+            'second_phone' => '0987654321',
+            // 'logo' => 'default_logo.png', //
 
         ]);
     }
