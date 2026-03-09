@@ -3,9 +3,11 @@
 use App\Http\Controllers\Auth\AuthController;
 use App\Http\Controllers\Auth\AuthDataController;
 use App\Http\Controllers\ClientController;
+use App\Http\Controllers\ContactUsController;
 use App\Http\Controllers\ProductController;
 use App\Http\Controllers\ProjectsController;
 use App\Http\Controllers\RoleController;
+use App\Http\Controllers\SendContactController;
 use App\Http\Controllers\SettingsController;
 use App\Http\Controllers\UserController;
 use Illuminate\Support\Facades\Route;
@@ -35,4 +37,11 @@ Route::middleware(['auth:sanctum'])->group(function () {
 
     Route::apiResource('products', ProductController::class);
 
+    // admin contact us
+    Route::apiResource('contact-us', ContactUsController::class);
+
 });
+
+// Contact Us
+Route::post('send-contact', SendContactController::class)
+    ->middleware('throttle:2,1');
