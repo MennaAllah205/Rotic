@@ -36,6 +36,7 @@ class RoleController extends Controller
     public function store(RolesStoreRequest $request)
     {
         $data = $request->validated();
+        $data['guard_name'] = 'web';
         try {
             DB::transaction(function () use ($data, &$role) {
 
