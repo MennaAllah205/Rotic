@@ -12,10 +12,10 @@ class UserSeeder extends Seeder
      */
     public function run(): void
     {
-        $user = User::Create(
+        $user = User::firstOrCreate(
             [
-                'name' => 'owner',
                 'email' => 'owner@owner.com',
+                'name' => 'owner',
                 'phone' => '01234567890',
                 'password' => '1234',
                 'is_owner' => true,

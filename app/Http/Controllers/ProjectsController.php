@@ -38,25 +38,29 @@ class ProjectsController extends Controller
         $data = $request->validated();
 
         try {
-            DB::transaction(function () use ($data, $request) {
-                $project = Project::create($data);
-                if ($request->hasFile('image')) {
 
-                    $file = $request->file('image');
+            DB::transaction(function () use ($data, $request, &$projects) {
 
-                    $project->addOptimizedMedia($project, $file, 'image');
+                $projects = Project::create($data);
+
+                if ($request->hasFile('logo')) {
+
+                    $file = $request->file('logo');
+
+                    $this->addOptimizedMedia($projects, $file, 'logo');
                 }
 
-                return backwithSuccess(
-                    data: new ProjectsResources($project)
-                );
+                return $projects;
             });
+
+            return backWithSuccess(
+                data: new ProjectsResources($projects)
+            );
         } catch (\Exception $e) {
-            backWithError($e);
+            return backWithError($e);
         }
 
     }
-
     /**
      * Display the specified resource.
      */
@@ -72,11 +76,11 @@ class ProjectsController extends Controller
         try {
             DB::transaction(function () use ($data, $project) {
                 $project->update($data);
-
-                return backWithSuccess(
-                    data: new ProjectsResources($project)
-                );
             });
+
+            return backWithSuccess(
+                data: new ProjectsResources($project)
+            );
         } catch (\Exception $e) {
             backWithError($e);
         }

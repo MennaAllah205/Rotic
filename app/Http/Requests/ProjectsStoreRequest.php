@@ -26,8 +26,8 @@ class ProjectsStoreRequest extends FormRequest
             'title' => 'required|array',
             'description' => 'sometimes|nullable|array',
             'features' => 'sometimes|nullable|array',
-            'link' => 'sometimes|nullable|string|max:255',
-            'image' => 'sometimes|nullable|string|max:255',
+            'link' => 'sometimes|nullable|string|max:255|url',
+            'image' => 'sometimes|nullable|image|max:255',
             'meta' => 'sometimes|nullable|array',
             'keywords' => 'sometimes|nullable|string|max:255',
         ];

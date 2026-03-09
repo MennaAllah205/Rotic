@@ -28,9 +28,9 @@ class ClientsUpdateRequest extends FormRequest
             'name.ar' => 'sometimes|required|string',
             'name.en' => 'sometimes|required|string',
 
-            'description' => 'sometimes|nullable|url',
+            'description' => 'sometimes|nullable',
 
-            'testimonial' => 'sometimes|nullable|url',
+            'testimonial' => 'sometimes|nullable',
 
             'logo' => 'sometimes|nullable|image|mimes:png,jpg|max:2048',
 

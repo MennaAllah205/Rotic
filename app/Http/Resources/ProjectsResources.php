@@ -16,8 +16,11 @@ class ProjectsResources extends JsonResource
     {
         return [
             'id' => $this->id,
-            'name' => $this->name,
-            'description' => $this->description,
+            'client_id' => $this->client_id,
+            'title[ar]' => $this->title['ar'] ?? null,
+            'title[en]' => $this->title['en'] ?? null,
+            'description[ar]' => $this->description['ar'] ?? null,
+            'description[en]' => $this->description['en'] ?? null,
             'features' => $this->features,
             'link' => $this->link,
             'image' => $this->getFirstMediaUrl('image'),

@@ -6,11 +6,14 @@ use App\Http\Requests\ClientsStoreRequest;
 use App\Http\Requests\ClientsUpdateRequest;
 use App\Http\Resources\ClientResources;
 use App\Models\Client;
+use App\Traits\HandlesOptimizedMedia;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 
 class ClientController extends Controller
 {
+    use HandlesOptimizedMedia;
+
     /**
      * Display a listing of the resource.
      */
@@ -38,23 +41,25 @@ class ClientController extends Controller
 
         try {
 
-            DB::transaction(function () use ($data, $request) {
+            DB::transaction(function () use ($data, $request, &$clients) {
 
-                $client = Client::create($data);
+                $clients = Client::create($data);
 
                 if ($request->hasFile('logo')) {
 
                     $file = $request->file('logo');
 
-                    $client->addOptimizedMedia($client, $file, 'logo');
+                    $this->addOptimizedMedia($clients, $file, 'logo');
                 }
 
-                return backWithSuccess(
-                    data: new ClientResources($client)
-                );
+                return $clients;
             });
+
+            return backWithSuccess(
+                data: new ClientResources($clients)
+            );
         } catch (\Exception $e) {
-            backWithError($e);
+            return backWithError($e);
         }
 
     }
@@ -69,13 +74,13 @@ class ClientController extends Controller
 
         try {
 
-            DB::transaction(function () use ($data, $client) {
+            DB::transaction(function () use ($data, &$client) {
                 $client->update($data);
-
-                return backWithSuccess(
-                    data: new ClientResources($client)
-                );
             });
+
+            return backWithSuccess(
+                data: new ClientResources($client)
+            );
         } catch (\Exception $e) {
             backWithError($e);
         }
