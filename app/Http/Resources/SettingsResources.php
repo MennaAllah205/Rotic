@@ -26,7 +26,7 @@ class SettingsResource extends JsonResource
                 'instagram' => $this->instagram,
             ],
             'logo' => $this->logo,
-            'metadata' => $this->meta,
+            'meta' => $this->meta,
         ];
     }
 }

@@ -17,14 +17,17 @@ class ClientResources extends JsonResource
         return [
             'id' => $this->id,
 
-            'name' => $this->name,
+            'name[ar]' => $this->name['ar'] ?? null,
+            'name[en]' => $this->name['en'] ?? null,
 
-            'description' => $this->description,
+            'description[ar]' => $this->description['ar'] ?? null,
+            'description[en]' => $this->description['en'] ?? null,
 
-            'testimonial' => $this->testimonial,
+            'testimonial[ar]' => $this->testimonial['ar'] ?? null,
+            'testimonial[en]' => $this->testimonial['en'] ?? null,
 
             'logo' => $this->getFirstMediaUrl('logo'),
-            'meta' => $this->meta,
+            'meta' => $this->meta ?? null,
 
             'projects' => ProjectsResources::collection($this->whenLoaded('projects')),
 
