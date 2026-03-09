@@ -38,8 +38,14 @@ class ProjectsController extends Controller
         $data = $request->validated();
 
         try {
-            DB::transaction(function () use ($data) {
+            DB::transaction(function () use ($data, $request) {
                 $project = Project::create($data);
+                if ($request->hasFile('image')) {
+
+                    $file = $request->file('image');
+
+                    $project->addOptimizedMedia($project, $file, 'image');
+                }
 
                 return backwithSuccess(
                     data: new ProjectsResources($project)

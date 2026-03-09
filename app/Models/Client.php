@@ -8,10 +8,10 @@ use Spatie\MediaLibrary\HasMedia;
 use Spatie\MediaLibrary\InteractsWithMedia;
 use Spatie\MediaLibrary\MediaCollections\Models\Media;
 
-
 class Client extends Model implements HasMedia
 {
-    use InteractsWithMedia , HandlesOptimizedMedia;
+    use HandlesOptimizedMedia , InteractsWithMedia;
+
     protected $fillable = [
         'name',
         'description',
@@ -26,7 +26,7 @@ class Client extends Model implements HasMedia
         $this->addMediaCollection('logo');
     }
 
-    public function registerMediaConversions(Media $media = null): void
+    public function registerMediaConversions(?Media $media = null): void
     {
         $this->addMediaConversion('logo')
             ->width(800)
@@ -53,6 +53,4 @@ class Client extends Model implements HasMedia
     {
         return $this->hasMany(Project::class);
     }
-
-
 }
