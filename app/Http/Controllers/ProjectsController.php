@@ -43,11 +43,11 @@ class ProjectsController extends Controller
 
                 $projects = Project::create($data);
 
-                if ($request->hasFile('logo')) {
+                if ($request->hasFile('image')) {
 
-                    $file = $request->file('logo');
+                    $file = $request->file('image');
 
-                    $this->addOptimizedMedia($projects, $file, 'logo');
+                    $projects->addOptimizedMedia($projects, $file, 'image');
                 }
 
                 return $projects;
@@ -74,15 +74,22 @@ class ProjectsController extends Controller
         $data = $request->validated();
 
         try {
-            DB::transaction(function () use ($data, $project) {
+            DB::transaction(function () use ($data, $project, $request) {
                 $project->update($data);
+                
+                if ($request->hasFile('image')) {
+                    $file = $request->file('image');
+
+                    $project->clearMediaCollection('image');
+                    $project->addOptimizedMedia($project, $file, 'image');
+                }
             });
 
             return backWithSuccess(
                 data: new ProjectsResources($project)
             );
         } catch (\Exception $e) {
-            backWithError($e);
+            return backWithError($e);
         }
     }
 

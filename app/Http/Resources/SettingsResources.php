@@ -25,7 +25,7 @@ class SettingsResources extends JsonResource
                 'youtube' => $this->youtube,
                 'instagram' => $this->instagram,
             ],
-            'logo' => $this->logo,
+            'logo' => $this->getFirstMediaUrl('logo'),
             'meta' => $this->meta,
         ];
     }

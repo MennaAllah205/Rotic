@@ -32,4 +32,9 @@ class ProjectsUpdateRequest extends FormRequest
             'keywords' => 'sometimes|nullable|string|max:255',
         ];
     }
+
+    public function messages(): array
+    {
+        return getCustomValidationMessages();
+    }
 }

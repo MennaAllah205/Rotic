@@ -39,4 +39,9 @@ class ClientsUpdateRequest extends FormRequest
 
         ];
     }
+
+    public function messages(): array
+    {
+        return getCustomValidationMessages();
+    }
 }

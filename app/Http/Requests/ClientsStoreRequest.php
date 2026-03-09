@@ -35,4 +35,9 @@ class ClientsStoreRequest extends FormRequest
 
         ];
     }
+
+    public function messages(): array
+    {
+        return getCustomValidationMessages();
+    }
 }

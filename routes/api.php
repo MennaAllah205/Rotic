@@ -3,6 +3,7 @@
 use App\Http\Controllers\Auth\AuthController;
 use App\Http\Controllers\Auth\AuthDataController;
 use App\Http\Controllers\ClientController;
+use App\Http\Controllers\ProductController;
 use App\Http\Controllers\ProjectsController;
 use App\Http\Controllers\RoleController;
 use App\Http\Controllers\SettingsController;
@@ -18,7 +19,6 @@ Route::middleware(['auth:sanctum'])->group(function () {
         Route::post('logout', [AuthController::class, 'logout']);
     });
 
-
     Route::get('auth-data', [AuthDataController::class]);
 
     Route::get('auth-data', AuthDataController::class);
@@ -32,5 +32,7 @@ Route::middleware(['auth:sanctum'])->group(function () {
     Route::apiResource('clients', ClientController::class);
 
     Route::apiResource('projects', ProjectsController::class);
+
+    Route::apiResource('products', ProductController::class);
 
 });

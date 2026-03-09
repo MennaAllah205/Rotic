@@ -1,20 +1,12 @@
 <?php
 
-
-
 namespace App\Traits;
 
-
-
 use Illuminate\Http\UploadedFile;
-
 use Spatie\Image\Image;
-
-
 
 trait HandlesOptimizedMedia
 {
-
     protected function optimizeImage(
 
         UploadedFile $file,
@@ -31,19 +23,15 @@ trait HandlesOptimizedMedia
 
         $tempDir = public_path('temp');
 
-        if (!is_dir($tempDir)) {
+        if (! is_dir($tempDir)) {
 
             mkdir($tempDir, 0755, true);
 
         }
 
-        
+        $filename = uniqid().'.webp';
 
-        $filename = uniqid() . '.webp';
-
-        $path = $tempDir . '/' . $filename;
-
-        
+        $path = $tempDir.'/'.$filename;
 
         // resize + convert
 
@@ -57,15 +45,11 @@ trait HandlesOptimizedMedia
 
             ->save($path);
 
-        
-
         // Reduce quality if file is still too large
 
         while (filesize($path) / 1024 > $targetKb && $quality > 20) {
 
             $quality -= 5;
-
-            
 
             Image::load($file->getPathname())
 
@@ -78,8 +62,6 @@ trait HandlesOptimizedMedia
                 ->save($path);
 
         }
-
-        
 
         // Create new UploadedFile with correct path
 
@@ -99,15 +81,10 @@ trait HandlesOptimizedMedia
 
     }
 
-
-
-    protected function addOptimizedMedia($model, UploadedFile $file, string $collection = 'images')
-
+    public function addOptimizedMedia($model, UploadedFile $file, string $collection = 'images')
     {
 
         $optimized = $this->optimizeImage($file);
-
-
 
         return $model
 
@@ -116,8 +93,6 @@ trait HandlesOptimizedMedia
             ->toMediaCollection($collection);
 
     }
-
-
 
     protected function addOptimizedMediaMultiple($model, array $files, string $collection = 'images')
     {
@@ -129,6 +104,4 @@ trait HandlesOptimizedMedia
         }
 
     }
-
 }
-
