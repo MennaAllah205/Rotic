@@ -7,6 +7,7 @@ use App\Http\Requests\RolesUpdateRequest;
 use App\Http\Resources\RolesResources;
 use Illuminate\Support\Facades\DB;
 use Spatie\Permission\Models\Role;
+use Spatie\Permission\PermissionRegistrar;
 use Symfony\Component\HttpFoundation\Request;
 
 class RoleController extends Controller
@@ -44,9 +45,12 @@ class RoleController extends Controller
 
                 $role->syncPermissions($data['permissions']);
 
+                app()[PermissionRegistrar::class]->forgetCachedPermissions();
             });
 
-            return backWithSuccess();
+            return backWithSuccess(
+                data: new RolesResources($role),
+            );
         } catch (\Exception $e) {
             return backWithError($e);
         }
