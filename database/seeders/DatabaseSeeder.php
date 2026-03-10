@@ -19,6 +19,7 @@ class DatabaseSeeder extends Seeder
 
             RolesPermissionsSeeder::class,
             UserSeeder::class,
+            SettingSeeder::class,
         ]);
 
         $owner = User::first();

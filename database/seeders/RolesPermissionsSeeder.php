@@ -44,6 +44,11 @@ class RolesPermissionsSeeder extends Seeder
             'products_update',
             'products_delete',
 
+            'contact_us_show',
+            'contact_us_create',
+            'contact_us_update',
+            'contact_us_delete',
+
         ];
 
         $createdPermissions = [];

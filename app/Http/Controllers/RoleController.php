@@ -107,7 +107,7 @@ class RoleController extends Controller
                 $role->delete();
             });
 
-            return backWithSuccess('Role deleted successfully');
+            return backWithSuccess();
 
         } catch (\Exception $e) {
 
