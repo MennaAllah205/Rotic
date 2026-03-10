@@ -2,6 +2,8 @@
 
 use App\Http\Controllers\Auth\AuthController;
 use App\Http\Controllers\Auth\AuthDataController;
+use App\Http\Controllers\BlogController;
+use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\ClientController;
 use App\Http\Controllers\ContactUsController;
 use App\Http\Controllers\ProductController;
@@ -39,6 +41,10 @@ Route::middleware(['auth:sanctum'])->group(function () {
 
     // admin contact us
     Route::apiResource('contact-us', ContactUsController::class);
+
+    Route::apiResource('blogs', controller: CategoryController::class);
+
+    Route::apiResource('blogs', BlogController::class);
 
 });
 

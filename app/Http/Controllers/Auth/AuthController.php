@@ -1,4 +1,5 @@
 <?php
+
 namespace App\Http\Controllers\Auth;
 
 use App\Http\Controllers\Controller;
@@ -38,28 +39,29 @@ class AuthController extends Controller
 
             $credentials = [
                 $loginField => $data['credential'],
-                'password'  => $data['password'],
+                'password' => $data['password'],
             ];
 
             DB::beginTransaction();
 
-            $user = User::where($loginField, $data['credential'])->firstOrFail();
+            $user = User::where($loginField, $data['credential'])->first();
 
             if (! $user || ! Hash::check($data['password'], $user->password)) {
-                return backWithWarning('بيانات غير صالحة', 'Invalid Credentials');
+                return backWithWarning('بيانات غير صالحة', 'Invalid Credentials', 401);
             }
 
             $token = $user->createToken($request->userAgent())->plainTextToken;
 
             DB::commit();
-            
+
             return backWithSuccess(data: [
-                'user'  => $user->only('name'),
+                'user' => $user->only('name'),
                 'token' => $token,
             ]);
 
         } catch (\Exception $e) {
             DB::rollBack();
+
             return backWithError($e);
         }
     }
@@ -70,6 +72,7 @@ class AuthController extends Controller
             DB::transaction(function () use ($request) {
                 $request->user()->currentAccessToken()->delete();
             });
+
             return backWithSuccess();
         } catch (\Exception $e) {
             return backWithError($e);
