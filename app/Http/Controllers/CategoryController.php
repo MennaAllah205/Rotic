@@ -62,7 +62,7 @@ class CategoryController extends Controller
         $data = $request->validated();
 
         try {
-            DB::transaction(function () use ($data, $category) {
+            DB::transaction(function () use ($data, &$category) {
                 $category->update($data);
 
             });

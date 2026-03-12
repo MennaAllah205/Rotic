@@ -17,7 +17,7 @@ class UserSeeder extends Seeder
                 'email' => 'owner@owner.com',
                 'name' => 'owner',
                 'phone' => '01234567890',
-                'password' => '1234',
+                'password' => '12345678',
                 'is_owner' => true,
             ]
         );

@@ -42,7 +42,7 @@ Route::middleware(['auth:sanctum'])->group(function () {
     // admin contact us
     Route::apiResource('contact-us', ContactUsController::class);
 
-    Route::apiResource('blogs', controller: CategoryController::class);
+    Route::apiResource('categories', controller: CategoryController::class);
 
     Route::apiResource('blogs', BlogController::class);
 
