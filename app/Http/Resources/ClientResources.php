@@ -24,7 +24,7 @@ class ClientResources extends JsonResource
             'testimonial' => $this->testimonial,
 
             'logo' => $this->getFirstMediaUrl('logo'),
-            'meta' => $this->meta ?? null,
+            'meta' => $this->meta,
 
             'projects' => ProjectsResources::collection($this->whenLoaded('projects')),
 

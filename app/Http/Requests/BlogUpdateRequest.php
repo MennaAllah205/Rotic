@@ -27,6 +27,8 @@ class BlogUpdateRequest extends FormRequest
             'title' => 'sometimes|nullable',
             'content' => 'sometimes|nullable',
             'image' => 'sometimes|nullable|image',
+            'slug' => 'sometimes|nullable|string|unique:blogs,slug,'.$this->route('blog'),
+            'url' => 'sometimes|nullable|url',
 
             'meta' => 'sometimes|nullable',
         ];

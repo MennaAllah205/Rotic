@@ -21,6 +21,8 @@ return new class extends Migration
             $table->json('title')->nullable();
             $table->json('content')->nullable();
             $table->string('image')->nullable();
+            $table->text('slug')->nullable();
+            $table->string('url')->nullable();
             $table->json('meta')->nullable();
 
             $table->timestamps();
