@@ -19,7 +19,6 @@ class ClientController extends Controller
      */
     public function __construct()
     {
-        $this->middleware('permission:client_show')->only(['index', 'show']);
         $this->middleware('permission:client_create')->only(['store']);
         $this->middleware('permission:client_update')->only(['update']);
         $this->middleware('permission:client_delete')->only(['destroy']);
@@ -32,13 +31,15 @@ class ClientController extends Controller
         return ClientResources::collection($client);
     }
 
-    
-
-
-
     /**
      * Store a newly created resource in storage.
      */
+    public function show(string $id)
+    {
+        $client = Client::with('projects')->findOrFail($id);
+
+        return new ClientResources($client);
+    }
 
     public function store(ClientsStoreRequest $request)
     {

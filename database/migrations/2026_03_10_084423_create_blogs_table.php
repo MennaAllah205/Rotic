@@ -14,7 +14,8 @@ return new class extends Migration
         Schema::create('blogs', function (Blueprint $table) {
             $table->id();
 
-            // category  
+            // category
+            $table->foreignId('category_id')->nullable()->constrained('categories')->cascadeOnUpdate()->nullOnDelete();
 
             $table->json('name');
             $table->json('title')->nullable();

@@ -9,8 +9,6 @@ use Spatie\MediaLibrary\MediaCollections\Models\Media;
 
 class Setting extends Model implements HasMedia
 {
-
-
     use InteractsWithMedia;
 
     protected $fillable = [
@@ -20,9 +18,9 @@ class Setting extends Model implements HasMedia
         'youtube',
         'instagram',
         'email',
-        'first_phone_number',
-        'second_phone_number',
-        'meta'
+        'phone',
+        'second_phone',
+        'meta',
     ];
 
     public function registerMediaCollections(): void
@@ -30,7 +28,7 @@ class Setting extends Model implements HasMedia
         $this->addMediaCollection('logo');
     }
 
-    public function registerMediaConversions(Media $media = null): void
+    public function registerMediaConversions(?Media $media = null): void
     {
         $this->addMediaConversion('logo')
             ->width(800)
@@ -39,9 +37,6 @@ class Setting extends Model implements HasMedia
             ->sharpen(10)
             ->nonQueued();
     }
-
-
-
 
     protected function casts(): array
     {

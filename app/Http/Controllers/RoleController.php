@@ -79,7 +79,7 @@ class RoleController extends Controller
 
             });
 
-            return backWithSuccess();
+            return backWithSuccess(data: new RolesResources($role));
         } catch (\Exception $e) {
             return backWithError($e);
         }

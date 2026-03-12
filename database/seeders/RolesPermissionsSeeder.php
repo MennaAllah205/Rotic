@@ -29,17 +29,14 @@ class RolesPermissionsSeeder extends Seeder
 
             'settings_update',
 
-            'client_show',
             'client_create',
             'client_update',
             'client_delete',
 
-            'projects_show',
             'projects_create',
             'projects_update',
             'projects_delete',
 
-            'products_show',
             'products_create',
             'products_update',
             'products_delete',
@@ -49,12 +46,10 @@ class RolesPermissionsSeeder extends Seeder
             'contact_us_update',
             'contact_us_delete',
 
-            'categories_show',
             'categories_create',
             'categories_update',
             'categories_delete',
 
-            'blogs_show',
             'blogs_create',
             'blogs_update',
             'blogs_delete',

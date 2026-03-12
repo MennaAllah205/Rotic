@@ -13,7 +13,6 @@ class BlogController extends Controller
 {
     public function __construct()
     {
-        $this->middleware('permission:blogs_show')->only(['index', 'show']);
         $this->middleware('permission:blogs_create')->only(['store']);
         $this->middleware('permission:blogs_update')->only(['update']);
         $this->middleware('permission:blogs_delete')->only(['destroy']);
