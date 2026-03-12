@@ -13,6 +13,7 @@ class Blog extends Model implements HasMedia
     use HandlesOptimizedMedia, InteractsWithMedia;
 
     protected $fillable = [
+        'category_id',
         'name',
         'title',
         'content',
@@ -46,4 +47,10 @@ class Blog extends Model implements HasMedia
     {
         return $this->addOptimizedMedia($this, $file, $collection);
     }
+
+    public function category()
+    {
+        return $this->belongsTo(Category::class, 'category_id');
+    }
+
 }
