@@ -32,9 +32,14 @@ class ClientController extends Controller
         return ClientResources::collection($client);
     }
 
+    
+
+
+
     /**
      * Store a newly created resource in storage.
      */
+
     public function store(ClientsStoreRequest $request)
     {
         $data = $request->validated();

@@ -22,20 +22,20 @@ class SettingsRequest extends FormRequest
     {
         return [
 
-            'name' => 'required',
-            'name.ar' => 'required|string',
-            'name.en' => 'required|string',
+            'name'         => 'required',
+            'name.ar'      => 'required|string',
+            'name.en'      => 'required|string',
 
-            'facebook' => 'sometimes|nullable|url',
-            'youtube' => 'sometimes|nullable|url',
-            'instagram' => 'sometimes|nullable|url',
-            'meta' => 'sometimes|nullable|array',
+            'facebook'     => 'sometimes|nullable|url',
+            'youtube'      => 'sometimes|nullable|url',
+            'instagram'    => 'sometimes|nullable|url',
+            'meta'         => 'sometimes|nullable|array',
 
-            'email' => 'sometimes|nullable|email',
-            'phone' => 'sometimes|nullable|string',
+            'email'        => 'sometimes|nullable|email',
+            'phone'        => 'sometimes|nullable|string',
             'second_phone' => 'sometimes|nullable|string',
 
-            'logo' => 'sometimes|nullable|image',
+            'logo'         => 'sometimes|nullable|image',
 
         ];
     }

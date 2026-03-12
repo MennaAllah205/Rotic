@@ -1,5 +1,4 @@
 <?php
-
 namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
@@ -22,22 +21,20 @@ class BlogUpdateRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'name' => 'sometimes|required',
-            'name.ar' => 'sometimes|required|string',
-            'name.en' => 'sometimes|required|string',
-            'title' => 'sometimes|nullable',
-            'title.ar' => 'sometimes|nullable|string',
-            'title.en' => 'sometimes|nullable|string',
-            'content' => 'sometimes|nullable',
+            'name'       => 'sometimes|required',
+            'name.ar'    => 'sometimes|required|string',
+            'name.en'    => 'sometimes|required|string',
+            'title'      => 'sometimes|nullable',
+            'title.ar'   => 'sometimes|nullable|string',
+            'title.en'   => 'sometimes|nullable|string',
+            'content'    => 'sometimes|nullable',
             'content.ar' => 'sometimes|nullable|string',
             'content.en' => 'sometimes|nullable|string',
-            'image' => 'sometimes|nullable|image',
-            'meta_title' => 'sometimes|nullable',
-            'meta_title.ar' => 'sometimes|nullable|string',
-            'meta_title.en' => 'sometimes|nullable|string',
-            'meta_description' => 'sometimes|nullable',
-            'meta_description.ar' => 'sometimes|nullable|string',
-            'meta_description.en' => 'sometimes|nullable|string',
+            'image'      => 'sometimes|nullable|image',
+
+            'meta'       => 'sometimes|nullable',
+            'meta.ar'    => 'sometimes|nullable|string',
+            'meta.en'    => 'sometimes|nullable|string',
         ];
     }
 }

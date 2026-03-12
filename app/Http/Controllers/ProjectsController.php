@@ -1,5 +1,4 @@
 <?php
-
 namespace App\Http\Controllers;
 
 use App\Http\Requests\ProjectsStoreRequest;
@@ -24,7 +23,7 @@ class ProjectsController extends Controller
 
     public function index(Request $request)
     {
-        $projects = Project::paginate(getPerPage($request));
+        $projects = Project::with('client:id,name')->paginate(getPerPage($request));
 
         return ProjectsResources::collection($projects);
 
@@ -71,12 +70,12 @@ class ProjectsController extends Controller
     public function update(ProjectsUpdateRequest $request, string $id)
     {
         $project = Project::findOrFail($id);
-        $data = $request->validated();
+        $data    = $request->validated();
 
         try {
             DB::transaction(function () use ($data, $project, $request) {
                 $project->update($data);
-                
+
                 if ($request->hasFile('image')) {
                     $file = $request->file('image');
 

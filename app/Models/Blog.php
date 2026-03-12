@@ -1,5 +1,4 @@
 <?php
-
 namespace App\Models;
 
 use App\Traits\HandlesOptimizedMedia;
@@ -11,15 +10,14 @@ use Spatie\MediaLibrary\MediaCollections\Models\Media;
 
 class Blog extends Model implements HasMedia
 {
-    use HandlesOptimizedMedia , InteractsWithMedia;
+    use HandlesOptimizedMedia, InteractsWithMedia;
 
     protected $fillable = [
         'name',
         'title',
         'content',
         'image',
-        'meta_title',
-        'meta_description',
+        'meta',
     ];
 
     public function registerMediaCollections(): void
@@ -38,11 +36,11 @@ class Blog extends Model implements HasMedia
     }
 
     protected $casts = [
-        'name' => 'array',
-        'title' => 'array',
+        'name'    => 'array',
+        'title'   => 'array',
         'content' => 'array',
-        'meta_title' => 'array',
-        'meta_description' => 'array', ];
+        'meta'    => 'array',
+    ];
 
     public function addOptimizedMediaToCollection(UploadedFile $file, string $collection = 'image')
     {

@@ -49,5 +49,10 @@ Route::middleware(['auth:sanctum'])->group(function () {
 });
 
 // Contact Us
+
+// public
+
 Route::post('send-contact', SendContactController::class)
     ->middleware('throttle:2,1');
+
+

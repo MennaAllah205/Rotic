@@ -1,5 +1,4 @@
 <?php
-
 namespace App\Models;
 
 use App\Traits\HandlesOptimizedMedia;
@@ -10,7 +9,7 @@ use Spatie\MediaLibrary\MediaCollections\Models\Media;
 
 class Project extends Model implements HasMedia
 {
-    use HandlesOptimizedMedia , InteractsWithMedia;
+    use HandlesOptimizedMedia, InteractsWithMedia;
 
     protected $fillable = [
         'client_id',
@@ -28,7 +27,7 @@ class Project extends Model implements HasMedia
         $this->addMediaCollection('image');
     }
 
-    public function registerMediaConversions(Media|null $media = null): void
+    public function registerMediaConversions(Media | null $media = null): void
     {
         $this->addMediaConversion('image')
             ->width(800)
@@ -41,11 +40,11 @@ class Project extends Model implements HasMedia
     protected function casts(): array
     {
         return [
-            'title' => 'array',
+            'title'       => 'array',
             'description' => 'array',
-            'features' => 'array',
-            'meta' => 'array',
-            'keywords' => 'array',
+            'features'    => 'array',
+            'meta'        => 'array',
+            'keywords'    => 'array',
         ];
     }
 

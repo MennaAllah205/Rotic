@@ -23,7 +23,7 @@ class SettingsController extends Controller
         return response()->json($setting);
     }
 
-    public function update(SettingsRequest $request)
+    public function store(SettingsRequest $request)
     {
         $data = $request->validated();
         try {

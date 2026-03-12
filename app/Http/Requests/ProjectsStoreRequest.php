@@ -1,5 +1,4 @@
 <?php
-
 namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
@@ -22,14 +21,14 @@ class ProjectsStoreRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'client_id' => 'required|exists:clients,id',
-            'title' => 'required|array',
+            'client_id'   => 'required|exists:clients,id',
+            'title'       => 'required|array',
             'description' => 'sometimes|nullable|array',
-            'features' => 'sometimes|nullable|array',
-            'link' => 'sometimes|nullable|string|max:255|url',
-            'image' => 'sometimes|nullable|image|max:255',
-            'meta' => 'sometimes|nullable|array',
-            'keywords' => 'sometimes|nullable|string|max:255',
+            'features'    => 'sometimes|nullable|array',
+            'link'        => 'sometimes|nullable|string|max:255|url',
+            'image'       => 'sometimes|nullable|image|max:255',
+            'meta'        => 'sometimes|nullable|array',
+            'keywords'    => 'sometimes|nullable|string|max:255',
         ];
     }
 
