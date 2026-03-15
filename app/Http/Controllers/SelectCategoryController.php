@@ -9,7 +9,7 @@ class SelectCategoryController extends Controller
 {
     public function categories()
     {
-        $category = Category::select('id', 'name')->orderBy('name')->get();
+        $category = Category::select('id', 'name')->get();
 
         return SelectedCategoriesResources::collection($category);
     }

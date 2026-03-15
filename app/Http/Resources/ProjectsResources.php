@@ -1,5 +1,4 @@
 <?php
-
 namespace App\Http\Resources;
 
 use Illuminate\Http\Request;
@@ -16,22 +15,24 @@ class ProjectsResources extends JsonResource
     {
         return [
 
-            'id' => $this->id,
+            'id'          => $this->id,
 
-            'client' => $this->whenLoaded('client', fn () => [
-                'id' => $this->client->id,
+            'client'      => $this->whenLoaded('client', fn() => [
+                'id'   => $this->client->id,
                 'name' => $this->client->name,
             ]),
 
-            'title' => $this->title,
+            'title'       => $this->title,
             'description' => $this->description,
 
-            'features' => $this->features,
-            'link' => $this->link,
-            'images' => $this->getMedia('images')->map(function ($media) {
+            'features'    => $this->features,
+            'link'        => $this->link,
+
+            'images'      => $this->getMedia('images')->map(function ($media) {
                 return $media->getUrl();
-            }),       'meta' => $this->meta,
-            'keywords' => $this->keywords,
+            }), 'meta' => $this->meta,
+
+            'keywords'    => $this->keywords,
         ];
     }
 }

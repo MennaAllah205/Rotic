@@ -1,5 +1,4 @@
 <?php
-
 namespace App\Http\Resources;
 
 use Illuminate\Http\Request;
@@ -15,13 +14,13 @@ class BlogResources extends JsonResource
     public function toArray(Request $request): array
     {
         return [
-            'id' => $this->id,
-            'name' => $this->name,
-            'title' => $this->title,
+            'id'      => $this->id,
+            'name'    => $this->name,
+            'title'   => $this->title,
             'content' => $this->content,
-            'image' => $this->getFirstMediaUrl('image'),
+            'image'   => $this->getFirstMediaUrl('image'),
 
-            'meta' => $this->meta,
+            'meta'    => $this->meta,
         ];
     }
 }

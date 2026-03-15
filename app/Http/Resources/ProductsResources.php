@@ -1,5 +1,4 @@
 <?php
-
 namespace App\Http\Resources;
 
 use Illuminate\Http\Request;
@@ -15,12 +14,14 @@ class ProductsResources extends JsonResource
     public function toArray(Request $request): array
     {
         return [
-            'id' => $this->id,
-            'name' => $this->name,
+            'id'          => $this->id,
+            'name'        => $this->name,
             'description' => $this->description,
-            'images' => $this->getMedia('images')->map(function ($media) {
+
+            'images'      => $this->getMedia('images')->map(function ($media) {
                 return $media->getUrl();
             }),
+            
         ];
     }
 }

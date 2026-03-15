@@ -1,5 +1,4 @@
 <?php
-
 namespace App\Http\Resources;
 
 use Illuminate\Http\Request;
@@ -15,12 +14,12 @@ class ContactUsResources extends JsonResource
     public function toArray(Request $request): array
     {
         return [
-            'id' => $this->id,
-            'name' => $this->name,
+            'id'    => $this->id,
+            'name'  => $this->name,
             'email' => $this->email,
             'phone' => $this->phone,
             'title' => $this->title,
-            'body' => $this->body,
+            'body'  => $this->body,
         ];
     }
 }

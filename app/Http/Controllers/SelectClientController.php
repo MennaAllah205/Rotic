@@ -9,7 +9,7 @@ class SelectClientController extends Controller
 {
     public function clients()
     {
-        $clients = Client::select('id', 'name')->orderBy('name')->get();
+        $clients = Client::select('id', 'name')->get();
 
         return SelectedClientsResources::collection($clients);
     }
