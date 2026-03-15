@@ -42,11 +42,12 @@ class ProjectController extends Controller
 
                 $projects = Project::create($data);
 
-                if ($request->hasFile('image')) {
+                if ($request->hasFile('images')) {
 
-                    $file = $request->file('image');
+                    foreach ($request->file('images') as $file) {
 
-                    $projects->addOptimizedMedia($projects, $file, 'image');
+                        $projects->addOptimizedMedia($projects, $file, 'images');
+                    }
                 }
 
                 return $projects;
@@ -83,11 +84,12 @@ class ProjectController extends Controller
             DB::transaction(function () use ($data, $project, $request) {
                 $project->update($data);
 
-                if ($request->hasFile('image')) {
-                    $file = $request->file('image');
+                if ($request->hasFile('images')) {
 
-                    $project->clearMediaCollection('image');
-                    $project->addOptimizedMedia($project, $file, 'image');
+                    foreach ($request->file('images') as $file) {
+
+                        $project->addOptimizedMedia($project, $file, 'images');
+                    }
                 }
             });
 

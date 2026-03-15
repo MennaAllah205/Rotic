@@ -40,15 +40,17 @@ class ProductController extends Controller
 
                 $products = Product::create($data);
 
-                if ($request->hasFile('image')) {
-
-                    $file = $request->file('image');
-
-                    $products->addOptimizedMediaToCollection($file, 'image');
+                if ($request->hasFile('images')) {
+                    foreach ($request->file('images') as $file) {
+                        $products->addOptimizedMedia($products, $file, 'images');
+                    }
                 }
 
-                return $products;
             });
+
+            return backWithSuccess(
+                data: new ProductsResources($products)
+            );
 
             return backWithSuccess(
                 data: new ProductsResources($products)
@@ -72,7 +74,7 @@ class ProductController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(ProductUpdateRequest $request, string $id)
+    public function update(ProductUpdateRequest $request, $id)
     {
         $product = Product::findOrFail($id);
         $data = $request->validated();
@@ -81,11 +83,12 @@ class ProductController extends Controller
             DB::transaction(function () use ($data, $product, $request) {
                 $product->update($data);
 
-                if ($request->hasFile('image')) {
-                    $file = $request->file('image');
+                if ($request->hasFile('images')) {
 
-                    $product->clearMediaCollection('image');
-                    $product->addOptimizedMediaToCollection($file, 'image');
+                    foreach ($request->file('images') as $file) {
+
+                        $product->addOptimizedMedia($product, $file, 'images');
+                    }
                 }
             });
 
@@ -100,7 +103,7 @@ class ProductController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(string $id)
+    public function destroy($id)
     {
         $product = Product::findOrFail($id);
 
