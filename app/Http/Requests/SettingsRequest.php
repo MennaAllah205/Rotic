@@ -28,6 +28,7 @@ class SettingsRequest extends FormRequest
             'facebook' => 'sometimes|nullable|url',
             'youtube' => 'sometimes|nullable|url',
             'instagram' => 'sometimes|nullable|url',
+            'twitter' => 'sometimes|nullable|url',
             'meta' => 'sometimes|nullable|array',
 
             'email' => 'sometimes|nullable|email',

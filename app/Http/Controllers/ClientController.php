@@ -44,12 +44,18 @@ class ClientController extends Controller
     public function store(ClientsStoreRequest $request)
     {
         $data = $request->validated();
+        $roles = $data['roles'] ?? [];
+        unset($data['roles']);
 
         try {
 
-            DB::transaction(function () use ($data, $request, &$clients) {
+            DB::transaction(function () use ($data, $request, $roles, &$clients) {
 
                 $clients = Client::create($data);
+
+                if (!empty($roles)) {
+                    $clients->roles()->sync($roles);
+                }
 
                 if ($request->hasFile('logo')) {
 
@@ -77,11 +83,19 @@ class ClientController extends Controller
     {
         $client = Client::findOrFail($id);
         $data = $request->validated();
+        $roles = $data['roles'] ?? [];
+        unset($data['roles']);
 
         try {
 
-            DB::transaction(function () use ($data, &$client) {
+            DB::transaction(function () use ($data, $client, $roles) {
                 $client->update($data);
+
+                if (!empty($roles)) {
+                    $client->roles()->sync($roles);
+                } else {
+                    $client->roles()->detach();
+                }
             });
 
             return backWithSuccess(

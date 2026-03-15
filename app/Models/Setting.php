@@ -17,6 +17,7 @@ class Setting extends Model implements HasMedia
         'facebook',
         'youtube',
         'instagram',
+        'twitter',
         'email',
         'phone',
         'second_phone',

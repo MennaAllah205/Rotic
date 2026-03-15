@@ -33,6 +33,8 @@ class ClientsUpdateRequest extends FormRequest
 
             'meta' => 'sometimes|nullable|array',
             'keywords' => 'sometimes|nullable|array',
+            'roles' => 'sometimes|array',
+            'roles.*' => 'exists:roles,id',
 
         ];
     }
