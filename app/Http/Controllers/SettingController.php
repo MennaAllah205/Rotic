@@ -7,7 +7,7 @@ use App\Http\Resources\SettingsResources;
 use App\Models\Setting;
 use App\Traits\HandlesOptimizedMedia;
 
-class SettingsController extends Controller
+class SettingController extends Controller
 {
     public function __construct()
     {

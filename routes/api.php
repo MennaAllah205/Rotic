@@ -12,7 +12,7 @@ use App\Http\Controllers\RoleController;
 use App\Http\Controllers\SelectCategoryController;
 use App\Http\Controllers\SelectClientController;
 use App\Http\Controllers\SendContactController;
-use App\Http\Controllers\SettingsController;
+use App\Http\Controllers\SettingController;
 use App\Http\Controllers\UserController;
 use Illuminate\Support\Facades\Route;
 
@@ -33,7 +33,7 @@ Route::middleware(['auth:sanctum'])->group(function () {
 
     Route::apiResource('users', UserController::class);
 
-    Route::apiResource('settings', SettingsController::class)->only('index', 'show', 'store');
+    Route::apiResource('settings', SettingController::class)->only('index', 'show', 'store');
 
     Route::apiResource('clients', ClientController::class);
 
@@ -57,7 +57,7 @@ Route::middleware(['auth:sanctum'])->group(function () {
 // Public routes
 Route::prefix('/public')->group(function () {
 
-    Route::apiResource('settings', SettingsController::class)->only('index', 'show');
+    Route::apiResource('settings', SettingController::class)->only('index', 'show');
     Route::apiResource('clients', ClientController::class)->only('index', 'show');
     Route::apiResource('projects', ProjectController::class)->only('index', 'show');
     Route::apiResource('products', ProductController::class)->only('index', 'show');
