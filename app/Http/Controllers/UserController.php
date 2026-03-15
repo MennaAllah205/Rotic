@@ -1,5 +1,4 @@
 <?php
-
 namespace App\Http\Controllers;
 
 use App\Http\Requests\UsersStoreRequest;
@@ -22,7 +21,7 @@ class UserController extends Controller
     public function index(Request $request)
     {
 
-        $users = User::paginate(getPerPage($request));
+        $users = User::where('is_owner', false)->paginate(getPerPage($request));
 
         return UsersResources::collection($users);
 
@@ -37,6 +36,7 @@ class UserController extends Controller
             DB::transaction(function () use ($data, &$users) {
 
                 $users = User::create($data);
+                
             });
 
             return backWithSuccess(
@@ -51,7 +51,7 @@ class UserController extends Controller
     public function update(UsersUpdateRequest $request, $id)
     {
 
-        $user = User::findOrFail($id);
+        $user = User::where('is_owner', false)->findOrFail($id);
         $data = $request->validated();
 
         try {
@@ -75,9 +75,10 @@ class UserController extends Controller
 
     public function destroy($id)
     {
+        $user = User::where('is_owner', false)->findOrFail($id);
+
         try {
-            $user = User::findOrFail($id);
-            
+
             $user->delete();
 
             return backWithSuccess();
