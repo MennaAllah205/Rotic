@@ -9,8 +9,7 @@ use App\Http\Controllers\ContactUsController;
 use App\Http\Controllers\ProductController;
 use App\Http\Controllers\ProjectController;
 use App\Http\Controllers\RoleController;
-use App\Http\Controllers\SelectCategoryController;
-use App\Http\Controllers\SelectClientController;
+use App\Http\Controllers\SelectController;
 use App\Http\Controllers\SendContactController;
 use App\Http\Controllers\SettingController;
 use App\Http\Controllers\UserController;
@@ -36,8 +35,7 @@ Route::middleware(['auth:sanctum'])->group(function () {
     Route::apiResource('settings', SettingController::class)->only('index', 'show', 'store');
 
     Route::apiResource('clients', ClientController::class);
-
-    Route::get('select/clients', [SelectClientController::class, 'clients']);
+    Route::get('select/clients', [SelectController::class, 'clients']);
 
     Route::apiResource('projects', ProjectController::class);
 
@@ -47,8 +45,7 @@ Route::middleware(['auth:sanctum'])->group(function () {
     Route::apiResource('contact-us', ContactUsController::class);
 
     Route::apiResource('categories', controller: CategoryController::class);
-
-    Route::get('select/categories', [SelectCategoryController::class, 'categories']);
+    Route::get('select/categories', [SelectController::class, 'categories']);
 
     Route::apiResource('blogs', BlogController::class);
 
