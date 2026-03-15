@@ -52,9 +52,6 @@ class ProductController extends Controller
                 data: new ProductsResources($products)
             );
 
-            return backWithSuccess(
-                data: new ProductsResources($products)
-            );
         } catch (\Exception $e) {
             return backWithError($e);
         }

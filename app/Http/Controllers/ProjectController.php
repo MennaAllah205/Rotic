@@ -1,5 +1,4 @@
 <?php
-
 namespace App\Http\Controllers;
 
 use App\Http\Requests\ProjectsStoreRequest;
@@ -78,7 +77,7 @@ class ProjectController extends Controller
     public function update(ProjectsUpdateRequest $request, string $id)
     {
         $project = Project::findOrFail($id);
-        $data = $request->validated();
+        $data    = $request->validated();
 
         try {
             DB::transaction(function () use ($data, $project, $request) {
