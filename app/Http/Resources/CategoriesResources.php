@@ -16,10 +16,11 @@ class CategoriesResources extends JsonResource
     {
         return [
             'id' => $this->id,
-            'name[ar]' => $this->name['ar'] ?? null,
-            'name[en]' => $this->name['en'] ?? null,
-            'description[ar]' => $this->description['ar'] ?? null,
-            'description[en]' => $this->description['en'] ?? null,
+            'name' => $this->name,
+            'description' => $this->description,
+
+            'projects' => $this->whenLoaded('projects', fn () => ProjectsResources::collection($this->projects)),
+
         ];
     }
 }

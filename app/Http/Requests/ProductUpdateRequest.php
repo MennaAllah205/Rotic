@@ -23,14 +23,11 @@ class ProductUpdateRequest extends FormRequest
     {
         return [
             'name' => 'sometimes|nullable|array',
-            'name.ar' => 'sometimes|nullable|string',
-            'name.en' => 'sometimes|nullable|string',
 
             'description' => 'sometimes|nullable|array',
-            'description.ar' => 'sometimes|nullable|string',
-            'description.en' => 'sometimes|nullable|string',
 
-            'image' => 'sometimes|nullable|image|max:255',
+            'images' => 'sometimes|nullable|array',
+            'images.*' => 'image|mimes:jpg,jpeg,png,webp|max:2048',
         ];
     }
 

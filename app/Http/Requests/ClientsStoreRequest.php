@@ -24,8 +24,6 @@ class ClientsStoreRequest extends FormRequest
         return [
 
             'name' => 'required',
-            'name.ar' => 'required|string',
-            'name.en' => 'required|string',
 
             'description' => 'sometimes|nullable',
             'testimonial' => 'sometimes|nullable',

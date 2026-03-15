@@ -4,7 +4,8 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-return new class extends Migration {
+return new class extends Migration
+{
     /**
      * Run the migrations.
      */
@@ -13,7 +14,7 @@ return new class extends Migration {
         Schema::create('projects', function (Blueprint $table) {
             $table->id();
 
-            //clients projects relationship
+            // clients projects relationship
 
             $table->foreignId('client_id')->nullable()->constrained('clients')->cascadeOnUpdate()->nullOnDelete();
 
@@ -24,7 +25,7 @@ return new class extends Migration {
             // External / Contact Link
             $table->string('link')->nullable();
 
-            $table->string('image')->nullable();
+            $table->string('images')->nullable();
 
             $table->json('meta')->nullable();
             $table->text('keywords')->nullable();

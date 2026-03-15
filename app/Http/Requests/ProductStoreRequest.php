@@ -23,14 +23,11 @@ class ProductStoreRequest extends FormRequest
     {
         return [
             'name' => 'required|array',
-            'name.ar' => 'required|string',
-            'name.en' => 'required|string',
 
             'description' => 'sometimes|nullable|array',
-            'description.ar' => 'sometimes|nullable|string',
-            'description.en' => 'sometimes|nullable|string',
 
-            'image' => 'nullable|image|max:255',
+            'images' => 'sometimes|nullable|array',
+            'images.*' => 'image|mimes:jpg,jpeg,png,webp|max:2048',
         ];
     }
 

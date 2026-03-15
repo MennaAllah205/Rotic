@@ -1,4 +1,5 @@
 <?php
+
 namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
@@ -21,20 +22,15 @@ class BlogUpdateRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'name'       => 'sometimes|required',
-            'name.ar'    => 'sometimes|required|string',
-            'name.en'    => 'sometimes|required|string',
-            'title'      => 'sometimes|nullable',
-            'title.ar'   => 'sometimes|nullable|string',
-            'title.en'   => 'sometimes|nullable|string',
-            'content'    => 'sometimes|nullable',
-            'content.ar' => 'sometimes|nullable|string',
-            'content.en' => 'sometimes|nullable|string',
-            'image'      => 'sometimes|nullable|image',
+            'name' => 'sometimes|required',
+            'category_id' => 'sometimes|nullable|exists:categories,id',
+            'title' => 'sometimes|nullable',
+            'content' => 'sometimes|nullable',
+            'image' => 'sometimes|nullable|image',
+            'slug' => 'sometimes|nullable|string|unique:blogs,slug,'.$this->route('blog'),
+            'url' => 'sometimes|nullable|url',
 
-            'meta'       => 'sometimes|nullable',
-            'meta.ar'    => 'sometimes|nullable|string',
-            'meta.en'    => 'sometimes|nullable|string',
+            'meta' => 'sometimes|nullable',
         ];
     }
 }

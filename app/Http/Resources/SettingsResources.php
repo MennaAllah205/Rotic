@@ -1,4 +1,5 @@
 <?php
+
 namespace App\Http\Resources;
 
 use Illuminate\Http\Request;
@@ -9,27 +10,26 @@ class SettingsResources extends JsonResource
     public function toArray(Request $request): array
     {
         return [
-            'id'           => $this->id,
+            'id' => $this->id,
 
-            'name_ar'      => $this->name['ar'] ?? null,
-            'name_en'      => $this->name['en'] ?? null,
+            'name' => $this->name,
 
-            'contacts'     => [
-                'email'        => $this->email,
-                'phone'        => $this->phone,
+            'contacts' => [
+                'email' => $this->email,
+                'phone' => $this->phone,
                 'second_phone' => $this->second_phone,
             ],
 
             'social_media' => [
-                'facebook'  => $this->facebook,
-                'youtube'   => $this->youtube,
+                'facebook' => $this->facebook,
+                'youtube' => $this->youtube,
                 'instagram' => $this->instagram,
             ],
 
-            'logo'         => $this->getFirstMediaUrl('logo'),
+            'logo' => $this->getFirstMediaUrl('logo'),
 
-            'meta'         => $this->meta,
-            
+            'meta' => $this->meta,
+
         ];
     }
 }

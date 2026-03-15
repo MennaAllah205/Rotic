@@ -1,4 +1,5 @@
 <?php
+
 namespace App\Http\Controllers;
 
 use App\Http\Requests\ProjectsStoreRequest;
@@ -8,14 +9,13 @@ use App\Models\Project;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 
-class ProjectsController extends Controller
+class ProjectController extends Controller
 {
     /**
      * Display a listing of the resource.
      */
     public function __construct()
     {
-        $this->middleware('permission:projects_show')->only(['index', 'show']);
         $this->middleware('permission:projects_create')->only(['store']);
         $this->middleware('permission:projects_update')->only(['update']);
         $this->middleware('permission:projects_delete')->only(['destroy']);
@@ -42,11 +42,12 @@ class ProjectsController extends Controller
 
                 $projects = Project::create($data);
 
-                if ($request->hasFile('image')) {
+                if ($request->hasFile('images')) {
 
-                    $file = $request->file('image');
+                    foreach ($request->file('images') as $file) {
 
-                    $projects->addOptimizedMedia($projects, $file, 'image');
+                        $projects->addOptimizedMedia($projects, $file, 'images');
+                    }
                 }
 
                 return $projects;
@@ -67,20 +68,28 @@ class ProjectsController extends Controller
     /**
      * Update the specified resource in storage.
      */
+    public function show(string $id)
+    {
+        $project = Project::with('client')->findOrFail($id);
+
+        return new ProjectsResources($project);
+    }
+
     public function update(ProjectsUpdateRequest $request, string $id)
     {
         $project = Project::findOrFail($id);
-        $data    = $request->validated();
+        $data = $request->validated();
 
         try {
             DB::transaction(function () use ($data, $project, $request) {
                 $project->update($data);
 
-                if ($request->hasFile('image')) {
-                    $file = $request->file('image');
+                if ($request->hasFile('images')) {
 
-                    $project->clearMediaCollection('image');
-                    $project->addOptimizedMedia($project, $file, 'image');
+                    foreach ($request->file('images') as $file) {
+
+                        $project->addOptimizedMedia($project, $file, 'images');
+                    }
                 }
             });
 

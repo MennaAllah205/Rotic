@@ -16,11 +16,11 @@ class ProductsResources extends JsonResource
     {
         return [
             'id' => $this->id,
-            'name[ar]' => $this->name['ar'] ?? null,
-            'name[en]' => $this->name['en'] ?? null,
-            'description[ar]' => $this->description['ar'] ?? null,
-            'description[en]' => $this->description['en'] ?? null,
-            'image' => $this->getFirstMediaUrl('image'),
+            'name' => $this->name,
+            'description' => $this->description,
+            'images' => $this->getMedia('images')->map(function ($media) {
+                return $media->getUrl();
+            }),
         ];
     }
 }

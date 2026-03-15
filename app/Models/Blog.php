@@ -1,4 +1,5 @@
 <?php
+
 namespace App\Models;
 
 use App\Traits\HandlesOptimizedMedia;
@@ -18,6 +19,8 @@ class Blog extends Model implements HasMedia
         'title',
         'content',
         'image',
+        'slug',
+        'url',
         'meta',
     ];
 
@@ -37,10 +40,10 @@ class Blog extends Model implements HasMedia
     }
 
     protected $casts = [
-        'name'    => 'array',
-        'title'   => 'array',
+        'name' => 'array',
+        'title' => 'array',
         'content' => 'array',
-        'meta'    => 'array',
+        'meta' => 'array',
     ];
 
     public function addOptimizedMediaToCollection(UploadedFile $file, string $collection = 'image')
@@ -48,9 +51,9 @@ class Blog extends Model implements HasMedia
         return $this->addOptimizedMedia($this, $file, $collection);
     }
 
+    // category
     public function category()
     {
-        return $this->belongsTo(Category::class, 'category_id');
+        return $this->belongsTo(Category::class);
     }
-
 }

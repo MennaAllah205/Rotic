@@ -25,9 +25,6 @@ class ClientsUpdateRequest extends FormRequest
 
             'name' => 'sometimes|required',
 
-            'name.ar' => 'sometimes|required|string',
-            'name.en' => 'sometimes|required|string',
-
             'description' => 'sometimes|nullable',
 
             'testimonial' => 'sometimes|nullable',

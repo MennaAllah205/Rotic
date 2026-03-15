@@ -7,8 +7,9 @@ use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\ClientController;
 use App\Http\Controllers\ContactUsController;
 use App\Http\Controllers\ProductController;
-use App\Http\Controllers\ProjectsController;
+use App\Http\Controllers\ProjectController;
 use App\Http\Controllers\RoleController;
+use App\Http\Controllers\SelectClientController;
 use App\Http\Controllers\SendContactController;
 use App\Http\Controllers\SettingsController;
 use App\Http\Controllers\UserController;
@@ -31,11 +32,13 @@ Route::middleware(['auth:sanctum'])->group(function () {
 
     Route::apiResource('users', UserController::class);
 
-    Route::apiResource('settings', SettingsController::class)->only('index', 'update');
+    Route::apiResource('settings', SettingsController::class)->only('index', 'show', 'store');
 
     Route::apiResource('clients', ClientController::class);
 
-    Route::apiResource('projects', ProjectsController::class);
+    Route::get('select/clients', [SelectClientController::class, 'clients']);
+
+    Route::apiResource('projects', ProjectController::class);
 
     Route::apiResource('products', ProductController::class);
 
@@ -48,11 +51,19 @@ Route::middleware(['auth:sanctum'])->group(function () {
 
 });
 
-// Contact Us
+// Public routes
+Route::prefix('/public')->group(function () {
 
-// public
+    Route::apiResource('settings', SettingsController::class)->only('index', 'show');
+    Route::apiResource('clients', ClientController::class)->only('index', 'show');
+    Route::apiResource('projects', ProjectController::class)->only('index', 'show');
+    Route::apiResource('products', ProductController::class)->only('index', 'show');
+    Route::apiResource('categories', CategoryController::class)->only('index', 'show');
+    Route::apiResource('blogs', BlogController::class)->only('index', 'show');
 
-Route::post('send-contact', SendContactController::class)
-    ->middleware('throttle:2,1');
+    // Contact Us
 
+    Route::post('send-contact', SendContactController::class)
+        ->middleware('throttle:2,1');
 
+});

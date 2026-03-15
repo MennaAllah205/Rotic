@@ -1,4 +1,5 @@
 <?php
+
 namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
@@ -21,14 +22,15 @@ class ProjectsUpdateRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'client_id'   => 'sometimes|nullable|exists:clients,id',
-            'title'       => 'sometimes|array',
+            'client_id' => 'sometimes|nullable|exists:clients,id',
+            'title' => 'sometimes|array',
             'description' => 'sometimes|nullable|array',
-            'features'    => 'sometimes|nullable|array',
-            'link'        => 'sometimes|nullable|string|max:255|url',
-            'image'       => 'sometimes|nullable|image|max:255',
-            'meta'        => 'sometimes|nullable|array',
-            'keywords'    => 'sometimes|nullable|string|max:255',
+            'features' => 'sometimes|nullable|array',
+            'link' => 'sometimes|nullable|string|max:255|url',
+            'images' => 'sometimes|nullable|array',
+            'images.*' => 'image|mimes:jpg,jpeg,png,webp|max:2048',
+            'meta' => 'sometimes|nullable|array',
+            'keywords' => 'sometimes|nullable|string|max:255',
         ];
     }
 

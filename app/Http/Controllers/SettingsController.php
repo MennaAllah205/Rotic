@@ -20,7 +20,14 @@ class SettingsController extends Controller
     {
         $setting = Setting::first();
 
-        return response()->json($setting);
+        return new SettingsResources($setting);
+    }
+
+    public function show($id)
+    {
+        $setting = Setting::findOrFail($id);
+
+        return new SettingsResources($setting);
     }
 
     public function store(SettingsRequest $request)

@@ -13,7 +13,6 @@ class CategoryController extends Controller
 {
     public function __construct()
     {
-        $this->middleware('permission:categories_show')->only(['index', 'show']);
         $this->middleware('permission:categories_create')->only(['store']);
         $this->middleware('permission:categories_update')->only(['update']);
         $this->middleware('permission:categories_delete')->only(['destroy']);
@@ -21,7 +20,7 @@ class CategoryController extends Controller
 
     public function index(Request $request)
     {
-        $categories = Category::paginate(getPerPage($request));
+        $categories = Category::with('blogs:id,name')->paginate(getPerPage($request));
 
         return CategoriesResources::collection($categories);
     }
@@ -29,6 +28,13 @@ class CategoryController extends Controller
     /**
      * Store a newly created resource in storage.
      */
+    public function show(string $id)
+    {
+        $category = Category::with('blogs')->findOrFail($id);
+
+        return new CategoriesResources($category);
+    }
+
     public function store(CategoriesStoreRequest $request)
     {
         $data = $request->validated();
@@ -56,13 +62,16 @@ class CategoryController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(CategoriesUpdateRequest $request, string $id)
+    public function update(CategoriesUpdateRequest $request, $id)
     {
+
         $category = Category::findOrFail($id);
         $data = $request->validated();
 
         try {
+
             DB::transaction(function () use ($data, &$category) {
+
                 $category->update($data);
 
             });
