@@ -29,7 +29,7 @@ class ClientsUpdateRequest extends FormRequest
 
             'testimonial' => 'sometimes|nullable',
 
-            'logo' => 'sometimes|nullable|image|mimes:png,jpg|max:2048',
+            'logo' => 'sometimes|nullable|image',
 
             'meta' => 'sometimes|nullable|array',
             'keywords' => 'sometimes|nullable|array',
