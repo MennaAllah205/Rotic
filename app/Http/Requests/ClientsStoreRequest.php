@@ -26,7 +26,7 @@ class ClientsStoreRequest extends FormRequest
             'name' => 'required',
 
             'description' => 'sometimes|nullable',
-            'testimonial' => 'sometimes|nullable',
+            'link' => 'sometimes|nullable|url',
             'logo' => 'sometimes|nullable|image',
             'meta' => 'sometimes|nullable|array',
             'keywords' => 'sometimes|nullable|array',

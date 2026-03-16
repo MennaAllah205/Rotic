@@ -15,7 +15,7 @@ class Client extends Model implements HasMedia
     protected $fillable = [
         'name',
         'description',
-        'testimonial',
+        'link',
         'logo',
         'meta',
         'keywords',
@@ -41,7 +41,6 @@ class Client extends Model implements HasMedia
         return [
             'name' => 'array',
             'description' => 'array',
-            'testimonial' => 'array',
             'meta' => 'array',
             'keywords' => 'array',
         ];
@@ -52,5 +51,10 @@ class Client extends Model implements HasMedia
     public function projects()
     {
         return $this->hasMany(Project::class);
+    }
+
+    public function testimonials()
+    {
+        return $this->hasMany(TestimonialClient::class);
     }
 }

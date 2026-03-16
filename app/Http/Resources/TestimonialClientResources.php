@@ -5,7 +5,7 @@ namespace App\Http\Resources;
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\JsonResource;
 
-class ClientResources extends JsonResource
+class TestimonialClientResources extends JsonResource
 {
     /**
      * Transform the resource into an array.
@@ -17,16 +17,9 @@ class ClientResources extends JsonResource
         return [
             'id' => $this->id,
 
-            'name' => $this->name,
+            'client_id' => $this->client_id,
 
-            'description' => $this->description,
-
-            'link' => $this->link,
-
-            'logo' => $this->getFirstMediaUrl('logo'),
-            'meta' => $this->meta,
-
-            'projects' => ProjectsResources::collection($this->whenLoaded('projects')),
+            'testimonial' => $this->testimonial,
 
         ];
     }

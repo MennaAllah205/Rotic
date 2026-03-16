@@ -15,10 +15,11 @@ return new class extends Migration {
 
             $table->json('name')->nullable();
             $table->json('description')->nullable();
-            $table->json('testimonial')->nullable();
+
             // client logo
             $table->string('logo')->nullable();
 
+            $table->string('link')->nullable();
             //SEO fields
             $table->json('meta')->nullable();
             $table->text('keywords')->nullable();
