@@ -1,5 +1,4 @@
 <?php
-
 namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
@@ -23,9 +22,9 @@ class TestimonialUpdateRequest extends FormRequest
     {
         return [
             'client_name' => 'sometimes|nullable|max:255|array',
-            'title' => 'sometimes|nullable|max:255|array',
-            'body' => 'sometimes|nullable|max:2000|array',
-            'meta' => 'sometimes|nullable|array',
+            'title'       => 'sometimes|nullable|max:255|array',
+            'body'        => 'sometimes|nullable|max:2000|array',
+            'meta'        => 'sometimes|nullable|array',
 
         ];
     }

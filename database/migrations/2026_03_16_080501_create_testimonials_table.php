@@ -17,7 +17,6 @@ return new class extends Migration
             $table->json('title')->nullable();
             $table->json('body')->nullable();
             $table->json('meta')->nullable();
-
             $table->timestamps();
         });
     }

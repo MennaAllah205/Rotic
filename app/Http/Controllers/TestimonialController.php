@@ -1,5 +1,4 @@
 <?php
-
 namespace App\Http\Controllers;
 
 use App\Http\Requests\TestimonialStoreRequest;
@@ -55,18 +54,12 @@ class TestimonialController extends Controller
         }
 
     }
-    /**
-     * Display the specified resource.
-     */
 
-    /**
-     * Update the specified resource in storage.
-     */
     public function update(TestimonialUpdateRequest $request, $id)
     {
 
         $testimonial = Testimonial::findOrFail($id);
-        $data = $request->validated();
+        $data        = $request->validated();
 
         try {
 
@@ -84,9 +77,6 @@ class TestimonialController extends Controller
         }
     }
 
-    /**
-     * Remove the specified resource from storage.
-     */
     public function destroy(string $id)
     {
         $testimonial = Testimonial::findOrFail($id);
