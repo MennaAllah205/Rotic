@@ -12,7 +12,7 @@ use App\Http\Controllers\RoleController;
 use App\Http\Controllers\SelectController;
 use App\Http\Controllers\SendContactController;
 use App\Http\Controllers\SettingController;
-use App\Http\Controllers\TestimonialClientController;
+use App\Http\Controllers\TestimonialController;
 use App\Http\Controllers\UserController;
 use Illuminate\Support\Facades\Route;
 
@@ -48,7 +48,7 @@ Route::middleware(['auth:sanctum'])->group(function () {
 
     Route::apiResource('blogs', BlogController::class);
 
-    Route::apiResource('testimonial-clients', TestimonialClientController::class);
+    Route::apiResource('testimonials', TestimonialController::class);
 
 });
 
@@ -61,7 +61,7 @@ Route::prefix('/public')->group(function () {
     Route::apiResource('products', ProductController::class)->only('index', 'show');
     Route::apiResource('categories', CategoryController::class)->only('index', 'show');
     Route::apiResource('blogs', BlogController::class)->only('index', 'show');
-    Route::apiResource('testimonial-clients', TestimonialClientController::class)->only('index', 'show');
+    Route::apiResource('testimonials', TestimonialController::class)->only('index', 'show');
 
     // Contact Us
 

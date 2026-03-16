@@ -4,7 +4,7 @@ namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
 
-class TestimonialClientUpdateRequest extends FormRequest
+class TestimonialUpdateRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -22,9 +22,11 @@ class TestimonialClientUpdateRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'client_id' => 'sometimes|nullable|exists:clients,id',
+            'client_name' => 'sometimes|nullable|max:255|array',
+            'title' => 'sometimes|nullable|max:255|array',
+            'body' => 'sometimes|nullable|max:2000|array',
+            'meta' => 'sometimes|nullable|array',
 
-            'testimonial' => 'sometimes|nullable|string|max:2000',
         ];
     }
 

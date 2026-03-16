@@ -52,9 +52,4 @@ class Client extends Model implements HasMedia
     {
         return $this->hasMany(Project::class);
     }
-
-    public function testimonials()
-    {
-        return $this->hasMany(TestimonialClient::class);
-    }
 }

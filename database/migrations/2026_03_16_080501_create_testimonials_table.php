@@ -11,10 +11,13 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('testimonial_clients', function (Blueprint $table) {
+        Schema::create('testimonials', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('client_id')->nullable()->constrained('clients')->cascadeOnUpdate()->nullOnDelete();
-            $table->text('testimonial')->nullable();
+            $table->json('client_name')->nullable();
+            $table->json('title')->nullable();
+            $table->json('body')->nullable();
+            $table->json('meta')->nullable();
+
             $table->timestamps();
         });
     }
@@ -24,6 +27,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('testimonial_clients');
+        Schema::dropIfExists('testimonials');
     }
 };

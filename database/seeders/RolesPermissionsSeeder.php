@@ -54,9 +54,9 @@ class RolesPermissionsSeeder extends Seeder
             'blogs_update',
             'blogs_delete',
 
-            'testimonial_clients_create',
-            'testimonial_clients_update',
-            'testimonial_clients_delete',
+            'testimonial_create',
+            'testimonial_update',
+            'testimonial_delete',
 
         ];
 
