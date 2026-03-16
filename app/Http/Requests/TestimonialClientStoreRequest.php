@@ -24,7 +24,7 @@ class TestimonialClientStoreRequest extends FormRequest
         return [
             'client_id' => 'required|exists:clients,id',
 
-            'testimonial' => 'required',
+            'testimonial' => 'required|string|max:2000',
         ];
     }
 

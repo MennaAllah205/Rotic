@@ -14,7 +14,7 @@ return new class extends Migration
         Schema::create('testimonial_clients', function (Blueprint $table) {
             $table->id();
             $table->foreignId('client_id')->nullable()->constrained('clients')->cascadeOnUpdate()->nullOnDelete();
-            $table->json('testimonial')->nullable();
+            $table->text('testimonial')->nullable();
             $table->timestamps();
         });
     }

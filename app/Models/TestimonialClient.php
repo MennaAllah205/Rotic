@@ -11,13 +11,6 @@ class TestimonialClient extends Model
         'testimonial',
     ];
 
-    protected function casts(): array
-    {
-        return [
-            'testimonial' => 'array',
-        ];
-    }
-
     public function client()
     {
         return $this->belongsTo(Client::class);

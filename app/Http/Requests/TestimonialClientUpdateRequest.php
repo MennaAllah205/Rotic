@@ -24,7 +24,7 @@ class TestimonialClientUpdateRequest extends FormRequest
         return [
             'client_id' => 'sometimes|nullable|exists:clients,id',
 
-            'testimonial' => 'sometimes|nullable',
+            'testimonial' => 'sometimes|nullable|string|max:2000',
         ];
     }
 
