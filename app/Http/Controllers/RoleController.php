@@ -1,5 +1,4 @@
 <?php
-
 namespace App\Http\Controllers;
 
 use App\Http\Requests\RolesStoreRequest;
@@ -8,7 +7,6 @@ use App\Http\Resources\RolesResources;
 use Illuminate\Support\Facades\DB;
 use Spatie\Permission\Models\Permission;
 use Spatie\Permission\Models\Role;
-use Spatie\Permission\PermissionRegistrar;
 use Symfony\Component\HttpFoundation\Request;
 
 class RoleController extends Controller
@@ -37,23 +35,15 @@ class RoleController extends Controller
      */
     public function store(RolesStoreRequest $request)
     {
-        $data = $request->validated();
+        $data               = $request->validated();
         $data['guard_name'] = 'web';
         try {
             DB::transaction(function () use ($data, &$role) {
 
                 $role = Role::create($data);
 
-                // Create permissions if they don't exist
-                $permissions = [];
-                foreach ($data['permissions'] as $permissionName) {
-                    $permission = Permission::firstOrCreate(['name' => $permissionName, 'guard_name' => 'web']);
-                    $permissions[] = $permission->id;
-                }
+                $this->syncRolePermissions($role, $data['permissions']);
 
-                $role->syncPermissions($permissions);
-
-                app()[PermissionRegistrar::class]->forgetCachedPermissions();
             });
 
             return backWithSuccess(
@@ -79,18 +69,10 @@ class RoleController extends Controller
 
         try {
             DB::transaction(function () use ($data, $role) {
+
                 $role->update($data);
 
-                if (isset($data['permissions'])) {
-                    // Create permissions if they don't exist
-                    $permissions = [];
-                    foreach ($data['permissions'] as $permissionName) {
-                        $permission = Permission::firstOrCreate(['name' => $permissionName, 'guard_name' => 'web']);
-                        $permissions[] = $permission->id;
-                    }
-
-                    $role->syncPermissions($permissions);
-                }
+                $this->syncRolePermissions($role, $data['permissions']);
 
             });
 
@@ -131,4 +113,27 @@ class RoleController extends Controller
             return backWithError($e);
         }
     }
+
+    private function syncRolePermissions(Role $role, array $permissionNames): void
+    {
+        $existingPermissions = Permission::whereIn('name', $permissionNames)
+            ->pluck('name')
+            ->toArray();
+
+        $newPermissions = array_diff($permissionNames, $existingPermissions);
+
+        if (! empty($newPermissions)) {
+            $insertData = collect($newPermissions)->map(fn($name) => [
+                'name'       => $name,
+                'guard_name' => 'web',
+                'created_at' => now(),
+                'updated_at' => now(),
+            ])->toArray();
+
+            Permission::insertOrIgnore($insertData);
+        }
+
+        $role->syncPermissions($permissionNames);
+    }
+
 }
