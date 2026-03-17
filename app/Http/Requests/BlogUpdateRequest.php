@@ -11,7 +11,7 @@ class BlogUpdateRequest extends FormRequest
      */
     public function authorize(): bool
     {
-        return false;
+        return true;
     }
 
     /**
@@ -22,13 +22,11 @@ class BlogUpdateRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'name' => 'sometimes|required',
             'category_id' => 'sometimes|nullable|exists:categories,id',
             'title' => 'sometimes|nullable',
             'content' => 'sometimes|nullable',
             'image' => 'sometimes|nullable|image',
             'slug' => 'sometimes|nullable|string|unique:blogs,slug,'.$this->route('blog'),
-            'url' => 'sometimes|nullable|url',
 
             'meta' => 'sometimes|nullable',
         ];

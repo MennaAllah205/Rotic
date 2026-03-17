@@ -22,7 +22,6 @@ class BlogStoreRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'name' => 'required',
 
             'category_id' => 'required|exists:categories,id',
 
@@ -33,7 +32,6 @@ class BlogStoreRequest extends FormRequest
             'image' => 'sometimes|nullable|image',
 
             'slug' => 'sometimes|nullable|string|unique:blogs,slug',
-            'url' => 'sometimes|nullable|url',
 
             'meta' => 'sometimes|nullable',
         ];

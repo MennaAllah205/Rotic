@@ -17,12 +17,10 @@ return new class extends Migration
             // category
             $table->foreignId('category_id')->nullable()->constrained('categories')->cascadeOnUpdate()->nullOnDelete();
 
-            $table->json('name');
             $table->json('title')->nullable();
             $table->json('content')->nullable();
             $table->string('image')->nullable();
             $table->text('slug')->nullable();
-            $table->string('url')->nullable();
             $table->json('meta')->nullable();
 
             $table->timestamps();

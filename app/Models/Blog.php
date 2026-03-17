@@ -15,12 +15,10 @@ class Blog extends Model implements HasMedia
 
     protected $fillable = [
         'category_id',
-        'name',
         'title',
         'content',
         'image',
         'slug',
-        'url',
         'meta',
     ];
 
