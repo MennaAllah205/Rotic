@@ -28,6 +28,7 @@ Route::middleware(['auth:sanctum'])->group(function () {
     Route::get('auth-data', [AuthDataController::class]);
 
     Route::apiResource('roles', RoleController::class);
+    Route::get('select/roles', [SelectController::class, 'roles']);
 
     Route::apiResource('users', UserController::class);
 

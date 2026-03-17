@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Category;
 use App\Models\Client;
+use Spatie\Permission\Models\Role;
 
 class SelectController extends Controller
 {
@@ -22,6 +23,15 @@ class SelectController extends Controller
 
         return response()->json([
             'data' => $category,
+        ]);
+    }
+
+    public function roles()
+    {
+        $roles = Role::select('id', 'name')->get();
+
+        return response()->json([
+            'data' => $roles,
         ]);
     }
 }
