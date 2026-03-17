@@ -1,5 +1,4 @@
 <?php
-
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
@@ -16,10 +15,10 @@ class Testimonial extends Model
     protected function casts(): array
     {
         return [
-            'meta' => 'array',
+            'meta'        => 'array',
             'client_name' => 'array',
-            'title' => 'array',
-            'body' => 'array',
+            'title'       => 'array',
+            'body'        => 'array',
         ];
     }
 }
