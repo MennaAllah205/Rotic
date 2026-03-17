@@ -6,6 +6,7 @@ use App\Http\Requests\RolesStoreRequest;
 use App\Http\Requests\RolesUpdateRequest;
 use App\Http\Resources\RolesResources;
 use Illuminate\Support\Facades\DB;
+use Spatie\Permission\Models\Permission;
 use Spatie\Permission\Models\Role;
 use Spatie\Permission\PermissionRegistrar;
 use Symfony\Component\HttpFoundation\Request;
@@ -14,10 +15,10 @@ class RoleController extends Controller
 {
     public function __construct()
     {
-        $this->middleware('permission:role_show')->only(['index', 'show']);
-        $this->middleware('permission:role_create')->only(['store']);
-        $this->middleware('permission:role_update')->only(['update']);
-        $this->middleware('permission:role_delete')->only(['destroy']);
+        $this->middleware('permission:show_role')->only(['index', 'show']);
+        $this->middleware('permission:create_role')->only(['store']);
+        $this->middleware('permission:update_role')->only(['update']);
+        $this->middleware('permission:delete_role')->only(['destroy']);
     }
 
     /**
@@ -43,7 +44,14 @@ class RoleController extends Controller
 
                 $role = Role::create($data);
 
-                $role->syncPermissions($data['permissions']);
+                // Create permissions if they don't exist
+                $permissions = [];
+                foreach ($data['permissions'] as $permissionName) {
+                    $permission = Permission::firstOrCreate(['name' => $permissionName, 'guard_name' => 'web']);
+                    $permissions[] = $permission->id;
+                }
+
+                $role->syncPermissions($permissions);
 
                 app()[PermissionRegistrar::class]->forgetCachedPermissions();
             });
@@ -74,7 +82,14 @@ class RoleController extends Controller
                 $role->update($data);
 
                 if (isset($data['permissions'])) {
-                    $role->syncPermissions($data['permissions']);
+                    // Create permissions if they don't exist
+                    $permissions = [];
+                    foreach ($data['permissions'] as $permissionName) {
+                        $permission = Permission::firstOrCreate(['name' => $permissionName, 'guard_name' => 'web']);
+                        $permissions[] = $permission->id;
+                    }
+
+                    $role->syncPermissions($permissions);
                 }
 
             });

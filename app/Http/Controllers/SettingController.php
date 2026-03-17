@@ -11,7 +11,9 @@ class SettingController extends Controller
 {
     public function __construct()
     {
-        $this->middleware('permission:settings_update')->only(['update']);
+        $this->middleware('permission:create_setting')->only(['store']);
+
+        $this->middleware('permission:update_setting')->only(['update']);
     }
 
     use HandlesOptimizedMedia;

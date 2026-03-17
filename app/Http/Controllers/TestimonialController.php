@@ -11,13 +11,6 @@ use Illuminate\Support\Facades\DB;
 
 class TestimonialController extends Controller
 {
-    public function __construct()
-    {
-        $this->middleware('permission:testimonial_create')->only(['store']);
-        $this->middleware('permission:testimonial_update')->only(['update']);
-        $this->middleware('permission:testimonial_delete')->only(['destroy']);
-    }
-
     public function index(Request $request)
     {
         $testimonials = Testimonial::paginate(getPerPage($request));

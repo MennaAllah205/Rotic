@@ -11,13 +11,6 @@ use Illuminate\Support\Facades\DB;
 
 class BlogController extends Controller
 {
-    public function __construct()
-    {
-        $this->middleware('permission:blogs_create')->only(['store']);
-        $this->middleware('permission:blogs_update')->only(['update']);
-        $this->middleware('permission:blogs_delete')->only(['destroy']);
-    }
-
     public function index(Request $request)
     {
         $products = Blog::paginate(getPerPage($request));

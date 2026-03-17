@@ -13,10 +13,10 @@ class ContactUsController extends Controller
 {
     public function __construct()
     {
-        $this->middleware('permission:contact_us_show')->only(['index', 'show']);
-        $this->middleware('permission:contact_us_create')->only(['store']);
-        $this->middleware('permission:contact_us_update')->only(['update']);
-        $this->middleware('permission:contact_us_delete')->only(['destroy']);
+        $this->middleware('permission:show_contact')->only(['index', 'show']);
+        $this->middleware('permission:create_contact')->only(['store']);
+        $this->middleware('permission:update_contact')->only(['update']);
+        $this->middleware('permission:delete_contact')->only(['destroy']);
     }
 
     public function index(Request $request)

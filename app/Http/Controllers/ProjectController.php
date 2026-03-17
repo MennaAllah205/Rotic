@@ -1,4 +1,5 @@
 <?php
+
 namespace App\Http\Controllers;
 
 use App\Http\Requests\ProjectsStoreRequest;
@@ -15,9 +16,9 @@ class ProjectController extends Controller
      */
     public function __construct()
     {
-        $this->middleware('permission:projects_create')->only(['store']);
-        $this->middleware('permission:projects_update')->only(['update']);
-        $this->middleware('permission:projects_delete')->only(['destroy']);
+        $this->middleware('permission:create_project')->only(['store']);
+        $this->middleware('permission:update_project')->only(['update']);
+        $this->middleware('permission:delete_project')->only(['destroy']);
     }
 
     public function index(Request $request)
@@ -77,7 +78,7 @@ class ProjectController extends Controller
     public function update(ProjectsUpdateRequest $request, string $id)
     {
         $project = Project::findOrFail($id);
-        $data    = $request->validated();
+        $data = $request->validated();
 
         try {
             DB::transaction(function () use ($data, $project, $request) {

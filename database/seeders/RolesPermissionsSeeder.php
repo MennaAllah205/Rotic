@@ -15,48 +15,45 @@ class RolesPermissionsSeeder extends Seeder
     {
         $permissions = [
 
-            'role_show',
-            'role_create',
-            'role_update',
-            'role_delete',
+            'show_role',
+            'create_role',
+            'update_role',
+            'delete_role',
 
-            'user_show',
-            'user_create',
-            'user_update',
-            'user_delete',
+            'show_user',
+            'create_user',
+            'update_user',
+            'delete_user',
 
-            'auth_data_show',
+            'show_setting',
+            'create_setting',
+            'update_setting',
+            'delete_setting',
 
-            'settings_update',
+            'show_client',
+            'create_client',
+            'update_client',
+            'delete_client',
 
-            'client_create',
-            'client_update',
-            'client_delete',
+            'show_project',
+            'create_project',
+            'update_project',
+            'delete_project',
 
-            'projects_create',
-            'projects_update',
-            'projects_delete',
+            'show_product',
+            'create_product',
+            'update_product',
+            'delete_product',
 
-            'products_create',
-            'products_update',
-            'products_delete',
+            'show_category',
+            'create_category',
+            'update_category',
+            'delete_category',
 
-            'contact_us_show',
-            'contact_us_create',
-            'contact_us_update',
-            'contact_us_delete',
-
-            'categories_create',
-            'categories_update',
-            'categories_delete',
-
-            'blogs_create',
-            'blogs_update',
-            'blogs_delete',
-
-            'testimonial_create',
-            'testimonial_update',
-            'testimonial_delete',
+            'show_contact',
+            'create_contact',
+            'update_contact',
+            'delete_contact',
 
         ];
 
