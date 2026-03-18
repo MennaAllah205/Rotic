@@ -38,7 +38,6 @@ class Blog extends Model implements HasMedia
     }
 
     protected $casts = [
-        'name' => 'array',
         'title' => 'array',
         'content' => 'array',
         'meta' => 'array',
