@@ -1,5 +1,4 @@
 <?php
-
 namespace App\Http\Controllers;
 
 use App\Http\Requests\ClientsStoreRequest;
@@ -19,9 +18,9 @@ class ClientController extends Controller
      */
     public function __construct()
     {
-        $this->middleware('permission:client_create')->only(['store']);
-        $this->middleware('permission:client_update')->only(['update']);
-        $this->middleware('permission:client_delete')->only(['destroy']);
+        // $this->middleware('permission:client_create')->only(['store']);
+        // $this->middleware('permission:client_update')->only(['update']);
+        // $this->middleware('permission:client_delete')->only(['destroy']);
     }
 
     public function index(Request $request)
@@ -44,18 +43,12 @@ class ClientController extends Controller
     public function store(ClientsStoreRequest $request)
     {
         $data = $request->validated();
-        $roles = $data['roles'] ?? [];
-        unset($data['roles']);
 
         try {
 
-            DB::transaction(function () use ($data, $request, $roles, &$clients) {
+            DB::transaction(function () use ($data, $request, &$clients) {
 
                 $clients = Client::create($data);
-
-                if (!empty($roles)) {
-                    $clients->roles()->sync($roles);
-                }
 
                 if ($request->hasFile('logo')) {
 
@@ -82,29 +75,36 @@ class ClientController extends Controller
     public function update(ClientsUpdateRequest $request, int $id)
     {
         $client = Client::findOrFail($id);
-        $data = $request->validated();
-        $roles = $data['roles'] ?? [];
-        unset($data['roles']);
+        $data   = $request->validated();
 
         try {
 
-            DB::transaction(function () use ($data, $client, $roles) {
+            DB::transaction(function () use ($data, $client, $request) {
+
                 $client->update($data);
 
-                if (!empty($roles)) {
-                    $client->roles()->sync($roles);
-                } else {
-                    $client->roles()->detach();
+                // 🔥 handle logo update
+                if ($request->hasFile('logo')) {
+
+                    // امسح القديم
+                    $client->clearMediaCollection('logo');
+
+                    // ارفع الجديد
+                    $this->addOptimizedMedia(
+                        $client,
+                        $request->file('logo'),
+                        'logo'
+                    );
                 }
             });
 
             return backWithSuccess(
-                data: new ClientResources($client)
+                data: new ClientResources($client->load('projects'))
             );
-        } catch (\Exception $e) {
-            backWithError($e);
-        }
 
+        } catch (\Exception $e) {
+            return backWithError($e);
+        }
     }
 
     /**
@@ -115,11 +115,14 @@ class ClientController extends Controller
         $client = Client::findOrFail($id);
 
         try {
+            $client->clearMediaCollection('logo');
+
             $client->delete();
 
             return backWithSuccess();
+
         } catch (\Exception $e) {
-            backWithError($e);
+            return backWithError($e);
         }
     }
 }

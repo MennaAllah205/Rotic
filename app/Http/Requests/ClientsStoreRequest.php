@@ -1,5 +1,4 @@
 <?php
-
 namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
@@ -23,16 +22,13 @@ class ClientsStoreRequest extends FormRequest
     {
         return [
 
-            'name' => 'required',
+            'name'        => 'required',
 
             'description' => 'sometimes|nullable',
-            'link' => 'sometimes|nullable|url',
-            'logo' => 'sometimes|nullable|image',
-            'meta' => 'sometimes|nullable|array',
-            'keywords' => 'sometimes|nullable|array',
-            'roles' => 'sometimes|array',
-            'roles.*' => 'exists:roles,id',
-
+            'link'        => 'sometimes|nullable|url',
+            'logo'        => 'sometimes|nullable|image',
+            'meta'        => 'sometimes|nullable|array',
+            'keywords'    => 'sometimes|nullable|array',
         ];
     }
 
