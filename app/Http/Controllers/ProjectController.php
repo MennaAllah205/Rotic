@@ -23,7 +23,7 @@ class ProjectController extends Controller
 
     public function index(Request $request)
     {
-        $projects = Project::with('client:id,name')->paginate(getPerPage($request));
+        $projects = Project::with('client')->paginate(getPerPage($request));
 
         return ProjectsResources::collection($projects);
 

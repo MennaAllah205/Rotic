@@ -18,8 +18,13 @@ class ProjectsResources extends JsonResource
             'id'          => $this->id,
 
             'client'      => $this->whenLoaded('client', fn() => [
-                'id'   => $this->client->id,
-                'name' => $this->client->name,
+                'id'          => $this->client->id,
+                'name'        => $this->client->name,
+                'description' => $this->client->description,
+                'link'        => $this->client->link,
+                'logo'        => $this->client->logo,
+                'meta'        => $this->client->meta,
+                'keywords'    => $this->client->keywords,
             ]),
 
             'title'       => $this->title,
