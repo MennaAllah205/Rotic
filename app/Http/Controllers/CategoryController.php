@@ -20,7 +20,7 @@ class CategoryController extends Controller
 
     public function index(Request $request)
     {
-        $categories = Category::with('blogs:id,name')->paginate(getPerPage($request));
+        $categories = Category::paginate(getPerPage($request));
 
         return CategoriesResources::collection($categories);
     }
@@ -30,7 +30,7 @@ class CategoryController extends Controller
      */
     public function show(string $id)
     {
-        $category = Category::with('blogs')->findOrFail($id);
+        $category = Category::findOrFail($id);
 
         return new CategoriesResources($category);
     }

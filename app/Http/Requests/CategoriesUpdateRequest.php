@@ -1,5 +1,4 @@
 <?php
-
 namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
@@ -22,7 +21,7 @@ class CategoriesUpdateRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'name' => 'sometimes|nullable|array',
+            'name'        => 'sometimes|nullable|array',
             'description' => 'sometimes|nullable|array',
         ];
     }

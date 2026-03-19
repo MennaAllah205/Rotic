@@ -18,8 +18,6 @@ class CategoriesResources extends JsonResource
             'name'        => $this->name,
             'description' => $this->description,
 
-            'projects'    => $this->whenLoaded('projects', fn() => ProjectsResources::collection($this->projects)),
-
         ];
     }
 }
