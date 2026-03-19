@@ -1,5 +1,4 @@
 <?php
-
 namespace App\Http\Controllers;
 
 use App\Http\Requests\UsersStoreRequest;
@@ -22,7 +21,7 @@ class UserController extends Controller
     public function index(Request $request)
     {
 
-        $users = User::where('is_owner', false)->paginate(getPerPage($request));
+        $users = User::where('is_owner', false)->with('roles:id,name')->paginate(getPerPage($request));
 
         return UsersResources::collection($users);
 
@@ -32,8 +31,8 @@ class UserController extends Controller
     {
         try {
 
-            $data = $request->validated();
-            $roles = $data['roles'] ?? [];
+            $data  = $request->validated();
+            $roles = $data['roles'];
 
             DB::transaction(function () use ($data, $roles, &$users) {
 
@@ -42,6 +41,7 @@ class UserController extends Controller
                 if (! empty($roles)) {
                     $users->roles()->sync($roles);
                 }
+
                 $users->load('roles');
             });
 
@@ -57,9 +57,9 @@ class UserController extends Controller
     public function update(UsersUpdateRequest $request, $id)
     {
 
-        $user = User::with('roles')->where('is_owner', false)->findOrFail($id);
-        $data = $request->validated();
-        $roles = $data['roles'] ?? [];
+        $user  = User::with('roles')->where('is_owner', false)->findOrFail($id);
+        $data  = $request->validated();
+        $roles = $data['roles'];
 
         try {
 
@@ -69,9 +69,7 @@ class UserController extends Controller
 
                 if (! empty($roles)) {
                     $user->roles()->sync($roles);
-                } else {
-                    $user->roles()->detach();
-                }
+                } 
 
                 if (isset($data['password'])) {
                     $user->tokens()->delete();

@@ -1,5 +1,4 @@
 <?php
-
 namespace App\Http\Resources;
 
 use Illuminate\Http\Request;
@@ -16,13 +15,14 @@ class UsersResources extends JsonResource
     {
 
         return [
-            'id' => $this->id,
-            'name' => $this->name,
+            'id'    => $this->id,
+            'name'  => $this->name,
             'email' => $this->email,
             'phone' => $this->phone,
+            
             'roles' => $this->roles->map(function ($role) {
                 return [
-                    'id' => $role->id,
+                    'id'   => $role->id,
                     'name' => $role->name,
                 ];
             }),
