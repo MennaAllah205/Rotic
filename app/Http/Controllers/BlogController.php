@@ -1,5 +1,4 @@
 <?php
-
 namespace App\Http\Controllers;
 
 use App\Http\Requests\BlogStoreRequest;
@@ -13,9 +12,9 @@ class BlogController extends Controller
 {
     public function index(Request $request)
     {
-        $products = Blog::paginate(getPerPage($request));
-
-        return BlogResources::collection($products);
+        $blogs = Blog::with('category:id,name')
+            ->paginate(getPerPage($request));
+        return BlogResources::collection($blogs);
 
     }
 
@@ -28,22 +27,22 @@ class BlogController extends Controller
 
         try {
 
-            DB::transaction(function () use ($data, $request, &$products) {
+            DB::transaction(function () use ($data, $request, &$blog) {
 
-                $products = Blog::create($data);
+                $blog = Blog::create($data);
 
                 if ($request->hasFile('image')) {
 
                     $file = $request->file('image');
 
-                    $products->addOptimizedMediaToCollection($file, 'image');
+                    $blog->addOptimizedMediaToCollection($file, 'image');
                 }
 
-                return $products;
+                return $blog;
             });
 
             return backWithSuccess(
-                data: new BlogResources($products)
+                data: new BlogResources($blog)
             );
         } catch (\Exception $e) {
             return backWithError($e);
@@ -56,9 +55,9 @@ class BlogController extends Controller
      */
     public function show($id)
     {
-        $product = Blog::findOrFail($id);
+        $blog = Blog::with('category:id,name')->findOrFail($id);
 
-        return new BlogResources($product);
+        return new BlogResources($blog);
     }
 
     /**
