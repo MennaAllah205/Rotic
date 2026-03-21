@@ -22,7 +22,7 @@ class ProjectsResources extends JsonResource
                 'name'        => $this->client->name,
                 'description' => $this->client->description,
                 'link'        => $this->client->link,
-                'logo'        => $this->client->logo,
+                'logo'        => $this->client->getFirstMediaUrl('logos'),
                 'meta'        => $this->client->meta,
                 'keywords'    => $this->client->keywords,
             ]),
