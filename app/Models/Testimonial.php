@@ -2,6 +2,7 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
+use Spatie\MediaLibrary\MediaCollections\Models\Media;
 
 class Testimonial extends Model
 {
@@ -21,4 +22,20 @@ class Testimonial extends Model
             'body'        => 'array',
         ];
     }
+
+    public function registerMediaCollections(): void
+    {
+        $this->addMediaCollection('logo')->singleFile();
+    }
+
+    public function registerMediaConversions(Media | null $media = null): void
+    {
+        $this->addMediaConversion('image')
+            ->width(800)
+            ->height(800)
+            ->quality(70)
+            ->sharpen(10)
+            ->nonQueued();
+    }
+
 }

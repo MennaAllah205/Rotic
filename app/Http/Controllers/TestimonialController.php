@@ -17,9 +17,6 @@ class TestimonialController extends Controller
         return TestimonialResources::collection($testimonials);
     }
 
-    /**
-     * Store a newly created resource in storage.
-     */
     public function show(string $id)
     {
         $testimonial = Testimonial::findOrFail($id);
@@ -29,44 +26,48 @@ class TestimonialController extends Controller
 
     public function store(TestimonialStoreRequest $request)
     {
-        $data = $request->validated();
-
-        try {
-
-            DB::transaction(function () use ($data, &$testimonials) {
-
-                $testimonials = Testimonial::create($data);
-
-            });
-
-            return backWithSuccess(
-                data: new TestimonialResources($testimonials)
-            );
-        } catch (\Exception $e) {
-            return backWithError($e);
-        }
-
-    }
-
-    public function update(TestimonialUpdateRequest $request, $id)
-    {
-
-        $testimonial = Testimonial::findOrFail($id);
         $data        = $request->validated();
+        $testimonial = null;
 
         try {
+            DB::transaction(function () use ($data, &$testimonial, $request) {
+                $testimonial = Testimonial::create($data);
 
-            DB::transaction(function () use ($data, &$testimonial) {
-
-                $testimonial->update($data);
-
+                // إضافة اللوجو في حالة الرفع
+                if ($request->hasFile('logo')) {
+                    $testimonial->addMediaFromRequest('logo')->toMediaCollection('logo');
+                }
             });
 
             return backWithSuccess(
                 data: new TestimonialResources($testimonial)
             );
         } catch (\Exception $e) {
-            return backWithError($e);
+            return backWithError($e->getMessage());
+        }
+    }
+
+    public function update(TestimonialUpdateRequest $request, $id)
+    {
+        $testimonial = Testimonial::findOrFail($id);
+        $data        = $request->validated();
+
+        try {
+            DB::transaction(function () use ($data, $testimonial, $request) {
+                $testimonial->update($data);
+
+                // تحديث اللوجو: إذا تم رفع ملف جديد، سيقوم Spatie باستبدال القديم تلقائياً
+                // بشرط وجود singleFile() في الموديل
+                if ($request->hasFile('logo')) {
+                    $testimonial->addMediaFromRequest('logo')->toMediaCollection('logo');
+                }
+            });
+
+            return backWithSuccess(
+                data: new TestimonialResources($testimonial->fresh())
+            );
+        } catch (\Exception $e) {
+            return backWithError($e->getMessage());
         }
     }
 
@@ -75,11 +76,12 @@ class TestimonialController extends Controller
         $testimonial = Testimonial::findOrFail($id);
 
         try {
+            // ملاحظة: مكتبة Spatie ستحذف الملفات من القرص تلقائياً عند حذف الموديل
             $testimonial->delete();
 
             return backWithSuccess();
         } catch (\Exception $e) {
-            return backWithError($e);
+            return backWithError($e->getMessage());
         }
     }
 }

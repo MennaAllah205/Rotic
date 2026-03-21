@@ -1,5 +1,4 @@
 <?php
-
 namespace App\Http\Resources;
 
 use Illuminate\Http\Request;
@@ -15,15 +14,12 @@ class TestimonialResources extends JsonResource
     public function toArray(Request $request): array
     {
         return [
-            'id' => $this->id,
-
+            'id'          => $this->id,
             'client_name' => $this->client_name,
-
-            'title' => $this->title,
-
-            'body' => $this->body,
-
-            'meta' => $this->meta,
+            'title'       => $this->title,
+            'body'        => $this->body,
+            'meta'        => $this->meta,
+            'logo'        => $this->getFirstMediaUrl('logo'),
 
         ];
     }
