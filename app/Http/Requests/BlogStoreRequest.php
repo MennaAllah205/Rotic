@@ -1,5 +1,4 @@
 <?php
-
 namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
@@ -22,18 +21,12 @@ class BlogStoreRequest extends FormRequest
     public function rules(): array
     {
         return [
-
             'category_id' => 'required|exists:categories,id',
-
-            'title' => 'sometimes|nullable',
-
-            'content' => 'sometimes|nullable',
-
-            'image' => 'sometimes|nullable|image',
-
-            'slug' => 'sometimes|nullable|string|unique:blogs,slug',
-
-            'meta' => 'sometimes|nullable',
+            'title'       => 'sometimes|nullable',
+            'content'     => 'sometimes|nullable',
+            'image'       => 'sometimes|nullable|image',
+            'slug'        => 'sometimes|nullable|string|unique:blogs,slug',
+            'meta'        => 'sometimes|nullable',
         ];
     }
 }

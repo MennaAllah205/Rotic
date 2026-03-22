@@ -17,9 +17,10 @@ class BlogResources extends JsonResource
             'id'         => $this->id,
             'title'      => $this->title,
             'content'    => $this->content,
+            'slug'       => $this->slug,
             'image'      => $this->getFirstMediaUrl('image'),
             'meta'       => $this->meta,
-            
+
             'created_at' => $this->created_at?->toDateTimeString(),
             'updated_at' => $this->updated_at?->toDateTimeString(),
 

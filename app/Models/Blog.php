@@ -16,7 +16,6 @@ class Blog extends Model implements HasMedia
         'category_id',
         'title',
         'content',
-        'image',
         'slug',
         'meta',
     ];
