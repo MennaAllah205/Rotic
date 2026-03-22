@@ -10,13 +10,21 @@ use Illuminate\Support\Facades\DB;
 
 class BlogController extends Controller
 {
-    public function index(Request $request)
-    {
-        $blogs = Blog::with('category:id,name')
-            ->paginate(getPerPage($request));
-        return BlogResources::collection($blogs);
+public function index(Request $request)
+{
+    // التحقق من أن الـ category_id المرسل هو رقم وموجود فعلياً في جدول categories
+    $request->validate([
+        'category_id' => 'nullable|integer|exists:categories,id',
+    ]);
 
-    }
+    $blogs = Blog::with('category:id,name')
+        ->when($request->filled('category_id'), function ($query) use ($request) {
+            $query->where('category_id', $request->category_id);
+        })
+        ->paginate(getPerPage($request));
+
+    return BlogResources::collection($blogs);
+}
 
     /**
      * Store a newly created resource in storage.
