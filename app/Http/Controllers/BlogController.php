@@ -61,9 +61,9 @@ class BlogController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show($id)
+    public function show($slug)
     {
-        $blog = Blog::with('category:id,name')->findOrFail($id);
+        $blog = Blog::with('category:id,name')->firstWhere('slug', $slug);
 
         return new BlogResources($blog);
     }
