@@ -64,6 +64,8 @@ Route::prefix('/public')->group(function () {
     Route::apiResource('blogs', BlogController::class)->only('index', 'show');
     Route::apiResource('testimonials', TestimonialController::class)->only('index', 'show');
 
+    Route::get('/select/blogs', [BlogController::class, 'select']);
+
     // Contact Us
 
     Route::post('send-contact', SendContactController::class)

@@ -1,12 +1,17 @@
 <?php
 namespace App\Models;
 
+use App\Traits\HandlesOptimizedMedia;
 use Illuminate\Database\Eloquent\Model;
+use Spatie\MediaLibrary\HasMedia;
+use Spatie\MediaLibrary\InteractsWithMedia;
 use Spatie\MediaLibrary\MediaCollections\Models\Media;
 
-class Testimonial extends Model
+class Testimonial extends Model implements HasMedia
 {
+    use HandlesOptimizedMedia, InteractsWithMedia;
     protected $fillable = [
+
         'client_name',
         'title',
         'body',
