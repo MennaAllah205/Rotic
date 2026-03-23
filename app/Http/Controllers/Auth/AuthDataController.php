@@ -12,10 +12,10 @@ class AuthDataController extends Controller
     /**
      * Handle the incoming request.
      */
-    public function __construct()
-    {
-        $this->middleware('permission:auth_data_show')->only(['__invoke']);
-    }
+    // public function __construct()
+    // {
+    //     // $this->middleware('permission:auth_data_show')->only(['__invoke']);
+    // }
     public function __invoke(Request $request)
     {
         $user = User::with('roles:id,name', 'permissions')->findOrFail(Auth::id());

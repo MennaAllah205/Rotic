@@ -70,7 +70,7 @@ class BlogController extends Controller
 
     public function select(Request $request)
     {
-        $blogs = Blog::select('id', 'title')
+        $blogs = Blog::select('id', 'title', 'slug')
             ->get();
 
         return backWithSuccess(
