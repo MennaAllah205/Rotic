@@ -25,8 +25,7 @@ Route::middleware(['auth:sanctum'])->group(function () {
         Route::post('logout', [AuthController::class, 'logout']);
     });
 
-    Route::get('/auth-data', [AuthDataController::class]);
-
+    Route::get('/auth-data', AuthDataController::class);
     Route::apiResource('roles', RoleController::class);
     Route::get('/select/roles', [SelectController::class, 'roles']);
 
