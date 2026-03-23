@@ -25,10 +25,10 @@ Route::middleware(['auth:sanctum'])->group(function () {
         Route::post('logout', [AuthController::class, 'logout']);
     });
 
-    Route::get('auth-data', [AuthDataController::class]);
+    Route::get('/auth-data', [AuthDataController::class]);
 
     Route::apiResource('roles', RoleController::class);
-    Route::get('select/roles', [SelectController::class, 'roles']);
+    Route::get('/select/roles', [SelectController::class, 'roles']);
 
     Route::apiResource('users', UserController::class);
 
@@ -45,7 +45,7 @@ Route::middleware(['auth:sanctum'])->group(function () {
     Route::apiResource('contact-us', ContactUsController::class);
 
     Route::apiResource('categories', controller: CategoryController::class);
-    Route::get('select/categories', [SelectController::class, 'categories']);
+    Route::get('/select/categories', [SelectController::class, 'categories']);
 
     Route::apiResource('blogs', BlogController::class);
 
