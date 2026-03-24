@@ -28,7 +28,7 @@ class ClientsUpdateRequest extends FormRequest
             'description' => 'sometimes|nullable',
 
             'link' => 'sometimes|nullable|url',
-            'logo' => 'sometimes|nullable|image',
+            'logo' => 'sometimes|nullable|image|mimes:jpeg,png,jpg,svg|max:2048',
 
             'meta' => 'sometimes|nullable|array',
             'keywords' => 'sometimes|nullable|array',

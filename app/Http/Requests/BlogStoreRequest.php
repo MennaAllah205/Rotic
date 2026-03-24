@@ -24,7 +24,7 @@ class BlogStoreRequest extends FormRequest
             'category_id' => 'required|exists:categories,id',
             'title'       => 'sometimes|nullable',
             'content'     => 'sometimes|nullable',
-            'image'       => 'sometimes|nullable|image',
+            'image'       => 'sometimes|nullable|image|mimes:jpeg,png,jpg,svg|max:2048',
             'slug'        => 'sometimes|nullable|string|unique:blogs,slug',
             'meta'        => 'sometimes|nullable',
         ];

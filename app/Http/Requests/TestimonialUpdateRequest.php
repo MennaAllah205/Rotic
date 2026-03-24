@@ -26,7 +26,6 @@ class TestimonialUpdateRequest extends FormRequest
             'body'        => 'sometimes|nullable|max:2000|array',
             'meta'        => 'sometimes|nullable|array',
             'logo'        => 'sometimes|nullable|image|mimes:jpeg,png,jpg,svg|max:2048',
-
         ];
     }
 
