@@ -54,24 +54,29 @@ if (! function_exists('backWithWarning')) {
 }
 
 if (! function_exists('backWithError')) {
-    function backWithError($e = null)
-    {
-        $locale = getLocaleFromRequest();
+  function backWithError($e = null, $status = 500)
+{
+    $locale = getLocaleFromRequest();
 
-        $defaultErrorMessages = [
-            'en' => 'An error occurred: :msg',
-            'ar' => 'حدث خطأ: :msg',
-        ];
+    $defaultErrorMessages = [
+        'en' => 'An error occurred: :msg',
+        'ar' => 'حدث خطأ: :msg',
+    ];
 
-        if ($e instanceof ValidationException) {
-            return response()->json(['message' => $e->errors()], 422);
-        }
-
-        $template = $defaultErrorMessages[$locale];
-        $message  = str_replace(':msg', $e?->getMessage() ?? '', $template);
-
-        return response()->json(['message' => $message], 500);
+    if ($e instanceof ValidationException) {
+        return response()->json(['message' => $e->errors()], 422);
     }
+
+    // 👇 هنا التعديل
+    $messageText = is_string($e)
+        ? $e
+        : ($e?->getMessage() ?? '');
+
+    $template = $defaultErrorMessages[$locale];
+    $message  = str_replace(':msg', $messageText, $template);
+
+    return response()->json(['message' => $message], $status);
+}
 }
 
 if (! function_exists('getCustomValidationMessages')) {

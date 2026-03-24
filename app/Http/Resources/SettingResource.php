@@ -5,7 +5,7 @@ namespace App\Http\Resources;
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\JsonResource;
 
-class SettingsResources extends JsonResource
+class SettingResource extends JsonResource
 {
     public function toArray(Request $request): array
     {
@@ -27,8 +27,7 @@ class SettingsResources extends JsonResource
                 'twitter' => $this->twitter,
             ],
 
-            'logo' => $this->getFirstMediaUrl('logo'),
-
+'logo' => $this->getFirstMediaUrl('logo'),
             'meta' => $this->meta,
 
         ];

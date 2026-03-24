@@ -3,7 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\SettingsRequest;
-use App\Http\Resources\SettingsResources;
+use App\Http\Resources\SettingResource;
 use App\Models\Setting;
 use App\Traits\HandlesOptimizedMedia;
 
@@ -22,14 +22,14 @@ class SettingController extends Controller
     {
         $setting = Setting::first();
 
-        return new SettingsResources($setting);
+        return new SettingResource($setting);
     }
 
     public function show($id)
     {
         $setting = Setting::findOrFail($id);
 
-        return new SettingsResources($setting);
+        return new SettingResource($setting);
     }
 
     public function store(SettingsRequest $request)
@@ -50,7 +50,7 @@ class SettingController extends Controller
 
             }
 
-            return backWithSuccess(data: new SettingsResources($setting));
+            return backWithSuccess(data: new SettingResource($setting));
         } catch (\Exception $e) {
             return backWithError($e);
         }

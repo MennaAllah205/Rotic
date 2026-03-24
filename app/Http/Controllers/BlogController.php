@@ -1,9 +1,10 @@
 <?php
+
 namespace App\Http\Controllers;
 
 use App\Http\Requests\BlogStoreRequest;
 use App\Http\Requests\BlogUpdateRequest;
-use App\Http\Resources\BlogResources;
+use App\Http\Resources\BlogResource;
 use App\Models\Blog;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
@@ -23,7 +24,7 @@ class BlogController extends Controller
             })
             ->paginate(getPerPage($request));
 
-        return BlogResources::collection($blogs);
+        return BlogResource::collection($blogs);
     }
 
     /**
@@ -50,7 +51,7 @@ class BlogController extends Controller
             });
 
             return backWithSuccess(
-                data: new BlogResources($blog)
+                data: new BlogResource($blog)
             );
         } catch (\Exception $e) {
             return backWithError($e);
@@ -65,7 +66,7 @@ class BlogController extends Controller
     {
         $blog = Blog::with('category:id,name')->firstWhere('slug', $slug);
 
-        return new BlogResources($blog);
+        return new BlogResource($blog);
     }
 
     public function select(Request $request)
@@ -100,7 +101,7 @@ class BlogController extends Controller
             });
 
             return backWithSuccess(
-                data: new BlogResources($blog)
+                data: new BlogResource($blog)
             );
         } catch (\Exception $e) {
             return backWithError($e);

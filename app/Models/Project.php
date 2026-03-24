@@ -1,8 +1,10 @@
 <?php
+
 namespace App\Models;
 
 use App\Traits\HandlesOptimizedMedia;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Http\UploadedFile;
 use Spatie\MediaLibrary\HasMedia;
 use Spatie\MediaLibrary\InteractsWithMedia;
 use Spatie\MediaLibrary\MediaCollections\Models\Media;
@@ -17,19 +19,18 @@ class Project extends Model implements HasMedia
         'description',
         'features',
         'link',
-        'image',
         'meta',
         'keywords',
     ];
 
     public function registerMediaCollections(): void
     {
-        $this->addMediaCollection('image');
+        $this->addMediaCollection('images');
     }
 
-    public function registerMediaConversions(Media | null $media = null): void
+    public function registerMediaConversions(?Media $media = null): void
     {
-        $this->addMediaConversion('image')
+        $this->addMediaConversion('images')
             ->width(800)
             ->height(800)
             ->quality(70)
@@ -40,12 +41,17 @@ class Project extends Model implements HasMedia
     protected function casts(): array
     {
         return [
-            'title'       => 'array',
+            'title' => 'array',
             'description' => 'array',
-            'features'    => 'array',
-            'meta'        => 'array',
-            'keywords'    => 'array',
+            'features' => 'array',
+            'meta' => 'array',
+            'keywords' => 'array',
         ];
+    }
+
+    public function addOptimizedMediaToCollection(UploadedFile $file, string $collection = 'image')
+    {
+        return $this->addOptimizedMedia($this, $file, $collection);
     }
 
     public function client()

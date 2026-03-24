@@ -1,10 +1,11 @@
 <?php
+
 namespace App\Http\Resources;
 
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\JsonResource;
 
-class AuthDataResources extends JsonResource
+class AuthDataResource extends JsonResource
 {
     /**
      * Transform the resource into an array.
@@ -15,12 +16,12 @@ class AuthDataResources extends JsonResource
     {
         return [
 
-            'id'          => $this->id,
-            'name'        => $this->name,
-            'email'       => $this->email,
-            'phone'       => $this->phone,
+            'id' => $this->id,
+            'name' => $this->name,
+            'email' => $this->email,
+            'phone' => $this->phone,
 
-            'roles'       => $this->when($this->relationLoaded('roles'), $this->getRoleNames()),
+            'roles' => $this->when($this->relationLoaded('roles'), $this->getRoleNames()),
 
             'permissions' => $this->when($this->relationLoaded('permissions'), $this->getAllPermissions()->pluck('name')),
 

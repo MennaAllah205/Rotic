@@ -4,7 +4,7 @@ namespace App\Http\Resources;
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\JsonResource;
 
-class ProductsResources extends JsonResource
+class ProductResource extends JsonResource
 {
     /**
      * Transform the resource into an array.
@@ -18,10 +18,12 @@ class ProductsResources extends JsonResource
             'name'        => $this->name,
             'description' => $this->description,
 
-            'images'      => $this->getMedia('images')->map(function ($media) {
-                return $media->getUrl();
-            }),
-            
+'images' => $this->getMedia('images')->map(function ($media) {
+    return [
+        'id'  => $media->id,
+        'url' => $media->getUrl(),
+    ];
+}),
         ];
     }
 }

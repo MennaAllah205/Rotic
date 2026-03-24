@@ -20,11 +20,11 @@ class Blog extends Model implements HasMedia
         'meta',
     ];
 
-    public function registerMediaCollections(): void
+   public function registerMediaCollections(): void
     {
-        $this->addMediaCollection('image');
+        $this->addMediaCollection('image')
+            ->singleFile();
     }
-
     public function registerMediaConversions(?Media $media = null): void
     {
         $this->addMediaConversion('image')

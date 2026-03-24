@@ -4,7 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\ProductStoreRequest;
 use App\Http\Requests\ProductUpdateRequest;
-use App\Http\Resources\ProductsResources;
+use App\Http\Resources\ProductResource;
 use App\Models\Product;
 use Illuminate\Http\Request;
 use Illuminate\Routing\Controller;
@@ -23,7 +23,7 @@ class ProductController extends Controller
     {
         $products = Product::paginate(getPerPage($request));
 
-        return ProductsResources::collection($products);
+        return ProductResource::collection($products);
 
     }
 
@@ -49,7 +49,7 @@ class ProductController extends Controller
             });
 
             return backWithSuccess(
-                data: new ProductsResources($products)
+                data: new ProductResource($products)
             );
 
         } catch (\Exception $e) {
@@ -65,7 +65,7 @@ class ProductController extends Controller
     {
         $product = Product::findOrFail($id);
 
-        return new ProductsResources($product);
+        return new ProductResource($product);
     }
 
     /**
@@ -90,7 +90,7 @@ class ProductController extends Controller
             });
 
             return backWithSuccess(
-                data: new ProductsResources($product)
+                data: new ProductResource($product)
             );
         } catch (\Exception $e) {
             return backWithError($e);

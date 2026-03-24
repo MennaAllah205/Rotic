@@ -4,7 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\CategoriesStoreRequest;
 use App\Http\Requests\CategoriesUpdateRequest;
-use App\Http\Resources\CategoriesResources;
+use App\Http\Resources\CategoryResource;
 use App\Models\Category;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
@@ -22,7 +22,7 @@ class CategoryController extends Controller
     {
         $categories = Category::paginate(getPerPage($request));
 
-        return CategoriesResources::collection($categories);
+        return CategoryResource::collection($categories);
     }
 
     /**
@@ -32,7 +32,7 @@ class CategoryController extends Controller
     {
         $category = Category::findOrFail($id);
 
-        return new CategoriesResources($category);
+        return new CategoryResource($category);
     }
 
     public function store(CategoriesStoreRequest $request)
@@ -48,7 +48,7 @@ class CategoryController extends Controller
             });
 
             return backWithSuccess(
-                data: new CategoriesResources($categories)
+                data: new CategoryResource($categories)
             );
         } catch (\Exception $e) {
             return backWithError($e);
@@ -77,7 +77,7 @@ class CategoryController extends Controller
             });
 
             return backWithSuccess(
-                data: new CategoriesResources($category)
+                data: new CategoryResource($category)
             );
         } catch (\Exception $e) {
             return backWithError($e);

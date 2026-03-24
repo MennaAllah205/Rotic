@@ -2,7 +2,7 @@
 namespace App\Http\Controllers\Auth;
 
 use App\Http\Controllers\Controller;
-use App\Http\Resources\AuthDataResources;
+use App\Http\Resources\AuthDataResource;
 use Illuminate\Http\Request;
 
 class AuthDataController extends Controller
@@ -11,7 +11,7 @@ class AuthDataController extends Controller
     {
         $user = $request->user()->load(['roles:id,name', 'permissions']);
 
-        return new AuthDataResources($user);
+        return new AuthDataResource($user);
 
     }
 }

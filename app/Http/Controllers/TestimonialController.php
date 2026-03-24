@@ -3,7 +3,7 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\TestimonialStoreRequest;
 use App\Http\Requests\TestimonialUpdateRequest;
-use App\Http\Resources\TestimonialResources;
+use App\Http\Resources\TestimonialResource;
 use App\Models\Testimonial;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
@@ -14,14 +14,14 @@ class TestimonialController extends Controller
     {
         $testimonials = Testimonial::paginate(getPerPage($request));
 
-        return TestimonialResources::collection($testimonials);
+        return TestimonialResource::collection($testimonials);
     }
 
     public function show(string $id)
     {
         $testimonial = Testimonial::findOrFail($id);
 
-        return new TestimonialResources($testimonial);
+        return new TestimonialResource($testimonial);
     }
 
     public function store(TestimonialStoreRequest $request)
@@ -40,7 +40,7 @@ class TestimonialController extends Controller
             });
 
             return backWithSuccess(
-                data: new TestimonialResources($testimonial)
+                data: new TestimonialResource($testimonial)
             );
         } catch (\Exception $e) {
             return backWithError($e->getMessage());
@@ -64,7 +64,7 @@ class TestimonialController extends Controller
             });
 
             return backWithSuccess(
-                data: new TestimonialResources($testimonial->fresh())
+                data: new TestimonialResource($testimonial->fresh())
             );
         } catch (\Exception $e) {
             return backWithError($e->getMessage());

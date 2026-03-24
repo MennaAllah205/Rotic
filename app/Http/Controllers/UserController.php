@@ -3,7 +3,7 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\UsersStoreRequest;
 use App\Http\Requests\UsersUpdateRequest;
-use App\Http\Resources\UsersResources;
+use App\Http\Resources\UserResource;
 use App\Models\User;
 use Illuminate\Support\Facades\DB;
 use Symfony\Component\HttpFoundation\Request;
@@ -23,7 +23,7 @@ class UserController extends Controller
 
         $users = User::where('is_owner', false)->with('roles:id,name')->paginate(getPerPage($request));
 
-        return UsersResources::collection($users);
+        return UserResource::collection($users);
 
     }
 
@@ -46,7 +46,7 @@ class UserController extends Controller
             });
 
             return backWithSuccess(
-                data: new UsersResources($users)
+                data: new UserResource($users)
             );
 
         } catch (\Exception $e) {
@@ -69,7 +69,7 @@ class UserController extends Controller
 
                 if (! empty($roles)) {
                     $user->roles()->sync($roles);
-                } 
+                }
 
                 if (isset($data['password'])) {
                     $user->tokens()->delete();
@@ -77,7 +77,7 @@ class UserController extends Controller
             });
 
             return backWithSuccess(
-                data: new UsersResources($user)
+                data: new UserResource($user)
             );
         } catch (\Exception $e) {
             return backWithError($e);

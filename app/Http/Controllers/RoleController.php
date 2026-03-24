@@ -1,9 +1,10 @@
 <?php
+
 namespace App\Http\Controllers;
 
 use App\Http\Requests\RolesStoreRequest;
 use App\Http\Requests\RolesUpdateRequest;
-use App\Http\Resources\RolesResources;
+use App\Http\Resources\RoleResource;
 use Illuminate\Support\Facades\DB;
 use Spatie\Permission\Models\Permission;
 use Spatie\Permission\Models\Role;
@@ -27,7 +28,7 @@ class RoleController extends Controller
         $roles = Role::with('permissions')
             ->paginate(getPerPage($request));
 
-        return RolesResources::collection($roles);
+        return RoleResource::collection($roles);
     }
 
     /**
@@ -35,7 +36,7 @@ class RoleController extends Controller
      */
     public function store(RolesStoreRequest $request)
     {
-        $data               = $request->validated();
+        $data = $request->validated();
         $data['guard_name'] = 'web';
         try {
             DB::transaction(function () use ($data, &$role) {
@@ -47,7 +48,7 @@ class RoleController extends Controller
             });
 
             return backWithSuccess(
-                data: new RolesResources($role),
+                data: new RoleResource($role),
             );
         } catch (\Exception $e) {
             return backWithError($e);
@@ -76,7 +77,7 @@ class RoleController extends Controller
 
             });
 
-            return backWithSuccess(data: new RolesResources($role));
+            return backWithSuccess(data: new RoleResource($role));
         } catch (\Exception $e) {
             return backWithError($e);
         }
@@ -123,8 +124,8 @@ class RoleController extends Controller
         $newPermissions = array_diff($permissionNames, $existingPermissions);
 
         if (! empty($newPermissions)) {
-            $insertData = collect($newPermissions)->map(fn($name) => [
-                'name'       => $name,
+            $insertData = collect($newPermissions)->map(fn ($name) => [
+                'name' => $name,
                 'guard_name' => 'web',
                 'created_at' => now(),
                 'updated_at' => now(),
@@ -135,5 +136,4 @@ class RoleController extends Controller
 
         $role->syncPermissions($permissionNames);
     }
-
 }

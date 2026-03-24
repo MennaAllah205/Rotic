@@ -4,7 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\ProjectsStoreRequest;
 use App\Http\Requests\ProjectsUpdateRequest;
-use App\Http\Resources\ProjectsResources;
+use App\Http\Resources\ProjectResource;
 use App\Models\Project;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
@@ -25,7 +25,7 @@ class ProjectController extends Controller
     {
         $projects = Project::with('client')->paginate(getPerPage($request));
 
-        return ProjectsResources::collection($projects);
+        return ProjectResource::collection($projects);
 
     }
 
@@ -37,24 +37,25 @@ class ProjectController extends Controller
         $data = $request->validated();
 
         try {
+            $project = DB::transaction(function () use ($data, $request) {
 
-            DB::transaction(function () use ($data, $request, &$projects) {
-
-                $projects = Project::create($data);
+                $project = Project::create($data);
 
                 if ($request->hasFile('images')) {
-
                     foreach ($request->file('images') as $file) {
-
-                        $projects->addOptimizedMedia($projects, $file, 'images');
+                        $project->addMedia($file)->toMediaCollection('images');
                     }
                 }
 
-                return $projects;
+                return $project;
             });
 
             return backWithSuccess(
-                data: new ProjectsResources($projects)
+                data: new ProjectResource($project)
+            );
+
+            return backWithSuccess(
+                data: new ProjectResource($projects)
             );
         } catch (\Exception $e) {
             return backWithError($e);
@@ -72,7 +73,7 @@ class ProjectController extends Controller
     {
         $project = Project::with('client')->findOrFail($id);
 
-        return new ProjectsResources($project);
+        return new ProjectResource($project);
     }
 
     public function update(ProjectsUpdateRequest $request, string $id)
@@ -88,13 +89,13 @@ class ProjectController extends Controller
 
                     foreach ($request->file('images') as $file) {
 
-                        $project->addOptimizedMedia($project, $file, 'images');
+                        $project->addOptimizedMediaToCollection($file, 'images');
                     }
                 }
             });
 
             return backWithSuccess(
-                data: new ProjectsResources($project)
+                data: new ProjectResource($project)
             );
         } catch (\Exception $e) {
             return backWithError($e);

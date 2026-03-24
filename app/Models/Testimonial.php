@@ -1,4 +1,5 @@
 <?php
+
 namespace App\Models;
 
 use App\Traits\HandlesOptimizedMedia;
@@ -10,6 +11,7 @@ use Spatie\MediaLibrary\MediaCollections\Models\Media;
 class Testimonial extends Model implements HasMedia
 {
     use HandlesOptimizedMedia, InteractsWithMedia;
+
     protected $fillable = [
 
         'client_name',
@@ -21,19 +23,20 @@ class Testimonial extends Model implements HasMedia
     protected function casts(): array
     {
         return [
-            'meta'        => 'array',
+            'meta' => 'array',
             'client_name' => 'array',
-            'title'       => 'array',
-            'body'        => 'array',
+            'title' => 'array',
+            'body' => 'array',
         ];
     }
 
     public function registerMediaCollections(): void
     {
-        $this->addMediaCollection('logo')->singleFile();
+        $this->addMediaCollection('logo')
+            ->singleFile();
     }
 
-    public function registerMediaConversions(Media | null $media = null): void
+    public function registerMediaConversions(?Media $media = null): void
     {
         $this->addMediaConversion('image')
             ->width(800)
@@ -42,5 +45,4 @@ class Testimonial extends Model implements HasMedia
             ->sharpen(10)
             ->nonQueued();
     }
-
 }

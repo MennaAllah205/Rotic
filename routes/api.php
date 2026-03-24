@@ -6,6 +6,7 @@ use App\Http\Controllers\BlogController;
 use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\ClientController;
 use App\Http\Controllers\ContactUsController;
+use App\Http\Controllers\DeleteMediaController;
 use App\Http\Controllers\ProductController;
 use App\Http\Controllers\ProjectController;
 use App\Http\Controllers\RoleController;
@@ -31,7 +32,7 @@ Route::middleware(['auth:sanctum'])->group(function () {
 
     Route::apiResource('users', UserController::class);
 
-    Route::apiResource('settings', SettingController::class)->only('index', 'show', 'store');
+    Route::apiResource('settings', SettingController::class)->only('index', 'show', 'store', 'update');
 
     Route::apiResource('clients', ClientController::class);
     Route::get('select/clients', [SelectController::class, 'clients']);
@@ -49,6 +50,8 @@ Route::middleware(['auth:sanctum'])->group(function () {
     Route::apiResource('blogs', BlogController::class);
 
     Route::apiResource('testimonials', TestimonialController::class);
+
+    Route::delete('/media/{id}', [DeleteMediaController::class, 'destroy']);
 
 });
 

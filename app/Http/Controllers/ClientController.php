@@ -3,7 +3,7 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\ClientsStoreRequest;
 use App\Http\Requests\ClientsUpdateRequest;
-use App\Http\Resources\ClientResources;
+use App\Http\Resources\ClientResource;
 use App\Models\Client;
 use App\Traits\HandlesOptimizedMedia;
 use Illuminate\Http\Request;
@@ -27,7 +27,7 @@ class ClientController extends Controller
     {
         $client = Client::with('projects')->paginate(getPerPage($request));
 
-        return ClientResources::collection($client);
+        return ClientResource::collection($client);
     }
 
     /**
@@ -37,7 +37,7 @@ class ClientController extends Controller
     {
         $client = Client::with('projects')->findOrFail($id);
 
-        return new ClientResources($client);
+        return new ClientResource($client);
     }
 
     public function store(ClientsStoreRequest $request)
@@ -61,7 +61,7 @@ class ClientController extends Controller
             });
 
             return backWithSuccess(
-                data: new ClientResources($clients)
+                data: new ClientResource($clients)
             );
         } catch (\Exception $e) {
             return backWithError($e);
@@ -99,7 +99,7 @@ class ClientController extends Controller
             });
 
             return backWithSuccess(
-                data: new ClientResources($client->load('projects'))
+                data: new ClientResource($client->load('projects'))
             );
 
         } catch (\Exception $e) {

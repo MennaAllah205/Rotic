@@ -4,7 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\ContactUsUpdateRequest;
 use App\Http\Requests\SendContactRequest;
-use App\Http\Resources\ContactUsResources;
+use App\Http\Resources\ContactUsResource;
 use App\Models\ContactUs;
 use Illuminate\Support\Facades\DB;
 use Symfony\Component\HttpFoundation\Request;
@@ -24,7 +24,7 @@ class ContactUsController extends Controller
 
         $contactUs = ContactUs::paginate(getPerPage($request));
 
-        return ContactUsResources::collection($contactUs);
+        return ContactUsResource::collection($contactUs);
 
     }
 
@@ -40,7 +40,7 @@ class ContactUsController extends Controller
             });
 
             return backWithSuccess(
-                data: new ContactUsResources($contactUs)
+                data: new ContactUsResource($contactUs)
             );
 
         } catch (\Exception $e) {
@@ -63,7 +63,7 @@ class ContactUsController extends Controller
             });
 
             return backWithSuccess(
-                data: new ContactUsResources($contactUs)
+                data: new ContactUsResource($contactUs)
             );
         } catch (\Exception $e) {
             return backWithError($e);
