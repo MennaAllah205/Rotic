@@ -1,5 +1,4 @@
 <?php
-
 namespace App\Http\Controllers;
 
 use App\Http\Requests\BlogStoreRequest;
@@ -62,10 +61,14 @@ class BlogController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show($slug)
+    public function show($identifier)
     {
-        $blog = Blog::with('category:id,name')->firstWhere('slug', $slug);
-
+        $blog = Blog::with('category:id,name')
+            ->where(function ($query) use ($identifier) {
+                $query->where('id', $identifier)
+                    ->orWhere('slug', $identifier);
+            })
+            ->firstOrFail(); 
         return new BlogResource($blog);
     }
 
