@@ -32,7 +32,7 @@ Route::middleware(['auth:sanctum'])->group(function () {
 
     Route::apiResource('users', UserController::class);
 
-    Route::apiResource('settings', SettingController::class)->only('index', 'show', 'store', 'update');
+    Route::apiResource('settings', SettingController::class)->only('index', 'show', 'store');
 
     Route::apiResource('clients', ClientController::class);
     Route::get('select/clients', [SelectController::class, 'clients']);

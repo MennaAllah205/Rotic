@@ -92,6 +92,13 @@ class CategoryController extends Controller
         $category = Category::findOrFail($id);
 
         try {
+            
+            if ($category->blogs()->exists()) {
+                return backWithWarning(
+                    new \Exception('Cannot delete category. It is associated with one or more blog posts.','لا يمكن حذف هذا التصنيف لأنه مرتبط ببعض المقالات')
+                );
+            }
+
             $category->delete();
 
             return backWithSuccess();
