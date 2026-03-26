@@ -25,7 +25,7 @@ class TestimonialStoreRequest extends FormRequest
             'title'       => 'required|max:255|array',
             'body'        => 'required|max:2000|array',
             'meta'        => 'sometimes|nullable|array',
-            'logo'        => 'sometimes|nullable|image',
+            'logo'        => 'sometimes|nullable|image|max:2048',
 
         ];
     }

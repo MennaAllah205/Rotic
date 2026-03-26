@@ -27,7 +27,7 @@ class ProductUpdateRequest extends FormRequest
             'description' => 'sometimes|nullable|array',
 
             'images' => 'sometimes|nullable|array',
-            'images.*' => 'image',
+            'images.*' => 'image|max:2048',
         ];
     }
 

@@ -28,7 +28,7 @@ class ProjectsStoreRequest extends FormRequest
             'features' => 'sometimes|nullable|array',
             'link' => 'sometimes|nullable|string|max:255|url',
             'images' => 'sometimes|nullable|array',
-            'images.*' => 'image',
+            'images.*' => 'image|max:2048',
             'meta' => 'sometimes|nullable|array',
             'keywords' => 'sometimes|nullable|string|max:255',
         ];

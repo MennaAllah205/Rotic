@@ -24,7 +24,7 @@ class BlogUpdateRequest extends FormRequest
             'category_id' => 'sometimes|nullable|exists:categories,id',
             'title'       => 'sometimes|nullable',
             'content'     => 'sometimes|nullable',
-            'image'       => 'sometimes|nullable|image|mimes:jpeg,png,jpg,svg|max:2048',
+            'image'       => 'sometimes|nullable|image|max:2048',
             'slug'        => 'sometimes|nullable|string|unique:blogs,slug,' . $this->route('blog'),
 
             'meta'        => 'sometimes|nullable',
