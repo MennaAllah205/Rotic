@@ -1,5 +1,4 @@
 <?php
-
 namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
@@ -23,12 +22,12 @@ class BlogUpdateRequest extends FormRequest
     {
         return [
             'category_id' => 'sometimes|nullable|exists:categories,id',
-            'title' => 'sometimes|nullable',
-            'content' => 'sometimes|nullable',
-            'image' => 'sometimes|nullable|image',
-            'slug' => 'sometimes|nullable|string|unique:blogs,slug,'.$this->route('blog'),
+            'title'       => 'sometimes|nullable',
+            'content'     => 'sometimes|nullable',
+            'image'       => 'sometimes|nullable|image|mimes:jpeg,png,jpg,svg|max:2048',
+            'slug'        => 'sometimes|nullable|string|unique:blogs,slug,' . $this->route('blog'),
 
-            'meta' => 'sometimes|nullable',
+            'meta'        => 'sometimes|nullable',
         ];
     }
 }

@@ -35,7 +35,7 @@ class SettingsRequest extends FormRequest
             'phone' => 'sometimes|nullable|string',
             'second_phone' => 'sometimes|nullable|string',
 
-            'logo' => 'sometimes|nullable|image',
+            'logo' => 'sometimes|nullable|image|mimes:jpeg,png,jpg,svg|max:2048',
 
         ];
     }
