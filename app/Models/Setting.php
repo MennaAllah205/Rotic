@@ -14,6 +14,7 @@ class Setting extends Model implements HasMedia
     protected $fillable = [
         'name',
         'logo',
+        'about_us',
         'facebook',
         'youtube',
         'instagram',
@@ -44,6 +45,7 @@ class Setting extends Model implements HasMedia
     {
         return [
             'name' => 'array',
+            'about_us' => 'array',
             'meta' => 'array',
         ];
     }

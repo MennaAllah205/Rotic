@@ -14,6 +14,7 @@ class SettingResource extends JsonResource
 
             'name' => $this->name,
 
+            'about_us' => $this->about_us,
             'contacts' => [
                 'email' => $this->email,
                 'phone' => $this->phone,
@@ -27,7 +28,7 @@ class SettingResource extends JsonResource
                 'twitter' => $this->twitter,
             ],
 
-'logo' => $this->getFirstMediaUrl('logo'),
+            'logo' => $this->getFirstMediaUrl('logo'),
             'meta' => $this->meta,
 
         ];

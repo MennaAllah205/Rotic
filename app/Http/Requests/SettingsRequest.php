@@ -30,6 +30,7 @@ class SettingsRequest extends FormRequest
             'instagram' => 'sometimes|nullable|url',
             'twitter' => 'sometimes|nullable|url',
             'meta' => 'sometimes|nullable|array',
+            'about_us' => 'sometimes|nullable|array',
 
             'email' => 'sometimes|nullable|email',
             'phone' => 'sometimes|nullable|string',

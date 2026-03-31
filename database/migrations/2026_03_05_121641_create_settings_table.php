@@ -18,6 +18,7 @@ return new class extends Migration
             $table->json('name')->nullable();
             // logo
             $table->string('logo')->nullable();
+            $table->json('about_us')->nullable();
 
             // social links
             $table->string('facebook')->nullable();

@@ -17,6 +17,13 @@ class SettingSeeder extends Seeder
                 'ar' => 'اسم المتجر بالعربي',
                 'en' => 'Store Name in English',
             ],
+
+            'about_us' => [
+                'ar' => 'من نحن بالعربي',
+                'en' => 'About Us in English',
+
+            ],
+
             'facebook' => 'https://facebook.com/my-page',
             'youtube' => 'https://youtube.com/my-channel',
             'meta' => [
