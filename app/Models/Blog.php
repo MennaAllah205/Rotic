@@ -1,4 +1,5 @@
 <?php
+
 namespace App\Models;
 
 use App\Traits\HandlesOptimizedMedia;
@@ -18,9 +19,10 @@ class Blog extends Model implements HasMedia
         'content',
         'slug',
         'meta',
+        'embedding',
     ];
 
-   public function registerMediaCollections(): void
+    public function registerMediaCollections(): void
     {
         $this->addMediaCollection('image')
             ->singleFile();
@@ -39,6 +41,7 @@ class Blog extends Model implements HasMedia
         'title'   => 'array',
         'content' => 'array',
         'meta'    => 'array',
+        'embedding' => 'array',
     ];
 
     public function addOptimizedMediaToCollection(UploadedFile $file, string $collection = 'image')

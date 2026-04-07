@@ -4,6 +4,7 @@ use App\Http\Controllers\Auth\AuthController;
 use App\Http\Controllers\Auth\AuthDataController;
 use App\Http\Controllers\BlogController;
 use App\Http\Controllers\CategoryController;
+use App\Http\Controllers\ChatController;
 use App\Http\Controllers\ClientController;
 use App\Http\Controllers\ContactUsController;
 use App\Http\Controllers\DeleteMediaController;
@@ -52,8 +53,10 @@ Route::middleware(['auth:sanctum'])->group(function () {
     Route::apiResource('testimonials', TestimonialController::class);
 
     Route::delete('/media/{id}', [DeleteMediaController::class, 'destroy']);
-
 });
+
+// Chat routes
+Route::post('/chat', [ChatController::class, 'chat']);
 
 // Public routes
 Route::prefix('/public')->group(function () {
@@ -72,5 +75,4 @@ Route::prefix('/public')->group(function () {
 
     Route::post('send-contact', SendContactController::class)
         ->middleware('throttle:2,1');
-
 });

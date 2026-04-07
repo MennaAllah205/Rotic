@@ -1,4 +1,5 @@
 <?php
+
 namespace Database\Seeders;
 
 use App\Models\User;
@@ -19,6 +20,7 @@ class DatabaseSeeder extends Seeder
             RolesPermissionsSeeder::class,
             UserSeeder::class,
             SettingSeeder::class,
+            BlogSeeder::class,
         ]);
 
         $owner = User::first();

@@ -37,11 +37,6 @@ class AuthController extends Controller
 
             $loginField = filter_var($data['credential'], FILTER_VALIDATE_EMAIL) ? 'email' : 'phone';
 
-            $credentials = [
-                $loginField => $data['credential'],
-                'password' => $data['password'],
-            ];
-
             DB::beginTransaction();
 
             $user = User::where($loginField, $data['credential'])->first();
