@@ -30,11 +30,12 @@ class GenerateBlogEmbeddings extends Command
     {
         $this->info('Starting to generate embeddings for blogs...');
 
-        $embeddingService = new EmbeddingService();
+        $embeddingService = new EmbeddingService;
         $blogs = Blog::whereNull('embedding')->get();
 
         if ($blogs->isEmpty()) {
             $this->info('No blogs without embeddings found.');
+
             return 0;
         }
 
@@ -55,6 +56,7 @@ class GenerateBlogEmbeddings extends Command
                 if (empty($text)) {
                     $errorCount++;
                     $progressBar->advance();
+
                     continue;
                 }
 
@@ -70,7 +72,7 @@ class GenerateBlogEmbeddings extends Command
                 }
             } catch (\Exception $e) {
                 $errorCount++;
-                Log::error("Error processing blog ID {$blog->id}: " . $e->getMessage());
+                Log::error("Error processing blog ID {$blog->id}: ".$e->getMessage());
             }
 
             $progressBar->advance();
@@ -81,7 +83,7 @@ class GenerateBlogEmbeddings extends Command
         $progressBar->finish();
         $this->newLine();
 
-        $this->info("Embedding generation completed!");
+        $this->info('Embedding generation completed!');
         $this->info("Success: {$successCount} blogs");
         $this->info("Errors: {$errorCount} blogs");
 

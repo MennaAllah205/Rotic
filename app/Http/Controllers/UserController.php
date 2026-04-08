@@ -1,10 +1,12 @@
 <?php
+
 namespace App\Http\Controllers;
 
 use App\Http\Requests\UsersStoreRequest;
 use App\Http\Requests\UsersUpdateRequest;
 use App\Http\Resources\UserResource;
 use App\Models\User;
+use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\DB;
 use Symfony\Component\HttpFoundation\Request;
 
@@ -21,7 +23,14 @@ class UserController extends Controller
     public function index(Request $request)
     {
 
-        $users = User::where('is_owner', false)->with('roles:id,name')->paginate(getPerPage($request));
+        $page = request()->get('page', 1);
+
+        $users = Cache::remember('users_page_'.$page, now()->addMinutes(10), function () use ($request) {
+            return User::where('is_owner', false)
+                ->with('roles:id,name')
+                ->paginate(getPerPage($request));
+        });
+        // $users = User::where('is_owner', false)->with('roles:id,name')->paginate(getPerPage($request));
 
         return UserResource::collection($users);
 
@@ -31,7 +40,7 @@ class UserController extends Controller
     {
         try {
 
-            $data  = $request->validated();
+            $data = $request->validated();
             $roles = $data['roles'];
 
             DB::transaction(function () use ($data, $roles, &$users) {
@@ -57,8 +66,8 @@ class UserController extends Controller
     public function update(UsersUpdateRequest $request, $id)
     {
 
-        $user  = User::with('roles')->where('is_owner', false)->findOrFail($id);
-        $data  = $request->validated();
+        $user = User::with('roles')->where('is_owner', false)->findOrFail($id);
+        $data = $request->validated();
         $roles = $data['roles'];
 
         try {
