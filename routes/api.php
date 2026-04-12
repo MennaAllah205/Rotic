@@ -7,6 +7,7 @@ use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\ChatController;
 use App\Http\Controllers\ClientController;
 use App\Http\Controllers\ContactUsController;
+use App\Http\Controllers\ConversationController;
 use App\Http\Controllers\DeleteMediaController;
 use App\Http\Controllers\ProductController;
 use App\Http\Controllers\ProjectController;
@@ -53,7 +54,17 @@ Route::middleware(['auth:sanctum'])->group(function () {
     Route::apiResource('testimonials', TestimonialController::class);
 
     Route::delete('/media/{id}', [DeleteMediaController::class, 'destroy']);
+
+    Route::post('/conversation/user/send-message', [ConversationController::class, 'sendUserMessage']);
+
+    Route::post('/conversation/{conversationId}/add-participant', [ConversationController::class, 'addParticipants']);
+    Route::delete('/conversation/{conversationId}/remove-participant', [ConversationController::class, 'removeParticipant']);
+
+    Route::put('/conversation/message/{messageId}/edit', [ConversationController::class, 'editMessage']);
+    Route::delete('/conversation/message/{messageId}/delete', [ConversationController::class, 'deleteMessage']);
 });
+
+Route::post('/conversation/lead/send-message', [ConversationController::class, 'sendLeadMessage']);
 
 // Chat routes
 Route::post('/chat', [ChatController::class, 'chat']);

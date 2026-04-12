@@ -1,13 +1,292 @@
 {
   "models": {
     "Blog": {
-      "table": "blogs"
-
+      "table": "blogs",
+      "fillable": [
+        "category_id",
+        "title",
+        "content",
+        "slug",
+        "meta",
+        "embedding"
+      ],
+      "casts": {
+        "title": "array (multilingual: ar, en)",
+        "content": "array (multilingual: ar, en)",
+        "meta": "array",
+        "embedding": "array (vector for similarity search)"
+      },
+      "media": {
+        "library": "spatie/laravel-medialibrary",
+        "collections": {
+          "image": {
+            "singleFile": true,
+            "conversions": {
+              "image": {
+                "width": 800,
+                "height": 800,
+                "quality": 70,
+                "sharpen": 10
+              }
+            }
+          }
+        }
+      },
+      "relationships": {
+        "category": "belongsTo Category"
+      },
+      "custom_methods": [
+        "addOptimizedMediaToCollection"
+      ]
+    },
+    "FAQ": {
+      "table": "faqs",
+      "fillable": [
+        "question",
+        "answer",
+        "category",
+        "order",
+        "is_active"
+      ],
+      "casts": {
+        "question": "array (multilingual: ar, en)",
+        "answer": "array (multilingual: ar, en)",
+        "category": "string",
+        "order": "integer",
+        "is_active": "boolean"
+      },
+      "relationships": {},
+      "custom_methods": [
+        "scopeActive",
+        "scopeByCategory",
+        "scopeOrdered"
+      ]
     }
   },
   "database": {
     "tables": ["blogs", "categories", "faqs"]
+  },
+  "rules": [
+    "blogs support multilingual fields (title, content)",
+    "images are handled via Spatie Media Library",
+    "each blog has only one image",
+    "embedding is used for AI similarity search",
+    "faqs support multilingual fields (question, answer)",
+    "faqs can be categorized and ordered",
+    "faqs can be active/inactive for display control"
+  ],
+  "faq_data": {
+    "blogs": [
+      {
+        "question": {
+          "ar": "ما هو نظام المدونات في هذا الموقع؟",
+          "en": "What is the blog system on this website?"
+        },
+        "answer": {
+          "ar": "نظام المدونات هو نظام متعدد اللغات يدعم العربية والإنجليزية. كل مدونة لها عنوان ومحتوى متعدد اللغات، يمكن تصنيفها ضمن فئات، وتدعم صورة واحدة محسّنة باستخدام Spatie Media Library.",
+          "en": "The blog system is a multilingual system supporting Arabic and English. Each blog has a title and content in multiple languages, can be categorized, and supports one optimized image using Spatie Media Library."
+        },
+        "category": {
+          "ar": "عام",
+          "en": "general"
+        }
+      },
+      {
+        "question": {
+          "ar": "كيف يمكنني البحث عن مدونات معينة؟",
+          "en": "How can I search for specific blogs?"
+        },
+        "answer": {
+          "ar": "يمكن البحث عن المدونات باستخدام الذكاء الاصطناعي الذي يحلل محتوى المدونات ويجد الأكثر صلة بسؤالك. النظام يستخدم تقنية embedding للتشابه الدلالي.",
+          "en": "You can search for blogs using AI that analyzes blog content and finds the most relevant to your question. The system uses embedding technology for semantic similarity."
+        },
+        "category": {
+          "ar": "بحث",
+          "en": "search"
+        }
+      },
+      {
+        "question": {
+          "ar": "هل المدونات منظمة في فئات؟",
+          "en": "Are blogs organized in categories?"
+        },
+        "answer": {
+          "ar": "نعم، كل مدونة مرتبطة بفئة محددة. هذا يساعد في تنظيم المحتوى وتسهيل الوصول إلى المواضيع المتشابهة.",
+          "en": "Yes, each blog is associated with a specific category. This helps organize content and facilitate access to similar topics."
+        },
+        "category": {
+          "ar": "تنظيم",
+          "en": "organization"
+        }
+      },
+      {
+        "question": {
+          "ar": "ما هي خصائص صور المدونات؟",
+          "en": "What are the characteristics of blog images?"
+        },
+        "answer": {
+          "ar": "كل مدونة تدعم صورة واحدة فقط. الصور يتم معالجتها تلقائياً بأبعاد 800x800 بكسل وجودة 70% مع تحسين حدة الصورة. النظام يستخدم Spatie Media Library لإدارة الوسائط.",
+          "en": "Each blog supports only one image. Images are automatically processed at 800x800 pixels with 70% quality and sharpening. The system uses Spatie Media Library for media management."
+        },
+        "category": {
+          "ar": "وسائط",
+          "en": "media"
+        }
+      },
+      {
+        "question": {
+          "ar": "هل يمكنني الحصول على ملخص للمدونات؟",
+          "en": "Can I get a summary of blogs?"
+        },
+        "answer": {
+          "ar": "نعم، النظام يوفر أحدث 10 مدونات مع عناوينها. يمكن للذكاء الاصطناعي أيضاً تلخيص المحتوى أو الإجابة على أسئلة محددة بناءً على محتوى المدونات المتاحة.",
+          "en": "Yes, the system provides the latest 10 blogs with their titles. AI can also summarize content or answer specific questions based on available blog content."
+        },
+        "category": {
+          "ar": "محتوى",
+          "en": "content"
+        }
+      },
+      {
+        "question": {
+          "ar": "كيف يعمل التشابه الدلالي في المدونات؟",
+          "en": "How does semantic similarity work in blogs?"
+        },
+        "answer": {
+          "ar": "النظام يستخدم تقنية embedding لتحويل محتوى المدونات إلى متجهات رقمية. عند البحث، يقارن النظام متجه السؤال مع متجهات المدونات لإيجاد المحتوى الأكثر تشابهاً معنوياً.",
+          "en": "The system uses embedding technology to convert blog content into digital vectors. When searching, the system compares the question vector with blog vectors to find the most semantically similar content."
+        },
+        "category": {
+          "ar": "ذكاء اصطناعي",
+          "en": "ai"
+        }
+      },
+      {
+        "question": {
+          "ar": "هل المدونات محدثة بانتظام؟",
+          "en": "Are blogs updated regularly?"
+        },
+        "answer": {
+          "ar": "النظام يعرض أحدث المدونات أولاً. يتم تخزين المدونات مؤقتاً لمدة 10 دقائق لضمان الأداء السريع مع تحديث المحتوى بانتظام.",
+          "en": "The system displays the newest blogs first. Blogs are cached for 10 minutes to ensure fast performance while updating content regularly."
+        },
+        "category": {
+          "ar": "تحديثات",
+          "en": "updates"
+        }
+      },
+      {
+        "question": {
+          "ar": "ما هي اللغات المدعومة في المدونات؟",
+          "en": "What languages are supported in blogs?"
+        },
+        "answer": {
+          "ar": "النظام يدعم العربية والإنجليزية بشكل كامل. كل مدونة لها عنوان ومحتوى متوفر في كلتا اللغتين، ويمكن للذكاء الاصطناعي الإجابة بنفس لغة المستخدم.",
+          "en": "The system fully supports Arabic and English. Each blog has title and content available in both languages, and AI can respond in the user's language."
+        },
+        "category": {
+          "ar": "لغات",
+          "en": "languages"
+        }
+      },
+      {
+        "question": {
+          "ar": "كيف يتم كتابة عناوين المدونات؟",
+          "en": "How are blog titles written?"
+        },
+        "answer": {
+          "ar": "عناوين المدونات يتم كتابتها باللغتين العربية والإنجليزية. كل عنوان يتم تخزينه كحقل متعدد اللغات يدعم الترجمة الكاملة بين اللغتين.",
+          "en": "Blog titles are written in both Arabic and English. Each title is stored as a multilingual field supporting full translation between both languages."
+        },
+        "category": {
+          "ar": "عناوين",
+          "en": "titles"
+        }
+      },
+      {
+        "question": {
+          "ar": "هل يمكن البحث في عناوين المدونات؟",
+          "en": "Can I search in blog titles?"
+        },
+        "answer": {
+          "ar": "نعم، يمكن البحث في عناوين المدونات باللغتين العربية والإنجليزية. النظام يبحث في العناوين والمحتوى معاً لإيجاد النتائج الأكثر صلة.",
+          "en": "Yes, you can search in blog titles in both Arabic and English. The system searches in titles and content together to find the most relevant results."
+        },
+        "category": {
+          "ar": "عناوين",
+          "en": "titles"
+        }
+      },
+      {
+        "question": {
+          "ar": "ما هو محتوى المدونة؟",
+          "en": "What is blog content?"
+        },
+        "answer": {
+          "ar": "محتوى المدونة هو النص الرئيسي للمقالة، متوفر باللغتين العربية والإنجليزية. يمكن أن يحتوي على معلومات مفصلة عن الموضوع ويتم عرضه باللغة التي يختارها المستخدم.",
+          "en": "Blog content is the main text of the article, available in both Arabic and English. It can contain detailed information about the topic and is displayed in the user's chosen language."
+        },
+        "category": {
+          "ar": "محتوى",
+          "en": "content"
+        }
+      },
+      {
+        "question": {
+          "ar": "هل يمكن الحصول على ملخص لمحتوى المدونات؟",
+          "en": "Can I get a summary of blog content?"
+        },
+        "answer": {
+          "ar": "نعم، يمكن للذكاء الاصطناعي تلخيص محتوى المدونات أو الإجابة على أسئلة محددة بناءً على المحتوى المتوفر في المدونات.",
+          "en": "Yes, AI can summarize blog content or answer specific questions based on the available content in the blogs."
+        },
+        "category": {
+          "ar": "محتوى",
+          "en": "content"
+        }
+      },
+      {
+        "question": {
+          "ar": "كيف يتم البحث في محتوى المدونات؟",
+          "en": "How is blog content searched?"
+        },
+        "answer": {
+          "ar": "يتم البحث في محتوى المدونات باستخدام تقنية الذكاء الاصطناعي وتحليل التشابه الدلالي. النظام يحلل سؤالك ويجد المحتوى الأكثر صلة من بين جميع المدونات المتاحة.",
+          "en": "Blog content is searched using AI technology and semantic similarity analysis. The system analyzes your question and finds the most relevant content from all available blogs."
+        },
+        "category": {
+          "ar": "محتوى",
+          "en": "content"
+        }
+      },
+      {
+        "question": {
+          "ar": "هل محتوى المدونات متوفر باللغتين؟",
+          "en": "Is blog content available in both languages?"
+        },
+        "answer": {
+          "ar": "نعم، كل مدونة تحتوي على محتوى كامل باللغة العربية واللغة الإنجليزية. يمكن للمستخدمين الوصول إلى المحتوى باللغة التي يفضلونها.",
+          "en": "Yes, each blog contains complete content in both Arabic and English languages. Users can access content in their preferred language."
+        },
+        "category": {
+          "ar": "محتوى",
+          "en": "content"
+        }
+      },
+      {
+        "question": {
+          "ar": "ما هي أنواع المحتوى المتوفرة في المدونات؟",
+          "en": "What types of content are available in blogs?"
+        },
+        "answer": {
+          "ar": "المدونات تحتوي على محتوى متنوع حسب الفئات المتاحة. كل مدونة لها عنوان ومحتوى رئيسي بالإضافة إلى صورة واحدة وبيانات وصفية.",
+          "en": "Blogs contain diverse content based on available categories. Each blog has a title and main content plus one image and metadata."
+        },
+        "category": {
+          "ar": "محتوى",
+          "en": "content"
+        }
+      }
+    ]
   }
-
 }
-

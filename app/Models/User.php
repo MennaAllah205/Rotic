@@ -3,6 +3,7 @@
 namespace App\Models;
 
 // use Illuminate\Contracts\Auth\MustVerifyEmail;
+use Database\Factories\UserFactory;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
@@ -12,9 +13,8 @@ use Spatie\Permission\Traits\HasRoles;
 
 class User extends Authenticatable
 {
-    /** @use HasFactory<\Database\Factories\UserFactory> */
-    use HasFactory, Notifiable, HasApiTokens, HasRoles;
-
+    /** @use HasFactory<UserFactory> */
+    use HasApiTokens, HasFactory, HasRoles, Notifiable;
 
     /**
      * The attributes that are mass assignable.
@@ -57,7 +57,7 @@ class User extends Authenticatable
     /**
      * Register media conversions for automatic image compression
      */
-    public function registerMediaConversions(Media $media = null): void
+    public function registerMediaConversions(?Media $media = null): void
     {
         $this->addMediaConversion('thumb')
             ->width(800) // Resize to max 800px width
@@ -73,5 +73,15 @@ class User extends Authenticatable
             ->sharpen(10)
             ->performOnCollections('images')
             ->nonQueued();
+    }
+
+    public function conversations()
+    {
+        return $this->morphMany(ConversationParticipant::class, 'participant');
+    }
+
+    public function messages()
+    {
+        return $this->morphMany(Message::class, 'sender');
     }
 }
